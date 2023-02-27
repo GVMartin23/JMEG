@@ -5,5 +5,6 @@ public class Main {
 
         System.out.println("Testing our first class!!! :)");
         System.out.println("Ethan's print statement");
+        //Hi
     }
 }
