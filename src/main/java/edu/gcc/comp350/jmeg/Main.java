@@ -1,10 +1,28 @@
 package edu.gcc.comp350.jmeg;
 
-public class Main {
-    public static void main(String[] args) {
+import java.util.ArrayList;
 
-        System.out.println("Testing our first class!!! :)");
-        System.out.println("Ethan's print statement");
-        //Hi
+public class Main {
+private static ArrayList<Schedule> schedules;
+
+    public static ArrayList<Schedule> getSchedules() {
+        return schedules;
     }
+
+    public static void setSchedules(ArrayList<Schedule> schedules) {
+        Main.schedules = schedules;
+    }
+
+    public void Main(){
+
+}
+private static Schedule createSchedule(){
+    return null;
+}
+private static void loadSchedule(Schedule s){
+
+}
+public void saveSchedule(Schedule s){
+    return;
+}
 }
