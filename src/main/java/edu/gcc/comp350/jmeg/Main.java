@@ -3,6 +3,11 @@ package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 
 public class Main {
+
+    public static void main(String[] args){
+        User user=new User("Sally Senior", "Computer Science", "AI and ML", 2024);
+        System.out.println(user.getName());
+    }
 private static ArrayList<Schedule> schedules;
 
     public static ArrayList<Schedule> getSchedules() {
