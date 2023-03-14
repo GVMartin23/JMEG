@@ -7,6 +7,10 @@ public class User {
     private int year;
 
     public User(String name, String major, String minor, int year){
+        this.name = name;
+        this.major = major;
+        this.minor = minor;
+        this.year = year;
     }
 
 
