@@ -5,7 +5,6 @@ public class Search {
     private ArrayList<Filter> filters;
     private String inputData;
     private Schedule currentSchedule;
-
     public void Search(){
 
     }
