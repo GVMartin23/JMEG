@@ -2,6 +2,7 @@ package edu.gcc.comp350.jmeg;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -24,8 +25,21 @@ public class Main {
     }
 
 
-    private static void loadSchedule(Schedule s){
+    /**
+     * Loads saved schedules into memory
+     * Looks in working directory (Not Final)
+     */
+    private static void loadSchedule(){
+        //Current working directory
+        File directory = new File(System.getProperty("user.dir"));
 
+        //lambda sorting files in directory by those that are csv files
+        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv"));
+
+        //Load each schedule individually
+        for (File file : schedules) {
+
+        }
     }
 
     /**
