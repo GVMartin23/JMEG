@@ -1,9 +1,6 @@
 package edu.gcc.comp350.jmeg;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Main {
@@ -34,11 +31,32 @@ public class Main {
         File directory = new File(System.getProperty("user.dir"));
 
         //lambda sorting files in directory by those that are csv files
-        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv"));
+        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
 
         //Load each schedule individually
         for (File file : schedules) {
 
+        }
+    }
+
+    /**
+     * Method to check if file is one of the data csvs instead of a schedule
+     * Only Needed when course data is stored in CSVs
+     * @param filename name of file to check
+     * @return true if filename is same as data files
+     */
+    private static boolean isDataCSV(String filename) {
+        return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv");
+    }
+
+    private static void parseSavedSchedule(File file) throws IOException {
+        String schedule;
+        String user;
+        String courses;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            schedule = reader.readLine();
+            user = reader.readLine();
+            courses = reader.readLine();
         }
     }
 
