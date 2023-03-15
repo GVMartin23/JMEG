@@ -26,16 +26,19 @@ public class Main {
      * Loads saved schedules into memory
      * Looks in working directory (Not Final)
      */
-    private static void loadSchedule(){
+    private static void loadSchedule() throws IOException {
         //Current working directory
         File directory = new File(System.getProperty("user.dir"));
 
         //lambda sorting files in directory by those that are csv files
         File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
 
+        if (Main.schedules == null) {
+            Main.schedules = new ArrayList<>();
+        }
         //Load each schedule individually
         for (File file : schedules) {
-
+            Main.schedules.add(parseSavedSchedule(file));
         }
     }
 
@@ -49,15 +52,38 @@ public class Main {
         return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv");
     }
 
-    private static void parseSavedSchedule(File file) throws IOException {
-        String schedule;
-        String user;
-        String courses;
+    /**
+     * Takes input CSV file and parse information to load Schedule
+     * @param file File to parse
+     * @throws IOException if fileNotFound, or data read incorrectly
+     */
+    private static Schedule parseSavedSchedule(File file) throws IOException {
+        String scheduleData;
+        String userData;
+        String coursesData;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            schedule = reader.readLine();
-            user = reader.readLine();
-            courses = reader.readLine();
+            scheduleData = reader.readLine();
+            userData = reader.readLine();
+            coursesData = reader.readLine();
         }
+
+        String[] scheduleVars = scheduleData.split(",");
+        String[] userVars = userData.split(",");
+        String[] courseVars = userData.split(",");
+
+        Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
+
+        User user = new User(userVars[0], userVars[1], userVars[2], Integer.parseInt(userVars[3]));
+
+        schedule.setUser(user);
+
+
+        //TODO: Search course list to find what courses are in schedule and add to schedule arraylist
+        //TODO: Need variable where courses are listed when loaded into memory
+
+
+        return schedule;
+
     }
 
     /**

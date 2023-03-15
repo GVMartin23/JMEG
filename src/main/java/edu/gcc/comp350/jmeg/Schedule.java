@@ -13,6 +13,17 @@ public class Schedule {
 //Might not need
     }
 
+    /**
+     * Constructor for Schedule
+     * Used in loading a schedule
+     * @param title String title
+     * @param credits int credits
+     */
+    public Schedule(String title, int credits) {
+        this.title = title;
+        this.credits = credits;
+    }
+
     public User getUser() {
         return user;
     }
