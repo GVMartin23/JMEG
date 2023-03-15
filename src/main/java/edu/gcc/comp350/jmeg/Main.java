@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Main {
-private static ArrayList<Schedule> schedules;
+    private static ArrayList<Schedule> schedules;
 
     public static ArrayList<Schedule> getSchedules() {
         return schedules;
@@ -22,6 +22,8 @@ private static ArrayList<Schedule> schedules;
     private static Schedule createSchedule(){
         return null;
     }
+
+
     private static void loadSchedule(Schedule s){
 
     }
