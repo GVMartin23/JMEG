@@ -4,134 +4,296 @@ import java.util.ArrayList;
 
 
 public class Course {
-    private String name;
-    private String courseCode;
-    private ArrayList<Course> preReqs;
-    private String time;
-    private String professor;
-    private String building;
-    private String sectionCode;
-    private int roomNum;
-    private String description;
-    private int capacity;
-    private int seatsLeft;
 
-    public Course(String name, String courseCode, ArrayList<Course> preReqs,
-                  String time, String professor, String building, String sectionCode,
-                  int roomNum, String description, int capacity, int seatsLeft) {
-        this.name = name;
-        this.courseCode = courseCode;
-        this.preReqs = preReqs;
-        this.time = time;
-        this.professor = professor;
-        this.building = building;
-        this.sectionCode = sectionCode;
-        this.roomNum = roomNum;
-        this.description = description;
-        this.capacity = capacity;
-        this.seatsLeft = seatsLeft;
+    int yr_code;
+    int trm_code;
+    String crs_code;
+    String crs_comp1;
+    String crs_comp2;
+    String crs_comp3;
+    String crs_title;
+    int credit_hrs;
+    String x_listed_parnt_crs;
+    String acad_credit_varies;
+    String acad_credit_label;
+    int crs_capacity;
+    int max_capacity;
+    int crs_enrollment;
+    String bldg_cde;
+    String room_cde;
+    String monday_cde;
+    String tuesday_cde;
+    String wednesday_cde;
+    String thursday_cde;
+    String friday_cde;
+    String begin_tim;
+    String end_tim;
+    String last_name;
+    String first_name;
+    String preferred_name;
+    String comment_txt;
+
+
+    public Course(int yr_code, int trm_code, String crs_code, String crs_comp1, String crs_comp2,
+                  String crs_comp3, String crs_title, int credit_hrs, String x_listed_parnt_crs,
+                  String acad_credit_varies, String acad_credit_label, int crs_capacity, int max_capacity,
+                  int crs_enrollment, String bldg_cde, String room_cde, String monday_cde, String tuesday_cde,
+                  String wednesday_cde, String thursday_cde, String friday_cde, String begin_tim, String end_tim,
+                  String last_name, String first_name, String preferred_name, String comment_txt) {
+        this.yr_code = yr_code;
+        this.trm_code = trm_code;
+        this.crs_code = crs_code;
+        this.crs_comp1 = crs_comp1;
+        this.crs_comp2 = crs_comp2;
+        this.crs_comp3 = crs_comp3;
+        this.crs_title = crs_title;
+        this.credit_hrs = credit_hrs;
+        this.x_listed_parnt_crs = x_listed_parnt_crs;
+        this.acad_credit_varies = acad_credit_varies;
+        this.acad_credit_label = acad_credit_label;
+        this.crs_capacity = crs_capacity;
+        this.max_capacity = max_capacity;
+        this.crs_enrollment = crs_enrollment;
+        this.bldg_cde = bldg_cde;
+        this.room_cde = room_cde;
+        this.monday_cde = monday_cde;
+        this.tuesday_cde = tuesday_cde;
+        this.wednesday_cde = wednesday_cde;
+        this.thursday_cde = thursday_cde;
+        this.friday_cde = friday_cde;
+        this.begin_tim = begin_tim;
+        this.end_tim = end_tim;
+        this.last_name = last_name;
+        this.first_name = first_name;
+        this.preferred_name = preferred_name;
+        this.comment_txt = comment_txt;
     }
 
-    public Course(String name, String courseCode) {
-        this.name=name;
-        this.courseCode=courseCode;
+    public int getYr_code() {
+        return yr_code;
     }
 
-    public String getName() {
-        return name;
+    public void setYr_code(int yr_code) {
+        this.yr_code = yr_code;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getTrm_code() {
+        return trm_code;
     }
 
-    public String getCourseCode() {
-        return courseCode;
+    public void setTrm_code(int trm_code) {
+        this.trm_code = trm_code;
     }
 
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
+    public String getCrs_code() {
+        return crs_code;
     }
 
-    public ArrayList<Course> getPreReqs() {
-        return preReqs;
+    public void setCrs_code(String crs_code) {
+        this.crs_code = crs_code;
     }
 
-    public void setPreReqs(ArrayList<Course> preReqs) {
-        this.preReqs = preReqs;
+    public String getCrs_comp1() {
+        return crs_comp1;
     }
 
-    public String getTime() {
-        return time;
+    public void setCrs_comp1(String crs_comp1) {
+        this.crs_comp1 = crs_comp1;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public String getCrs_comp2() {
+        return crs_comp2;
     }
 
-    public String getProfessor() {
-        return professor;
+    public void setCrs_comp2(String crs_comp2) {
+        this.crs_comp2 = crs_comp2;
     }
 
-    public void setProfessor(String professor) {
-        this.professor = professor;
+    public String getCrs_comp3() {
+        return crs_comp3;
     }
 
-    public String getBuilding() {
-        return building;
+    public void setCrs_comp3(String crs_comp3) {
+        this.crs_comp3 = crs_comp3;
     }
 
-    public void setBuilding(String building) {
-        this.building = building;
+    public String getCrs_title() {
+        return crs_title;
     }
 
-    public String getSectionCode() {
-        return sectionCode;
+    public void setCrs_title(String crs_title) {
+        this.crs_title = crs_title;
     }
 
-    public void setSectionCode(String sectionCode) {
-        this.sectionCode = sectionCode;
+    public int getCredit_hrs() {
+        return credit_hrs;
     }
 
-    public int getRoomNum() {
-        return roomNum;
+    public void setCredit_hrs(int credit_hrs) {
+        this.credit_hrs = credit_hrs;
     }
 
-    public void setRoomNum(int roomNum) {
-        this.roomNum = roomNum;
+    public String getX_listed_parnt_crs() {
+        return x_listed_parnt_crs;
     }
 
-    public String getDescription() {
-        return description;
+    public void setX_listed_parnt_crs(String x_listed_parnt_crs) {
+        this.x_listed_parnt_crs = x_listed_parnt_crs;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getAcad_credit_varies() {
+        return acad_credit_varies;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public void setAcad_credit_varies(String acad_credit_varies) {
+        this.acad_credit_varies = acad_credit_varies;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public String getAcad_credit_label() {
+        return acad_credit_label;
     }
 
-    public int getSeatsLeft() {
-        return seatsLeft;
+    public void setAcad_credit_label(String acad_credit_label) {
+        this.acad_credit_label = acad_credit_label;
     }
 
-    public void setSeatsLeft(int seatsLeft) {
-        this.seatsLeft = seatsLeft;
+    public int getCrs_capacity() {
+        return crs_capacity;
     }
 
-    @Override
-    public String toString(){
-        String crs = "";
-        crs += name + "\n";
-        crs += "--------------------------------\n";
-        crs += "Course and Section Code: " + courseCode + sectionCode;
-
-        return null;
+    public void setCrs_capacity(int crs_capacity) {
+        this.crs_capacity = crs_capacity;
     }
+
+    public int getMax_capacity() {
+        return max_capacity;
+    }
+
+    public void setMax_capacity(int max_capacity) {
+        this.max_capacity = max_capacity;
+    }
+
+    public int getCrs_enrollment() {
+        return crs_enrollment;
+    }
+
+    public void setCrs_enrollment(int crs_enrollment) {
+        this.crs_enrollment = crs_enrollment;
+    }
+
+    public String getBldg_cde() {
+        return bldg_cde;
+    }
+
+    public void setBldg_cde(String bldg_cde) {
+        this.bldg_cde = bldg_cde;
+    }
+
+    public String getRoom_cde() {
+        return room_cde;
+    }
+
+    public void setRoom_cde(String room_cde) {
+        this.room_cde = room_cde;
+    }
+
+    public String getMonday_cde() {
+        return monday_cde;
+    }
+
+    public void setMonday_cde(String monday_cde) {
+        this.monday_cde = monday_cde;
+    }
+
+    public String getTuesday_cde() {
+        return tuesday_cde;
+    }
+
+    public void setTuesday_cde(String tuesday_cde) {
+        this.tuesday_cde = tuesday_cde;
+    }
+
+    public String getWednesday_cde() {
+        return wednesday_cde;
+    }
+
+    public void setWednesday_cde(String wednesday_cde) {
+        this.wednesday_cde = wednesday_cde;
+    }
+
+    public String getThursday_cde() {
+        return thursday_cde;
+    }
+
+    public void setThursday_cde(String thursday_cde) {
+        this.thursday_cde = thursday_cde;
+    }
+
+    public String getFriday_cde() {
+        return friday_cde;
+    }
+
+    public void setFriday_cde(String friday_cde) {
+        this.friday_cde = friday_cde;
+    }
+
+    public String getBegin_tim() {
+        return begin_tim;
+    }
+
+    public void setBegin_tim(String begin_tim) {
+        this.begin_tim = begin_tim;
+    }
+
+    public String getEnd_tim() {
+        return end_tim;
+    }
+
+    public void setEnd_tim(String end_tim) {
+        this.end_tim = end_tim;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getPreferred_name() {
+        return preferred_name;
+    }
+
+    public void setPreferred_name(String preferred_name) {
+        this.preferred_name = preferred_name;
+    }
+
+    public String getComment_txt() {
+        return comment_txt;
+    }
+
+    public void setComment_txt(String comment_txt) {
+        this.comment_txt = comment_txt;
+    }
+
+
+
+//    @Override
+//    public String toString(){
+//        String crs = "";
+//        crs += name + "\n";
+//        crs += "--------------------------------\n";
+//        crs += "Course and Section Code: " + courseCode + sectionCode;
+//
+//        return null;
+//    }
 }
