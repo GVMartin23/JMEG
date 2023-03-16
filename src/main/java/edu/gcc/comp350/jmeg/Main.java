@@ -17,8 +17,8 @@ import java.util.Scanner;
 
 public class Main {
     private static ArrayList<Schedule> schedules;
-
     private static ArrayList<Course> courses;
+    public static ArrayList<Course> completeCourseList;
 
     public static ArrayList<Schedule> getSchedules() {
         return schedules;
@@ -28,7 +28,39 @@ public class Main {
         Main.schedules = schedules;
     }
 
+
+
+
     public static void main(String[] args) {
+//Making dummy courses and putting them in our complete class list
+       makeDummyCourses();
+
+
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to this software.  Enter your name");
+        String userName= scanner.nextLine();
+        System.out.println("Enter your major");
+        String major=scanner.nextLine();
+        System.out.println("Enter your minors");
+        String minor = scanner.nextLine();
+        System.out.println("Enter your year");
+        int year=scanner.nextInt();
+        scanner.nextLine();
+        User user=new User(userName, major, minor, year);//Create a user
+        System.out.println("Welcome, "+user.getName());
+
+        ArrayList<Schedule> userSchedules=new ArrayList<Schedule>();//Creates a new arrayList of schedules for the new user
+        Schedule schedule=new Schedule(user, "Test schedule");//Puts a new schedule into that list
+        schedules.add(schedule);
+
+
+        for(int i=0; i<schedules.size(); i++){
+            if(schedules.get(i).getUser().getName()==userName){//Puts all the schedules containing that user's name from the master schedule list into the list
+                userSchedules.add(schedules.get(i));
+            }
+        }
+        userScheduleSelect(user, userSchedules);
 
         try {
             List<String[]> list = loadCSV();
@@ -121,4 +153,64 @@ private static void loadSchedule(Schedule s){
 
         return sb.substring(0, sb.length() - 1) + "\n";
     }
+
+        public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules){
+            Scanner scanner=new Scanner(System.in);
+            System.out.println("Your schedules are: ");//Print out all the schedules for the current user
+            for(Schedule i:userSchedules){
+                System.out.println(i.getTitle());
+            }
+            System.out.println("Which schedule do you wish to edit?");
+            String userSelectedSchedule=scanner.nextLine();
+            System.out.println("You selected "+userSelectedSchedule);
+            Schedule currentSchedule=new Schedule(user, "meh");
+            ArrayList<Course> userCurrentCourses=new ArrayList<Course>();
+            for(Schedule i:userSchedules){
+                if(i.getTitle().equals(userSelectedSchedule)){//Matches the string input with the actual schedule
+                    currentSchedule=i;
+                    userCurrentCourses=currentSchedule.getCourses();
+                }
+            }
+            System.out.println("Editing schedule"+currentSchedule.getTitle());
+            System.out.println("Entire class list:");//Lists out all the possible classes from master list
+            for(Course c:completeCourseList){
+                System.out.print(" "+c.getName());
+            }
+            System.out.println("\nEnter a course name to add it to your schedule");
+            Boolean addClass=true;
+            String courseName=scanner.nextLine();
+            addCourseToSchedule(courseName, userCurrentCourses);
+
+            System.out.println("Now showing current schedule");
+            for(Course c: userCurrentCourses){
+                System.out.println(c.getName());
+            }
+            saveSchedule(currentSchedule);
+        }
+
+        public static void addCourseToSchedule(String courseName, ArrayList<Course> userCurrentCourses){
+            for(int i=0; i<userCurrentCourses.size(); i++) {
+                if (userCurrentCourses.size() > 0) {
+                    if (userCurrentCourses.get(i).getName() == courseName) {
+                        System.out.println("You already have this course added");
+                    }
+                }
+            }
+            System.out.println("Searching for "+courseName);
+            for (int j = 0; j < completeCourseList.size(); j++) {
+                if (completeCourseList.get(j).getName().equals(courseName)) {
+                    userCurrentCourses.add(completeCourseList.get(j));
+                    System.out.println("Successfully added class" + completeCourseList.get(j).getName());
+                }
+
+            }
+        }
+public static void makeDummyCourses(){
+    Course course1=new Course("Biology", "101");
+    Course course2=new Course("Physics", "201");
+    completeCourseList=new ArrayList<Course>();
+    completeCourseList.add(course1);
+    completeCourseList.add(course2);
+    schedules=new ArrayList<Schedule>();
+}
 }
