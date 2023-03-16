@@ -171,7 +171,7 @@ private static void loadSchedule(Schedule s){
                     userCurrentCourses=currentSchedule.getCourses();
                 }
             }
-            System.out.println("Editing schedule"+currentSchedule.getTitle());
+            System.out.println("Editing schedule "+currentSchedule.getTitle());
             System.out.println("Entire class list:");//Lists out all the possible classes from master list
             for(Course c:completeCourseList){
                 System.out.print(" "+c.getCrs_title());
