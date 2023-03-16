@@ -103,7 +103,7 @@ public class Main {
 
         String[] scheduleVars = scheduleData.split(",");
         String[] userVars = userData.split(",");
-        String[] courseVars = coursesData.split(",");
+        List<String> courseVars = Arrays.asList(coursesData.split(","));
 
         Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
 
@@ -115,8 +115,11 @@ public class Main {
         //TODO: Search course list to find what courses are in schedule and add to schedule arraylist
         //TODO: Need variable where courses are listed when loaded into memory
 
-        for (String code : courseVars) {
 
+        for (Course course : courses) {
+            if (courseVars.contains(course.getCourseCode())) {
+
+            }
         }
 
 
