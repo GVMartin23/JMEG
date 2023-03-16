@@ -32,6 +32,11 @@ public class Course {
         this.seatsLeft = seatsLeft;
     }
 
+    public Course(String name, String courseCode) {
+        this.name=name;
+        this.courseCode=courseCode;
+    }
+
     public String getName() {
         return name;
     }
