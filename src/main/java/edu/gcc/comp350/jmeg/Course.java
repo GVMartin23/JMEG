@@ -16,6 +16,22 @@ public class Course {
     private int capacity;
     private int seatsLeft;
 
+    public Course(String name, String courseCode, ArrayList<Course> preReqs,
+                  String time, String professor, String building, String sectionCode,
+                  int roomNum, String description, int capacity, int seatsLeft) {
+        this.name = name;
+        this.courseCode = courseCode;
+        this.preReqs = preReqs;
+        this.time = time;
+        this.professor = professor;
+        this.building = building;
+        this.sectionCode = sectionCode;
+        this.roomNum = roomNum;
+        this.description = description;
+        this.capacity = capacity;
+        this.seatsLeft = seatsLeft;
+    }
+
     public String getName() {
         return name;
     }
@@ -102,5 +118,15 @@ public class Course {
 
     public void setSeatsLeft(int seatsLeft) {
         this.seatsLeft = seatsLeft;
+    }
+
+    @Override
+    public String toString(){
+        String crs = "";
+        crs += name + "\n";
+        crs += "--------------------------------\n";
+        crs += "Course and Section Code: " + courseCode + sectionCode;
+
+        return null;
     }
 }

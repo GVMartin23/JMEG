@@ -9,8 +9,13 @@ public class Schedule {
     private ArrayList<Course> courses;
     private Calendar calendar;
 
-    public Schedule(){
-//Might not need
+    public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar){
+        //Might not need
+        this.user = user;
+        this.title = title;
+        this.credits = credits;
+        this.courses = courses;
+        this.calendar = calendar;
     }
 
     /**
@@ -65,23 +70,24 @@ public class Schedule {
     }
 
    public void searchCourses(){
-
+        //TODO: search csv data for courses
    }
 
    private void removeCourse(Course course){
-
+        courses.remove(course);
    }
 
    private void getRecommendedSchedule(User user){
-
+        //TODO: stretch goal
    }
-   private void switchSection(Course course){
-
+   private void switchSection(Course old_course, Course new_course){
+        removeCourse(old_course);
+        courses.add(new_course);
    }
    private void showCalendar(ArrayList<Course> courses){
-
+        //TODO: once calendar is implemented
    }
    private void getDetails(Course course){
-
+        //maybe should be in Course class?
    }
 }

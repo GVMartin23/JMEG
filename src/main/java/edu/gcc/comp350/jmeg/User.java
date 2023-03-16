@@ -13,7 +13,6 @@ public class User {
         this.year = year;
     }
 
-
     public String getName() {
         return name;
     }
