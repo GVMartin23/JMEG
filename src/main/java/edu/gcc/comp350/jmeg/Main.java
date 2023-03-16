@@ -16,6 +16,14 @@ public class Main {
 
     private static ArrayList<Course> courses;
 
+    public static void setCourses(ArrayList<Course> courses) {
+        Main.courses = courses;
+    }
+
+    public static ArrayList<Course> getCourses() {
+        return courses;
+    }
+
     public static ArrayList<Schedule> getSchedules() {
         return schedules;
     }
@@ -60,7 +68,7 @@ public class Main {
      * Loads saved schedules into memory
      * Looks in working directory (Not Final)
      */
-    private static void loadSchedule() throws IOException {
+    public static void loadSchedule() throws IOException {
         //Current working directory
         File directory = new File(System.getProperty("user.dir"));
 
@@ -111,17 +119,15 @@ public class Main {
 
         schedule.setUser(user);
 
-
-        //TODO: Search course list to find what courses are in schedule and add to schedule arraylist
-        //TODO: Need variable where courses are listed when loaded into memory
-
+        ArrayList<Course> scheduleCourses = new ArrayList<>();
 
         for (Course course : courses) {
-            if (courseVars.contains(course.getCourseCode())) {
-
+            if (courseVars.contains(course.getCrs_code())) {
+                scheduleCourses.add(course);
             }
         }
 
+        schedule.setCourses(scheduleCourses);
 
         return schedule;
 
@@ -181,7 +187,7 @@ public class Main {
     private static String formatCourseCSV(ArrayList<Course> Courses) {
         StringBuilder sb = new StringBuilder();
         for (Course c : Courses) {
-            sb.append(c.getCourseCode()).append(",");
+            sb.append(c.getCrs_code()).append(",");
         }
 
         return sb.substring(0, sb.length() - 1) + "\n";
