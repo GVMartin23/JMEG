@@ -1,15 +1,19 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 
+
+
 public class Search {
     private ArrayList<Filter> filters;
     private String inputData;
     private Schedule currentSchedule;
-
     public void Search(){
 
     }
+
+
     private ArrayList<Course> search(){
+
         return null;
     }
     private void clearFilters(){
