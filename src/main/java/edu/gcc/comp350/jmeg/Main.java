@@ -148,7 +148,7 @@ private static void loadSchedule(Schedule s){
     private static String formatCourseCSV(ArrayList<Course> Courses) {
         StringBuilder sb = new StringBuilder();
         for (Course c : Courses) {
-            sb.append(c.getCourseCode()).append(",");
+            sb.append(c.getCrs_code()).append(",");
         }
 
         return sb.substring(0, sb.length() - 1) + "\n";
@@ -171,10 +171,10 @@ private static void loadSchedule(Schedule s){
                     userCurrentCourses=currentSchedule.getCourses();
                 }
             }
-            System.out.println("Editing schedule"+currentSchedule.getTitle());
+            System.out.println("Editing schedule "+currentSchedule.getTitle());
             System.out.println("Entire class list:");//Lists out all the possible classes from master list
             for(Course c:completeCourseList){
-                System.out.print(" "+c.getName());
+                System.out.print(" "+c.getCrs_title());
             }
             System.out.println("\nEnter a course name to add it to your schedule");
             Boolean addClass=true;
@@ -183,7 +183,7 @@ private static void loadSchedule(Schedule s){
 
             System.out.println("Now showing current schedule");
             for(Course c: userCurrentCourses){
-                System.out.println(c.getName());
+                System.out.println(c.getCrs_title());
             }
             saveSchedule(currentSchedule);
         }
@@ -191,23 +191,23 @@ private static void loadSchedule(Schedule s){
         public static void addCourseToSchedule(String courseName, ArrayList<Course> userCurrentCourses){
             for(int i=0; i<userCurrentCourses.size(); i++) {
                 if (userCurrentCourses.size() > 0) {
-                    if (userCurrentCourses.get(i).getName() == courseName) {
+                    if (userCurrentCourses.get(i).getCrs_title() == courseName) {
                         System.out.println("You already have this course added");
                     }
                 }
             }
             System.out.println("Searching for "+courseName);
             for (int j = 0; j < completeCourseList.size(); j++) {
-                if (completeCourseList.get(j).getName().equals(courseName)) {
+                if (completeCourseList.get(j).getCrs_title().equals(courseName)) {
                     userCurrentCourses.add(completeCourseList.get(j));
-                    System.out.println("Successfully added class" + completeCourseList.get(j).getName());
+                    System.out.println("Successfully added class" + completeCourseList.get(j).getCrs_title());
                 }
 
             }
         }
 public static void makeDummyCourses(){
-    Course course1=new Course("Biology", "101");
-    Course course2=new Course("Physics", "201");
+    Course course1=new Course("Biology");
+    Course course2=new Course("Physics");
     completeCourseList=new ArrayList<Course>();
     completeCourseList.add(course1);
     completeCourseList.add(course2);
