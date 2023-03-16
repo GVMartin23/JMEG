@@ -1,6 +1,8 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 
+
+
 public class Search {
     private ArrayList<Filter> filters;
     private String inputData;
@@ -8,7 +10,10 @@ public class Search {
     public void Search(){
 
     }
+
+
     private ArrayList<Course> search(){
+
         return null;
     }
     private void clearFilters(){
