@@ -2,6 +2,7 @@ package edu.gcc.comp350.jmeg;
 
 import java.util.ArrayList;
 
+
 public class Course {
     private String name;
     private String courseCode;
