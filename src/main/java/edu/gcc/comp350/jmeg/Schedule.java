@@ -18,6 +18,11 @@ public class Schedule {
         this.calendar = calendar;
     }
 
+    public Schedule(User user, String title) {
+        this.user=user;
+        this.title=title;
+    }
+
     public User getUser() {
         return user;
     }
