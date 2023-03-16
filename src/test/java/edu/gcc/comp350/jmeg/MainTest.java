@@ -10,10 +10,9 @@ class MainTest {
 
     @Test
     void saveSchedule() {
-        Schedule schedule = new Schedule();
+        Schedule schedule = new Schedule("TITLE", 0);
         User user = new User("Joe" , "MAJOR", "MINOR", 1);
         schedule.setUser(user);
-        schedule.setTitle("TITLE");
         ArrayList<Course> courses = new ArrayList<>();
         Course course = new Course();
         course.setCourseCode("CS1");

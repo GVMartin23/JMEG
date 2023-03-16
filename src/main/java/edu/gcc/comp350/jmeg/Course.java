@@ -32,6 +32,13 @@ public class Course {
         this.seatsLeft = seatsLeft;
     }
 
+    /**
+     * Empty Constructor for testing
+     */
+    public Course() {
+
+    }
+
     public String getName() {
         return name;
     }
