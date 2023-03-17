@@ -54,14 +54,15 @@ public class Main {
         User user=new User(userName, major, minor, year);//Create a user
         System.out.println("Welcome, "+user.getName());
 
-        ArrayList<Schedule> userSchedules=new ArrayList<Schedule>();//Creates a new arrayList of schedules for the new user
+        ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
         Schedule schedule=new Schedule(user, "Test schedule");//Puts a new schedule into that list
         schedules.add(schedule);
 
 
-        for(int i=0; i<schedules.size(); i++){
-            if(schedules.get(i).getUser().getName().equals(userName)){//Puts all the schedules containing that user's name from the master schedule list into the list
-                userSchedules.add(schedules.get(i));
+        for (Schedule value : schedules) {
+            if (value.getUser().getName().equals(userName)) {
+                //Puts all the schedules containing that user's name from the master schedule list into the list
+                userSchedules.add(value);
             }
         }
         userScheduleSelect(user, userSchedules);
@@ -99,7 +100,7 @@ public class Main {
      * Loads saved schedules into memory
      * Looks in working directory (Not Final)
      */
-    public static void loadSchedule() throws IOException {
+    public static void loadSchedule() {
         //Current working directory
         File directory = new File(System.getProperty("user.dir"));
 
@@ -111,7 +112,12 @@ public class Main {
         }
         //Load each schedule individually
         for (File file : schedules) {
-            Main.schedules.add(parseSavedSchedule(file));
+            try {
+                Main.schedules.add(parseSavedSchedule(file));
+            } catch (IOException e) {
+                //File not found error or failed in reading file
+                e.printStackTrace();
+            }
         }
     }
 
@@ -134,12 +140,14 @@ public class Main {
         String scheduleData;
         String userData;
         String coursesData;
+        //Reads each line of saved schedule
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             scheduleData = reader.readLine();
             userData = reader.readLine();
             coursesData = reader.readLine();
         }
 
+        //Split lines of csv into unique vals
         String[] scheduleVars = scheduleData.split(",");
         String[] userVars = userData.split(",");
         List<String> courseVars = Arrays.asList(coursesData.split(","));
@@ -152,6 +160,7 @@ public class Main {
 
         ArrayList<Course> scheduleCourses = new ArrayList<>();
 
+        //Go through each Crs_code in file and add that course to schedule
         for (Course course : courses) {
             if (courseVars.contains(course.getCrs_code())) {
                 scheduleCourses.add(course);
@@ -161,7 +170,6 @@ public class Main {
         schedule.setCourses(scheduleCourses);
 
         return schedule;
-
     }
 
     /**
