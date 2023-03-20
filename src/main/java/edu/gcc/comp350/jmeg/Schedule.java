@@ -19,8 +19,19 @@ public class Schedule {
     }
 
     public Schedule(User user, String title) {
-        this.user=user;
-        this.title=title;
+        this.user = user;
+        this.title = title;
+    }
+
+    /**
+     * Constructor for Schedule
+     * Used in loading a schedule
+     * @param title String title
+     * @param credits int credits
+     */
+    public Schedule(String title, int credits) {
+        this.title = title;
+        this.credits = credits;
     }
 
     public User getUser() {
