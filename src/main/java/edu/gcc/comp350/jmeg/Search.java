@@ -1,18 +1,40 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
-
+import java.util.Scanner;
 
 
 public class Search {
     private ArrayList<Filter> filters;
     private String inputData;
     private Schedule currentSchedule;
-    public void Search(){
-
+    public Search(Schedule schedule) {
+        currentSchedule = schedule;
+        filters = new ArrayList<>();
+        inputData = "";
     }
 
+    /**
+     * Basic method for interaction with program
+     * Everything in here can change
+     * Return at end used to pass by returntoSchedule
+     * If this method is only called in scheduleInteract,
+     * then a return will send it back to that method
+     */
+    public void searchInteraction() {
+        Scanner scnr = new Scanner(System.in);
+        System.out.println("Enter search term");
 
-    private ArrayList<Course> search(){
+        System.out.println("If finished searching, press q");
+
+        char exit = scnr.next().charAt(0);
+        if (exit == 'q') {
+            return;
+        } else {
+            searchInteraction();
+        }
+    }
+
+    public ArrayList<Course> search() {
 
         return null;
     }
