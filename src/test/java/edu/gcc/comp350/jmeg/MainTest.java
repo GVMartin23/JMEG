@@ -35,7 +35,6 @@ class MainTest {
 
         ArrayList<Schedule> schedules = Main.getSchedules();
 
-        System.out.println(schedules.get(0).getTitle());
-
+        assertEquals("Test schedule", schedules.get(0).getTitle());
     }
 }
