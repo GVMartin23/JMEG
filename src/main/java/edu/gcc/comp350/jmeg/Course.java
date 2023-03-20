@@ -1,7 +1,10 @@
 package edu.gcc.comp350.jmeg;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Course {
 
@@ -287,15 +290,34 @@ public Course(String title){
         this.comment_txt = comment_txt;
     }
 
+    public static String formatTimeOfDay(LocalTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ha");
+        String formattedTime = time.format(formatter);
+        return formattedTime;
+    }
 
+    public static String convertStringToTime(String timeString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime localTime = LocalTime.parse(timeString, formatter);
+        String formattedTime = formatTimeOfDay(localTime);
+        return formattedTime;
+    }
 
-//    @Override
-//    public String toString(){
-//        String crs = "";
-//        crs += name + "\n";
-//        crs += "--------------------------------\n";
-//        crs += "Course and Section Code: " + courseCode + sectionCode;
-//
-//        return null;
-//    }
+    @Override
+    public String toString(){
+        String crs = "";
+        crs += crs_title + "\n";
+        crs += "--------------------------------\n";
+        crs += "Course and Section Code: " + crs_comp1 + " " + crs_comp2 + " " + crs_comp3 + "\t\t";
+
+        String st_time = convertStringToTime(begin_tim);
+        String end_time = convertStringToTime(end_tim);
+
+        String meets = String.format("Meets: %s/%s/%s/%s/%s\t\tFrom: %s to %s\n", monday_cde, tuesday_cde, wednesday_cde, thursday_cde, friday_cde, st_time, end_time);
+        crs += meets;
+        crs += "Professor: " + last_name + ", " + first_name;
+        crs += String.format("\t\tCapacity: %d/%d\n", crs_enrollment, crs_capacity);
+        crs += String.format("\t\tCredit Hours: %d", credit_hrs);
+        return crs;
+    }
 }
