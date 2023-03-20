@@ -56,6 +56,7 @@ public class Main {
 
         ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
         Schedule schedule=new Schedule(user, "Test schedule");//Puts a new schedule into that list
+        schedule.setCourses(completeCourseList);
         schedules.add(schedule);
 
 
@@ -242,27 +243,15 @@ public class Main {
         String userSelectedSchedule=scanner.nextLine();
         System.out.println("You selected "+userSelectedSchedule);
         Schedule currentSchedule=new Schedule(user, "meh");
-        ArrayList<Course> userCurrentCourses=new ArrayList<Course>();
         for(Schedule i:userSchedules){
             if(i.getTitle().equals(userSelectedSchedule)){//Matches the string input with the actual schedule
                 currentSchedule=i;
-                userCurrentCourses=currentSchedule.getCourses();
             }
         }
-        System.out.println("Editing schedule "+currentSchedule.getTitle());
-        System.out.println("Entire class list:");//Lists out all the possible classes from master list
-        for(Course c:completeCourseList){
-            System.out.print(" "+c.getCrs_title());
-        }
-        System.out.println("\nEnter a course name to add it to your schedule");
-        Boolean addClass=true;
-        String courseName=scanner.nextLine();
-        addCourseToSchedule(courseName, userCurrentCourses);
 
-        System.out.println("Now showing current schedule");
-        for(Course c: userCurrentCourses){
-            System.out.println(c.getCrs_title());
-        }
+
+        currentSchedule.scheduleInteract();
+
         saveSchedule(currentSchedule);
     }
 
