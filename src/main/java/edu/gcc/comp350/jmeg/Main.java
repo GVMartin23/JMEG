@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Main {
     private static ArrayList<Schedule> schedules;
     private static ArrayList<Course> courses;
-    public static ArrayList<Course> completeCourseList;
+    //public static ArrayList<Course> completeCourseList;
 
     public static void setCourses(ArrayList<Course> courses) {
         Main.courses = courses;
@@ -33,40 +33,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        testCSV();
-
-//Making dummy courses and putting them in our complete class list
-       makeDummyCourses();
-
-
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to this software.  Enter your name");
-        String userName= scanner.nextLine();
-        System.out.println("Enter your major");
-        String major=scanner.nextLine();
-        System.out.println("Enter your minors");
-        String minor = scanner.nextLine();
-        System.out.println("Enter your year");
-        int year=scanner.nextInt();
-        scanner.nextLine();
-        User user=new User(userName, major, minor, year);//Create a user
-        System.out.println("Welcome, "+user.getName());
-
-        ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
-        Schedule schedule=new Schedule(user, "Test schedule");//Puts a new schedule into that list
-        schedule.setCourses(completeCourseList);
-        schedules.add(schedule);
-
-
-        for (Schedule value : schedules) {
-            if (value.getUser().getName().equals(userName)) {
-                //Puts all the schedules containing that user's name from the master schedule list into the list
-                userSchedules.add(value);
-            }
-        }
-        userScheduleSelect(user, userSchedules);
-
+        loadSchedule();
+        testCSV();//Load courses into arrayList from CSV
+        User user=makeUser();//Use command prompt to make new user
+        ArrayList<Schedule> userSchedules=fillUserSchedules(user);//Create arrayList of schedules for the user,
+        userScheduleSelect(user, userSchedules);//Allow for search/add class interface
 
     }
 
@@ -189,13 +160,13 @@ public class Main {
     public static void loadSchedule() {
         //Current working directory
         File directory = new File(System.getProperty("user.dir"));
-
         //lambda sorting files in directory by those that are csv files
         File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
 
         if (Main.schedules == null) {
             Main.schedules = new ArrayList<>();
         }
+
         //Load each schedule individually
         for (File file : schedules) {
             try {
@@ -204,6 +175,8 @@ public class Main {
                 //File not found error or failed in reading file
                 e.printStackTrace();
             }
+            System.out.println("Testing");//TODO: DOESNT GET HERE
+
         }
     }
 
@@ -349,20 +322,50 @@ public class Main {
                 }
             }
             System.out.println("Searching for "+courseName);
-            for (int j = 0; j < completeCourseList.size(); j++) {
-                if (completeCourseList.get(j).getCrs_title().equals(courseName)) {
-                    userCurrentCourses.add(completeCourseList.get(j));
-                    System.out.println("Successfully added class" + completeCourseList.get(j).getCrs_title());
+            for (int j = 0; j < courses.size(); j++) {
+                if (courses.get(j).getCrs_title().equals(courseName)) {
+                    userCurrentCourses.add(courses.get(j));
+                    System.out.println("Successfully added class" + courses.get(j).getCrs_title());
                 }
 
             }
         }
-    public static void makeDummyCourses(){
-        Course course1=new Course("Biology");
-        Course course2=new Course("Physics");
-        completeCourseList=new ArrayList<Course>();
-        completeCourseList.add(course1);
-        completeCourseList.add(course2);
-        schedules=new ArrayList<Schedule>();
+        public static ArrayList<Schedule> fillUserSchedules(User user){
+            ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
+            Schedule schedule=new Schedule(user, user.getName()+"'s schedule");//Puts a new schedule into that list
+            setCourses(courses);
+            schedules.add(schedule);
+
+            for (Schedule value : schedules) {
+                if (value.getUser().getName().equals(user.getName())) {
+                    //Puts all the schedules containing that user's name from the master schedule list into the list
+                    userSchedules.add(value);
+                }
+            }
+            return userSchedules;
+        }
+    public static User makeUser(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Have you used this software before? Y/N");
+        String returningUser=scanner.nextLine();
+        if(returningUser.equals("Y")){
+            System.out.println("Welcome back");
+            //TODO code here for pulling returning user info off file
+            return new User("Dummy", "CS", "AI", 2024);
+        }else {//New user
+            System.out.println("Welcome.  Enter your name");
+            String userName = scanner.nextLine();
+            System.out.println("Enter your major");
+            String major = scanner.nextLine();
+            System.out.println("Enter your minors");
+            String minor = scanner.nextLine();
+            System.out.println("Enter your year");
+            int year = scanner.nextInt();
+            scanner.nextLine();
+            User user = new User(userName, major, minor, year);//Create a user
+            System.out.println("Welcome, " + user.getName());
+            //TODO: put user and their info onto file
+            return user;
+        }
     }
 }
