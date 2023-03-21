@@ -67,6 +67,7 @@ public class Main {
         }
         userScheduleSelect(user, userSchedules);
 
+
     }
 
     /**
@@ -79,8 +80,6 @@ public class Main {
             List<String[]> list = loadCSV();
             list.remove(0);
             for(String[] str : list) {
-                //System.out.println("TEST"+str[0]+"TEST");
-                System.out.println(Arrays.asList(str));
                 if(str[0].isEmpty()){
                     str[0] = "0";
                 }
