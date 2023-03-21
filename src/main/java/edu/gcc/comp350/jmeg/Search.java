@@ -1,5 +1,6 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 
@@ -11,10 +12,28 @@ public class Search {
 
     }
 
+//    public static void main(String[] args) {
+//        ArrayList<Course> cs;
+//        Search s = new Search();
+//        cs = s.getCourses();
+//
+//
+//    }
 
-    private ArrayList<Course> search(){
 
-        return null;
+    private ArrayList<Course> searchCourseName(ArrayList<Course> allCourses){
+        ArrayList<Course> c = new ArrayList<>();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter the name of the course");
+        String input = scan.next();
+
+        for(int i = 0; i < allCourses.size(); i++){
+            if(allCourses.get(6).crs_title.equals(input)){
+                System.out.println("Found");
+                c.add(allCourses.get(i));
+            }
+        }
+        return c;
     }
     private void clearFilters(){
         return;
