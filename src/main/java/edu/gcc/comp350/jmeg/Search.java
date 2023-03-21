@@ -72,16 +72,20 @@ public class Search {
      * Takes in and identifier and searches based on input
      * @param identifier defines what method to search by
      * @param input string that is used to search
-     * @return List of courses if identifier exists in switch, else null
+     * @return List of courses if identifier exits else null
      */
     private ArrayList<Course> search(String identifier, String input) {
-        return switch (identifier) {
-            case "NAME" -> searchCourseName(input);
-            case "DAY" -> searchCourseDay(input);
-            case "TIME" -> searchCourseTime(input);
-            case "CODE" -> searchCourseCode(input);
-            default -> null;
-        };
+        if (identifier.equals("NAME")) {
+            return searchCourseName(input);
+        } else if (identifier.equals("DAY")) {
+            return searchCourseDay(input);
+        } else if (identifier.equals("TIME")) {
+            return searchCourseTime(input);
+        } else if (identifier.equals("CODE")) {
+            return searchCourseCode(input);
+        }
+
+        return null;
     }
 
     /**
