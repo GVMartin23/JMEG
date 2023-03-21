@@ -35,6 +35,8 @@ public class Search {
     }
 
     public ArrayList<Course> search() {
+        return null;
+    }
 
     private ArrayList<Course> searchCourseName(ArrayList<Course> allCourses){
         ArrayList<Course> c = new ArrayList<>();
@@ -42,10 +44,10 @@ public class Search {
         System.out.println("Enter the name of the course");
         String input = scan.next();
 
-        for(int i = 0; i < allCourses.size(); i++){
-            if(allCourses.get(6).crs_title.equals(input)){
+        for (Course allCours : allCourses) {
+            if (allCourses.get(6).crs_title.equals(input)) {
                 System.out.println("Found");
-                c.add(allCourses.get(i));
+                c.add(allCours);
             }
         }
         return c;
