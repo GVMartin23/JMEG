@@ -23,21 +23,24 @@ public class Search {
     public void searchInteraction() {
         Scanner scnr = new Scanner(System.in);
 
-        System.out.println("Enter Name of Class");
-        String search = scnr.nextLine();
-        ArrayList<Course> results = searchCourseName(search);
-        System.out.println(results);
+        String exit = "Enter";
+        while (!exit.equals("exit")) {
+            System.out.println("Enter Name of Class");
+            String search = scnr.nextLine();
+            ArrayList<Course> results = searchCourseName(search);
+            System.out.println(results);
 
-        System.out.println("If finished searching, press q");
-
-        char exit = scnr.next().charAt(0);
-        if (exit == 'q') {
-            return;
-        } else {
-            searchInteraction();
+            System.out.println("If finished searching, type exit, else press enter: ");
+            exit = scnr.nextLine();
         }
     }
 
+
+    /**
+     * USED FOR TESTING ONLY
+     * DELETE ONCE DONE
+     * @param args
+     */
     public static void main(String[] args) {
         Main.testCSV();
         Scanner scnr = new Scanner(System.in);
