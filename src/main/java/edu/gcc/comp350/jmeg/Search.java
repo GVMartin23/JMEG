@@ -40,9 +40,11 @@ public class Search {
             if (results == null) {
                 System.out.println("Incorrect Search or Identifier");
                 continue;
+            } else if (results.isEmpty()) {
+                System.out.println("Search produced zero results, try a different query or identifier");
+            } else {
+                System.out.println(results);
             }
-
-            System.out.println(results);
 
             System.out.println("If finished searching, type exit, else press enter: ");
             exit = scnr.nextLine().toUpperCase();
@@ -132,36 +134,35 @@ public class Search {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : Main.getCourses()) {
-            if(input == "M" || input == "MON" || input == "MONDAY"){
+            if(input.equals("M") || input.equals("MON") || input.equals("MONDAY")){
                 if (course.getMonday_cde().contains(input)) {
                     c.add(course);
                 }
             }
 
-            if(input == "T" || input == "TUES" || input == "TUESDAY"){
+            if(input.equals("T") || input.equals("TUES") || input.equals("TUESDAY")){
                 if (course.getTuesday_cde().contains(input)) {
                     c.add(course);
                 }
             }
 
-            if(input == "W" || input == "WED" || input == "WEDNESDAY"){
+            if(input.equals("W") || input.equals("WED") || input.equals("WEDNESDAY")){
                 if (course.getWednesday_cde().contains(input)) {
                     c.add(course);
                 }
             }
 
-            if(input == "R" || input == "THURS" || input == "THURSDAY"){
+            if(input.equals("R") || input.equals("THURS") || input.equals("THURSDAY")){
                 if (course.getThursday_cde().contains(input)) {
                     c.add(course);
                 }
             }
 
-            if(input == "F" || input == "FRI" || input == "FRIDAY"){
+            if(input.equals("F") || input.equals("FRI") || input.equals("FRIDAY")){
                 if (course.getFriday_cde().contains(input)) {
                     c.add(course);
                 }
             }
-
         }
         return c;
     }
