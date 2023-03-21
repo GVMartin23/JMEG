@@ -32,15 +32,9 @@ public class Main {
         Main.schedules = schedules;
     }
 
-    public static ArrayList<Course> getCourses(){
-        return courses;
-    }
-
-    public static void setCourses(ArrayList<Course> courses) {
-        Main.courses = courses;
-    }
-
     public static void main(String[] args) {
+        testCSV();
+
 //Making dummy courses and putting them in our complete class list
        makeDummyCourses();
 
