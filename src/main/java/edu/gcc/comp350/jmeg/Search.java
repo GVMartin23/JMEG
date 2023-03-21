@@ -22,6 +22,7 @@ public class Search {
      */
     public void searchInteraction() {
         Scanner scnr = new Scanner(System.in);
+
         System.out.println("Enter search term");
 
         System.out.println("If finished searching, press q");
@@ -34,20 +35,28 @@ public class Search {
         }
     }
 
+    public static void main(String[] args) {
+        Main.testCSV();
+
+        Search search = new Search(new Schedule("TEST", 0));
+
+        search.searchCourseName();
+    }
+
     public ArrayList<Course> search() {
         return null;
     }
 
-    private ArrayList<Course> searchCourseName(ArrayList<Course> allCourses){
+    private ArrayList<Course> searchCourseName() {
         ArrayList<Course> c = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter the name of the course");
         String input = scan.next();
 
-        for (Course allCours : allCourses) {
-            if (allCourses.get(6).crs_title.equals(input)) {
-                System.out.println("Found");
-                c.add(allCours);
+        for (Course course : Main.getCourses()) {
+            if (course.getCrs_title().contains(input)) {
+                System.out.println(course.getCrs_title());
+                c.add(course);
             }
         }
         return c;
