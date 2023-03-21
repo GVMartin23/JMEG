@@ -75,6 +75,12 @@ public class Search {
         return c;
     }
 
+    /**
+     * This method takes in user input and searches the course list based on the course code
+     * that is inputted
+     * @param input- user input (course code) as a string
+     * @return - course list including courses with the course name specified by the user
+     */
     private ArrayList<Course> searchCourseCode(String input) {
         ArrayList<Course> c = new ArrayList<>();
 
@@ -86,16 +92,66 @@ public class Search {
         return c;
     }
 
-//    private ArrayList<Course> searchCourseDay(String input) {
-//        ArrayList<Course> c = new ArrayList<>();
-//
-//        for (Course course : Main.getCourses()) {
-//            if (course.getCrs_title().contains(input)) {
-//                c.add(course);
-//            }
-//        }
-//        return c;
-//    }
+    /**
+     * This method takes in user input and searches the course list based on the course day
+     * that is inputted
+     * @param input- user input (course day) as a string
+     * @return - course list including courses with the course name specified by the user
+     */
+    private ArrayList<Course> searchCourseDay(String input) {
+        ArrayList<Course> c = new ArrayList<>();
+
+        for (Course course : Main.getCourses()) {
+            if(input == "M" || input == "MON" || input == "MONDAY"){
+                if (course.getMonday_cde().contains(input)) {
+                    c.add(course);
+                }
+            }
+
+            if(input == "T" || input == "TUES" || input == "TUESDAY"){
+                if (course.getTuesday_cde().contains(input)) {
+                    c.add(course);
+                }
+            }
+
+            if(input == "W" || input == "WED" || input == "WEDNESDAY"){
+                if (course.getWednesday_cde().contains(input)) {
+                    c.add(course);
+                }
+            }
+
+            if(input == "R" || input == "THURS" || input == "THURSDAY"){
+                if (course.getThursday_cde().contains(input)) {
+                    c.add(course);
+                }
+            }
+
+            if(input == "F" || input == "FRI" || input == "FRIDAY"){
+                if (course.getFriday_cde().contains(input)) {
+                    c.add(course);
+                }
+            }
+
+        }
+        return c;
+    }
+
+    /**
+     * This method takes in user input and searches the course list based on the course begin time
+     * that is inputted
+     * @param input- user input (course begin time) as a string
+     * @return - course list including courses with the course name specified by the user
+     */
+    private ArrayList<Course> searchCourseTime(String input) {
+        ArrayList<Course> c = new ArrayList<>();
+
+        for (Course course : Main.getCourses()) {
+            if (course.getBegin_tim().contains(input)) {
+                c.add(course);
+            }
+        }
+        return c;
+    }
     private void clearFilters(){
         return;
     }
