@@ -324,7 +324,7 @@ public Course(String title){
         crs += meets;
         crs += "Professor: " + last_name + ", " + first_name;
         crs += String.format("\t\tCapacity: %d/%d\n", crs_enrollment, crs_capacity);
-        crs += String.format("\t\tCredit Hours: %d", credit_hrs);
+        crs += String.format("\t\tCredit Hours: %d\n", credit_hrs);
         return crs;
     }
 }
