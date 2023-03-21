@@ -3,23 +3,38 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-
 public class Search {
     private ArrayList<Filter> filters;
     private String inputData;
     private Schedule currentSchedule;
-    public void Search(){
-
+    public Search(Schedule schedule) {
+        currentSchedule = schedule;
+        filters = new ArrayList<>();
+        inputData = "";
     }
 
-//    public static void main(String[] args) {
-//        ArrayList<Course> cs;
-//        Search s = new Search();
-//        cs = s.getCourses();
-//
-//
-//    }
+    /**
+     * Basic method for interaction with program
+     * Everything in here can change
+     * Return at end used to pass by returntoSchedule
+     * If this method is only called in scheduleInteract,
+     * then a return will send it back to that method
+     */
+    public void searchInteraction() {
+        Scanner scnr = new Scanner(System.in);
+        System.out.println("Enter search term");
 
+        System.out.println("If finished searching, press q");
+
+        char exit = scnr.next().charAt(0);
+        if (exit == 'q') {
+            return;
+        } else {
+            searchInteraction();
+        }
+    }
+
+    public ArrayList<Course> search() {
 
     private ArrayList<Course> searchCourseName(ArrayList<Course> allCourses){
         ArrayList<Course> c = new ArrayList<>();
