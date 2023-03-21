@@ -24,17 +24,21 @@ class MainTest {
     }
 
     @Test
-    void loadSchedule() throws IOException {
-        Course course = new Course();
-        course.setCrs_code("CS1");
-        ArrayList<Course> courses = new ArrayList<>();
-        courses.add(course);
-        Main.setCourses(courses);
+    void loadScheduleCorrect() throws IOException {
+        saveSchedule();
 
         Main.loadSchedule();
 
         ArrayList<Schedule> schedules = Main.getSchedules();
 
+        ArrayList<String> titles = new ArrayList<>();
+
+        for (Schedule schedule : schedules) {
+
+        }
+
         assertEquals("Test schedule", schedules.get(0).getTitle());
     }
+
+
 }
