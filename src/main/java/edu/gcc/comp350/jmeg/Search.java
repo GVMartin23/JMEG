@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
+
 public class Search {
     private ArrayList<Filter> filters;
     private String inputData;
@@ -24,14 +25,27 @@ public class Search {
         Scanner scnr = new Scanner(System.in);
 
         String exit = "Enter";
-        while (!exit.equals("exit")) {
-            System.out.println("Enter Name of Class");
-            String search = scnr.nextLine();
-            ArrayList<Course> results = searchCourseName(search);
+        while (!exit.equals("EXIT")) {
+            System.out.println("Search by,");
+            System.out.println("Name    Day     Time    Code");
+            //Determine how they are searching
+            String identifier = scnr.nextLine().toUpperCase();
+
+            System.out.println("Enter query:");
+            String search = scnr.nextLine().toUpperCase();
+
+            //Gets list of results from search
+            ArrayList<Course> results = search(identifier, search);
+
+            if (results == null) {
+                System.out.println("Incorrect Search or Identifier");
+                continue;
+            }
+
             System.out.println(results);
 
             System.out.println("If finished searching, type exit, else press enter: ");
-            exit = scnr.nextLine();
+            exit = scnr.nextLine().toUpperCase();
         }
     }
 
@@ -54,8 +68,20 @@ public class Search {
         search.searchCourseCode(input);
     }
 
-    public ArrayList<Course> search() {
-        return null;
+    /**
+     * Takes in and identifier and searches based on input
+     * @param identifier defines what method to search by
+     * @param input string that is used to search
+     * @return List of courses if identifier exists in switch, else null
+     */
+    private ArrayList<Course> search(String identifier, String input) {
+        return switch (identifier) {
+            case "NAME" -> searchCourseName(input);
+            case "DAY" -> searchCourseDay(input);
+            case "TIME" -> searchCourseTime(input);
+            case "CODE" -> searchCourseCode(input);
+            default -> null;
+        };
     }
 
     /**
