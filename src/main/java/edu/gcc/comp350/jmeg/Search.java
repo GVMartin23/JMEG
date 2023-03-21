@@ -47,16 +47,23 @@ public class Search {
 
         Search search = new Search(new Schedule("TEST", 0));
 
-        System.out.println("Enter Name of Class");
+        System.out.println("Enter Code of Class");
         String input = scnr.nextLine();
 
-        search.searchCourseName(input);
+        //search.searchCourseName(input);
+        search.searchCourseCode(input);
     }
 
     public ArrayList<Course> search() {
         return null;
     }
 
+    /**
+     * This method takes in user input and searches the course list based on the course name
+     * that is inputted
+     * @param input - user input (course name) as a string
+     * @return - course list including courses with the course name specified by the user
+     */
     private ArrayList<Course> searchCourseName(String input) {
         ArrayList<Course> c = new ArrayList<>();
 
@@ -67,6 +74,28 @@ public class Search {
         }
         return c;
     }
+
+    private ArrayList<Course> searchCourseCode(String input) {
+        ArrayList<Course> c = new ArrayList<>();
+
+        for (Course course : Main.getCourses()) {
+            if (course.getCrs_code().contains(input)) {
+                c.add(course);
+            }
+        }
+        return c;
+    }
+
+//    private ArrayList<Course> searchCourseDay(String input) {
+//        ArrayList<Course> c = new ArrayList<>();
+//
+//        for (Course course : Main.getCourses()) {
+//            if (course.getCrs_title().contains(input)) {
+//                c.add(course);
+//            }
+//        }
+//        return c;
+//    }
     private void clearFilters(){
         return;
     }
