@@ -112,9 +112,13 @@ public class Schedule {
        Scanner scnr = new Scanner(System.in);
 
        System.out.println("Viewing schedule "+ title);
-       System.out.println("Entire class list:");//Lists out all the possible classes from master list
-       for(Course c: courses){
-           System.out.print(" "+c.getCrs_title());
+       if(courses.isEmpty()){//TODO: MAKE IT SO THAT IF COURSES ARENT FILLED IN YET IT DOESNT RUN
+           System.out.println("Schedule currently empty.  Add classes!");
+       }else {
+           System.out.println("Entire class list:");//Lists out all the possible classes from master list
+           for (Course c : courses) {
+               System.out.print(" " + c.getCrs_title());
+           }
        }
        System.out.println("\nWhat would you like to do?\nSearch     Quit");
 
