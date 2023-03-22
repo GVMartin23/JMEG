@@ -33,12 +33,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        loadSchedule();
         testCSV();//Load courses into arrayList from CSV
+        loadSchedule();
         User user=makeUser();//Use command prompt to make new user
         ArrayList<Schedule> userSchedules=fillUserSchedules(user);//Create arrayList of schedules for the user,
         userScheduleSelect(user, userSchedules);//Allow for search/add class interface
-
     }
 
     /**
@@ -175,7 +174,6 @@ public class Main {
                 //File not found error or failed in reading file
                 e.printStackTrace();
             }
-            System.out.println("Testing");//TODO: DOESNT GET HERE
 
         }
     }
@@ -306,7 +304,6 @@ public class Main {
                 currentSchedule=i;
             }
         }
-
 
         currentSchedule.scheduleInteract();
 
