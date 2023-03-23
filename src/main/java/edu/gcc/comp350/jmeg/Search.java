@@ -173,11 +173,12 @@ public class Search {
      * @param input- user input (course begin time) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    public ArrayList<Course> searchCourseTime(String input) {
+    private ArrayList<Course> searchCourseTime(String input) {
+
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : Main.getCourses()) {
-            if (course.getBegin_tim().contains(input)) {
+            if (course.getBegin_tim().substring(11).contains(input)) {
                 c.add(course);
             }
         }
