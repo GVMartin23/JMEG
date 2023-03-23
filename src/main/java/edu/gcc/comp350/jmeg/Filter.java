@@ -3,7 +3,7 @@ package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 
 public class Filter {
-    private enum FilterTypes {
+    enum FilterTypes {
         YEAR, TERM,
     }
 

@@ -94,4 +94,13 @@ class SearchTest {
 
         assertEquals(1, courseTimes.size());
     }
+
+    @Test
+    void filterCourses() {
+        Filter filter = new Filter("YEAR", "2018");
+        Main.testCSV();
+
+        search.filterCourses(filter, Main.getCourses());
+
+    }
 }
