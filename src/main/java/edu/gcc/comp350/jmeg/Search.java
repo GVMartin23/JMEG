@@ -51,25 +51,6 @@ public class Search {
         }
     }
 
-
-    /**
-     * USED FOR TESTING ONLY
-     * DELETE ONCE DONE
-     * @param args
-     */
-    public static void main(String[] args) {
-        Main.testCSV();
-        Scanner scnr = new Scanner(System.in);
-
-        Search search = new Search(new Schedule("TEST", 0));
-
-        System.out.println("Enter Code of Class");
-        String input = scnr.nextLine();
-
-        //search.searchCourseName(input);
-        search.searchCourseCode(input);
-    }
-
     /**
      * Takes in and identifier and searches based on input
      * @param identifier defines what method to search by
