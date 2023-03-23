@@ -32,10 +32,9 @@ public class Main {
         Main.schedules = schedules;
     }
 
-
-
-
     public static void main(String[] args) {
+        testCSV();
+
 //Making dummy courses and putting them in our complete class list
        makeDummyCourses();
 
@@ -68,16 +67,101 @@ public class Main {
         }
         userScheduleSelect(user, userSchedules);
 
+
+    }
+
+    /**
+     * Uses the loadCSV() function to retrieve the data on each course in the CSV
+     * Loops through each row and declares it as a course then adds it to the course
+     * arraylist
+     */
+    public static void testCSV(){
         try {
             List<String[]> list = loadCSV();
+            list.remove(0);
+            for(String[] str : list) {
+                if(str[0].isEmpty()){
+                    str[0] = "0";
+                }
+                int yr_code = Integer.parseInt(str[0]);
+                if(str[1].isEmpty()){
+                    str[1] = "0";
+                }
+                int trm_code = Integer.parseInt(str[1]);
+                String crs_code = str[2];
+                String crs_comp1 = str[3];
+                String crs_comp2 = str[4];
+                String crs_comp3 = str[5];
+                String crs_title = str[6];
+                if(str[7].isEmpty()){
+                    str[7] = "0";
+                }
+                int credit_hrs = Integer.parseInt(str[7]);
+                String x_listed_parnt_crs = str[8];
+                String acad_credit_varies = str[9];
+                String acad_credit_label = str[10];
+                if(str[11].isEmpty()){
+                    str[11] = "0";
+                }
+                int crs_capacity = Integer.parseInt(str[11]);
+                if(str[12].isEmpty()){
+                    str[12] = "0";
+                }
+                int max_capacity = Integer.parseInt(str[12]);
+                if(str[13].isEmpty()){
+                    str[13] = "0";
+                }
+                int crs_enrollment = Integer.parseInt(str[13]);
+                String bldg_cde = str[14];
+                String room_cde = str[15];
+                String monday_cde = str[16];
+                String tuesday_cde = str[17];
+                String wednesday_cde = str[18];
+                String thursday_cde = str[19];
+                String friday_cde = str[20];
+                String begin_tim = str[21];
+                String end_tim = str[22];
+                String last_name = str[23];
+                String first_name = str[24];
+                String preferred_name = " ";
+                if(str.length == 26){
+                    preferred_name = str[25];
+                }
+                String comment_txt = " ";
+                if(str.length == 27){
+                    comment_txt = str[26];
+
+                }
+
+                if (courses == null) {
+                    courses = new ArrayList<>();
+                }
+
+
+                Course course = new Course(yr_code, trm_code, crs_code,
+                        crs_comp1, crs_comp2, crs_comp3, crs_title,
+                        credit_hrs, x_listed_parnt_crs, acad_credit_varies,
+                        acad_credit_label, crs_capacity, max_capacity, crs_enrollment,
+                        bldg_cde, room_cde, monday_cde, tuesday_cde, wednesday_cde,
+                        thursday_cde, friday_cde, begin_tim, end_tim, last_name, first_name,
+                        preferred_name, comment_txt);
+                courses.add(course);
+
+
+            }
+
 
         }catch (IOException e){
             e.printStackTrace();
         }
-
-
     }
 
+    /**
+     * This method loads the 2018-2019 csv in the project
+     * Reads each line/row and delimits by commas
+     * @return string list of courses (taken from the csv)
+     * @throws IOException
+     */
     public static List<String[]> loadCSV() throws IOException{
         String csvFile = "2018-2019.csv";
         List<String[]> courses = new ArrayList<>();
@@ -85,6 +169,7 @@ public class Main {
             String line = "";
             while((line = br.readLine()) != null){
                 courses.add(line.split(","));
+                //System.out.println(line);
             }
         } catch (FileNotFoundException e){
             e.printStackTrace();
