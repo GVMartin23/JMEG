@@ -14,7 +14,6 @@ import java.util.Scanner;
 public class Main {
     private static ArrayList<Schedule> schedules;
     private static ArrayList<Course> courses;
-    //public static ArrayList<Course> completeCourseList;
 
     public static void setCourses(ArrayList<Course> courses) {
         Main.courses = courses;
@@ -302,19 +301,24 @@ public class Main {
         System.out.println("Which schedule do you wish to edit?");
         String userSelectedSchedule=scanner.nextLine();
         System.out.println("You selected "+userSelectedSchedule);
-        Schedule currentSchedule=new Schedule(user, "meh");
-        for(Schedule i:userSchedules){
-            if(i.getTitle().equals(userSelectedSchedule)){//Matches the string input with the actual schedule
-                currentSchedule=i;
+        Schedule currentSchedule=new Schedule(user, "empty schedule");
+        if(userSchedules.size()==0){//Make a new schedule if they do not currently have one
+            System.out.println("You do not have any schedules. Enter a name for your new schedule");
+            String newScheduleName= scanner.nextLine();
+            currentSchedule.setTitle(newScheduleName);
+        }else {
+            for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
+                if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
+                    currentSchedule = i;
+                }
             }
         }
-
         currentSchedule.scheduleInteract();
 
         saveSchedule(currentSchedule);
     }
 
-        public static void addCourseToSchedule(String courseName, ArrayList<Course> userCurrentCourses){
+    public static void addCourseToSchedule(String courseName, ArrayList<Course> userCurrentCourses){
             for(int i=0; i<userCurrentCourses.size(); i++) {
                 if (userCurrentCourses.size() > 0) {
                     if (userCurrentCourses.get(i).getCrs_title() == courseName) {
@@ -331,6 +335,7 @@ public class Main {
 
             }
         }
+
         public static ArrayList<Schedule> fillUserSchedules(User user){
             ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
             Schedule schedule=new Schedule(user, user.getName()+"'s schedule");//Puts a new schedule into that list
@@ -345,7 +350,8 @@ public class Main {
             }
             return userSchedules;
         }
-    public static User makeUser(){
+
+        public static User makeUser(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Have you used this software before? Y/N");
         String returningUser=scanner.nextLine();
