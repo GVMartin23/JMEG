@@ -4,15 +4,27 @@ import java.util.ArrayList;
 
 public class Filter {
     private enum FilterTypes {
-
+        YEAR, TERM,
     }
 
+    private FilterTypes filterType;
     private boolean active;
     private String filterName;
     private ArrayList<String> filterValues;
 
-    public void Filter(){
+    public Filter(String filterType, String filterName){
+        this.filterName = filterName;
+        this.filterType = FilterTypes.valueOf(filterType.toUpperCase());
+    }
 
+
+
+    public FilterTypes getFilterType() {
+        return filterType;
+    }
+
+    public void setFilterType(FilterTypes filterType) {
+        this.filterType = filterType;
     }
 
     public boolean isActive() {
