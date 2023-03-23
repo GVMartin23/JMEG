@@ -356,6 +356,7 @@ public class Main {
         String returningUser=scanner.nextLine();
         if(returningUser.equals("Y")){
             System.out.println("Welcome back");
+
             //TODO code here for pulling returning user info off file
             return new User("Dummy", "CS", "AI", 2024);
         }else {//New user

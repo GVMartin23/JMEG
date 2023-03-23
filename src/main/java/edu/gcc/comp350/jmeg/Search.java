@@ -6,10 +6,14 @@ import java.util.Scanner;
 
 public class Search {
     private ArrayList<Filter> filters;
+    private ArrayList<Course> completeCourseList;
+    private User currentUser;
     private String inputData;
     private Schedule currentSchedule;
-    public Search(Schedule schedule) {
+    public Search(Schedule schedule, User user, ArrayList<Course> courseList) {
         currentSchedule = schedule;
+        this.completeCourseList=courseList;
+        this.currentUser=user;
         filters = new ArrayList<>();
         inputData = "";
     }
@@ -69,13 +73,13 @@ public class Search {
         Main.testCSV();
         Scanner scnr = new Scanner(System.in);
 
-        Search search = new Search(new Schedule("TEST", 0));
+        //Search search = new Search(new Schedule("TEST", 0), );
 
         System.out.println("Enter Code of Class");
         String input = scnr.nextLine();
 
         //search.searchCourseName(input);
-        search.searchCourseCode(input);
+      //  search.searchCourseCode(input);
     }
 
     /**

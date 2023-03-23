@@ -9,15 +9,17 @@ public class Schedule {
     private String title;
     private int credits;
     private ArrayList<Course> courses;
+    private ArrayList<Course> allCourses;
     private Calendar calendar;
 
-    public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar){
+    public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar, ArrayList<Course> allCourses){
         //Might not need
         this.user = user;
         this.title = title;
         this.credits = credits;
         this.courses = courses;
         this.calendar = calendar;
+        this.allCourses=allCourses;
     }
 
     public Schedule(User user, String title) {
@@ -77,7 +79,7 @@ public class Schedule {
     }
 
    public void searchCourses() {
-        Search search = new Search(this);
+        Search search = new Search(this, user, courses);
         search.searchInteraction();
         scheduleInteract();
         //TODO: search csv data for courses
@@ -141,6 +143,18 @@ public class Schedule {
        String action = scnr.nextLine();
        if (action.equals("Search")) {
            searchCourses();
+           System.out.println("Would you like to add a class to your schedule?  Y/N");
+           String ans=scnr.nextLine();
+           if(ans.equals("Y")||ans.equals("y")){
+               System.out.println("Enter the name of the course you wish to add");
+               String courseTitleToAdd=scnr.nextLine();
+               addCourse(courseTitleToAdd, courses, allCourses);
+               System.out.println("Current courses added:");
+               for(Course c : courses){
+                   System.out.print(c.getCrs_title()+" ");
+               }
+           }
+           //TODO ASK IF WANNA ADD CLASS
        } else if (action.equals("Quit")) {
            return;
        }
