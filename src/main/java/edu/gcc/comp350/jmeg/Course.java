@@ -299,15 +299,13 @@ public Course(String title){
 
     public static String formatTimeOfDay(LocalTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ha");
-        String formattedTime = time.format(formatter);
-        return formattedTime;
+        return time.format(formatter);
     }
 
     public static String convertStringToTime(String timeString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTime localTime = LocalTime.parse(timeString, formatter);
-        String formattedTime = formatTimeOfDay(localTime);
-        return formattedTime;
+        LocalTime localTime = LocalTime.parse(timeString.substring(11), formatter);
+        return formatTimeOfDay(localTime);
     }
 
     @Override

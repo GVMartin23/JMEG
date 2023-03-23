@@ -186,7 +186,7 @@ public class Search {
 
     public void filterCourses(Filter filter, ArrayList<Course> courses) {
         if (filter.getFilterType() == Filter.FilterTypes.YEAR) {
-            courses = (ArrayList<Course>)courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
+            courses = (ArrayList<Course>) courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
         } else if (filter.getFilterType() == Filter.FilterTypes.TERM) {
             int termInt = filter.getFilterName().equals("SPRING") ? 10 : 30;
             courses = (ArrayList<Course>) courses.stream().filter(c -> c.getTrm_code() == termInt).collect(Collectors.toList());
