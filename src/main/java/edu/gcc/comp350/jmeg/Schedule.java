@@ -22,9 +22,10 @@ public class Schedule {
         this.allCourses=allCourses;
     }
 
-    public Schedule(User user, String title) {
+    public Schedule(User user, String titlex, ArrayList<Course> allCourses) {
         this.user = user;
         this.title = title;
+        this.allCourses=allCourses;
     }
 
     /**
@@ -133,7 +134,7 @@ public class Schedule {
            System.out.println("Schedule currently empty.  Add classes!");
            courses=new ArrayList<Course>();
        }else {
-           System.out.println("Entire class list:");//Lists out all the possible classes from master list
+           System.out.println("Entire class list:");//Lists out all classes in schedule
            for (Course c : courses) {
                System.out.print(" " + c.getCrs_title());
            }
@@ -154,8 +155,7 @@ public class Schedule {
                    System.out.print(c.getCrs_title()+" ");
                }
            }
-           //TODO ASK IF WANNA ADD CLASS
-       } else if (action.equals("Quit")) {
+       } else if (action.equals("Quit")){
            return;
        }
 

@@ -293,6 +293,11 @@ public class Main {
 
     public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules){
         Scanner scanner=new Scanner(System.in);
+        if(userSchedules.size()==0){
+            System.out.println("You have no schedules currently.  Type the title of your first schedule");
+            String title=scanner.nextLine();
+            Schedule newSchedule=new Schedule(user, title, courses);
+        }
         System.out.println("Your schedules are: ");//Print out all the schedules for the current user
         for(Schedule i:userSchedules){
             System.out.println(i.getTitle());
@@ -300,7 +305,7 @@ public class Main {
         System.out.println("Which schedule do you wish to edit?");
         String userSelectedSchedule=scanner.nextLine();
         System.out.println("You selected "+userSelectedSchedule);
-        Schedule currentSchedule=new Schedule(user, "empty schedule");
+        Schedule currentSchedule=new Schedule(user, "empty schedule", courses);
         if(userSchedules.size()==0){//Make a new schedule if they do not currently have one
             System.out.println("You do not have any schedules. Enter a name for your new schedule");
             String newScheduleName= scanner.nextLine();
@@ -337,7 +342,7 @@ public class Main {
 
         public static ArrayList<Schedule> fillUserSchedules(User user){
             ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
-            Schedule schedule=new Schedule(user, user.getName()+"'s schedule");//Puts a new schedule into that list
+            Schedule schedule=new Schedule(user, user.getName()+"'s schedule", courses);//Puts a new schedule into that list
             setCourses(courses);
             schedules.add(schedule);
 
@@ -356,9 +361,8 @@ public class Main {
         String returningUser=scanner.nextLine();
         if(returningUser.equals("Y")){
             System.out.println("Welcome back");
-
-            //TODO code here for pulling returning user info off file
-            return new User("Dummy", "CS", "AI", 2024);
+            return schedules.get(0).getUser();
+            //TODO code here for pulling returning user info off file currently gets first in list
         }else {//New user
             System.out.println("Welcome.  Enter your name");
             String userName = scanner.nextLine();
