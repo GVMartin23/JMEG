@@ -1,6 +1,8 @@
 package edu.gcc.comp350.jmeg;
 
+import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Schedule {
     private User user;
@@ -19,8 +21,19 @@ public class Schedule {
     }
 
     public Schedule(User user, String title) {
-        this.user=user;
-        this.title=title;
+        this.user = user;
+        this.title = title;
+    }
+
+    /**
+     * Constructor for Schedule
+     * Used in loading a schedule
+     * @param title String title
+     * @param credits int credits
+     */
+    public Schedule(String title, int credits) {
+        this.title = title;
+        this.credits = credits;
     }
 
     public User getUser() {
@@ -63,7 +76,10 @@ public class Schedule {
         this.calendar = calendar;
     }
 
-   public void searchCourses(){
+   public void searchCourses() {
+        Search search = new Search(this);
+        search.searchInteraction();
+        scheduleInteract();
         //TODO: search csv data for courses
    }
 
@@ -84,4 +100,32 @@ public class Schedule {
    private void getDetails(Course course){
         //maybe should be in Course class?
    }
+
+    /**
+     * UI method for working in schedule
+     * Everything in here can change
+     * Some of stuff in userSheduleSelect in Main moved here
+     * Main use is giving way to choose between searching courses
+     * and Quitting program
+     */
+   public void scheduleInteract() {
+       Scanner scnr = new Scanner(System.in);
+
+       System.out.println("Viewing schedule "+ title);
+       System.out.println("Entire class list:");//Lists out all the possible classes from master list
+       for(Course c: courses){
+           System.out.print(" "+c.getCrs_title());
+       }
+       System.out.println("\nWhat would you like to do?\nSearch     Quit");
+
+       String action = scnr.nextLine();
+       if (action.equals("Search")) {
+           searchCourses();
+       } else if (action.equals("Quit")) {
+           return;
+       }
+
+       System.out.println("Incorrect input");
+   }
+
 }

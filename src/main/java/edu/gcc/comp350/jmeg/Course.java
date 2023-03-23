@@ -74,6 +74,13 @@ public Course(String title){
         this.comment_txt = comment_txt;
     }
 
+    /**
+     * Dummy Constructor for testing
+     */
+    public Course() {
+
+    }
+
     public int getYr_code() {
         return yr_code;
     }

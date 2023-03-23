@@ -1,10 +1,6 @@
 package edu.gcc.comp350.jmeg;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +16,21 @@ public class Main {
     private static ArrayList<Course> courses;
     public static ArrayList<Course> completeCourseList;
 
+    public static void setCourses(ArrayList<Course> courses) {
+        Main.courses = courses;
+    }
+
+    public static ArrayList<Course> getCourses() {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
+        return courses;
+    }
+
     public static ArrayList<Schedule> getSchedules() {
+        if (schedules == null) {
+            schedules = new ArrayList<>();
+        }
         return schedules;
     }
 
@@ -28,13 +38,11 @@ public class Main {
         Main.schedules = schedules;
     }
 
-
-
-
     public static void main(String[] args) {
-//Making dummy courses and putting them in our complete class list
-       makeDummyCourses();
+        testCSV();
 
+        //Making dummy courses and putting them in our complete class list
+        makeDummyCourses();
 
 
         Scanner scanner = new Scanner(System.in);
@@ -50,48 +58,203 @@ public class Main {
         User user=new User(userName, major, minor, year);//Create a user
         System.out.println("Welcome, "+user.getName());
 
-        ArrayList<Schedule> userSchedules=new ArrayList<Schedule>();//Creates a new arrayList of schedules for the new user
+        ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
         Schedule schedule=new Schedule(user, "Test schedule");//Puts a new schedule into that list
-        schedules.add(schedule);
+        schedule.setCourses(completeCourseList);
+
+        ArrayList<Schedule> scheduleList = getSchedules();
+        scheduleList.add(schedule);
 
 
-        for(int i=0; i<schedules.size(); i++){
-            if(schedules.get(i).getUser().getName()==userName){//Puts all the schedules containing that user's name from the master schedule list into the list
-                userSchedules.add(schedules.get(i));
+        for (Schedule value : getSchedules()) {
+            if (value.getUser().getName().equals(userName)) {
+                //Puts all the schedules containing that user's name from the master schedule list into the list
+                userSchedules.add(value);
             }
         }
         userScheduleSelect(user, userSchedules);
-
-        try {
-            List<String[]> list = loadCSV();
-
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-
     }
 
-    public static List<String[]> loadCSV() throws IOException{
+    /**
+     * Uses the loadCSV() function to retrieve the data on each course in the CSV
+     * Loops through each row and declares it as a course then adds it to the course
+     * arraylist
+     */
+    public static void testCSV(){
+        try {
+            ArrayList<String[]> list = loadCSV();
+            list.remove(0);
+            for(String[] str : list) {
+                if(str[0].isEmpty()){
+                    str[0] = "0";
+                }
+                int yr_code = Integer.parseInt(str[0]);
+                if(str[1].isEmpty()){
+                    str[1] = "0";
+                }
+                int trm_code = Integer.parseInt(str[1]);
+                String crs_code = str[2];
+                String crs_comp1 = str[3];
+                String crs_comp2 = str[4];
+                String crs_comp3 = str[5];
+                String crs_title = str[6];
+                if(str[7].isEmpty()){
+                    str[7] = "0";
+                }
+                int credit_hrs = Integer.parseInt(str[7]);
+                String x_listed_parnt_crs = str[8];
+                String acad_credit_varies = str[9];
+                String acad_credit_label = str[10];
+                if(str[11].isEmpty()){
+                    str[11] = "0";
+                }
+                int crs_capacity = Integer.parseInt(str[11]);
+                if(str[12].isEmpty()){
+                    str[12] = "0";
+                }
+                int max_capacity = Integer.parseInt(str[12]);
+                if(str[13].isEmpty()){
+                    str[13] = "0";
+                }
+                int crs_enrollment = Integer.parseInt(str[13]);
+                String bldg_cde = str[14];
+                String room_cde = str[15];
+                String monday_cde = str[16];
+                String tuesday_cde = str[17];
+                String wednesday_cde = str[18];
+                String thursday_cde = str[19];
+                String friday_cde = str[20];
+                String begin_tim = str[21];
+                String end_tim = str[22];
+                String last_name = str[23];
+                String first_name = str[24];
+                String preferred_name = " ";
+                if(str.length == 26){
+                    preferred_name = str[25];
+                }
+                String comment_txt = " ";
+                if(str.length == 27){
+                    comment_txt = str[26];
+
+                }
+
+                ArrayList<Course> courseList = getCourses();
+
+                Course course = new Course(yr_code, trm_code, crs_code,
+                        crs_comp1, crs_comp2, crs_comp3, crs_title,
+                        credit_hrs, x_listed_parnt_crs, acad_credit_varies,
+                        acad_credit_label, crs_capacity, max_capacity, crs_enrollment,
+                        bldg_cde, room_cde, monday_cde, tuesday_cde, wednesday_cde,
+                        thursday_cde, friday_cde, begin_tim, end_tim, last_name, first_name,
+                        preferred_name, comment_txt);
+                courseList.add(course);
+
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method loads the 2018-2019 csv in the project
+     * Reads each line/row and delimits by commas
+     * @return string list of courses (taken from the csv)
+     * @throws IOException
+     */
+    public static ArrayList<String[]> loadCSV() throws IOException {
         String csvFile = "2018-2019.csv";
-        List<String[]> courses = new ArrayList<>();
+        ArrayList<String[]> courses = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))){
             String line = "";
             while((line = br.readLine()) != null){
                 courses.add(line.split(","));
-                //System.out.println(line);
             }
         } catch (FileNotFoundException e){
             e.printStackTrace();
         }
         return courses;
-
     }
-private static Schedule createSchedule(){
-    return null;
-}
-private static void loadSchedule(Schedule s){
 
+    private static Schedule createSchedule(){
+        return null;
+    }
+
+
+    /**
+     * Loads saved schedules into memory
+     * Looks in working directory (Not Final)
+     */
+    public static void loadSchedule() {
+        //Current working directory
+        File directory = new File(System.getProperty("user.dir"));
+
+        //lambda sorting files in directory by those that are csv files
+        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
+
+        if (schedules == null) {
+            schedules = new File[0];
+        }
+        //Load each schedule individually
+        for (File file : schedules) {
+            ArrayList<Schedule> scheduleList = Main.getSchedules();
+            try {
+                scheduleList.add(parseSavedSchedule(file));
+            } catch (IOException e) {
+                //File not found error or failed in reading file
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Method to check if file is one of the data csvs instead of a schedule
+     * Only Needed when course data is stored in CSVs
+     * @param filename name of file to check
+     * @return true if filename is same as data files
+     */
+    public static boolean isDataCSV(String filename) {
+        return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv");
+    }
+
+    /**
+     * Takes input CSV file and parse information to load Schedule
+     * @param file File to parse
+     * @throws IOException if fileNotFound, or data read incorrectly
+     */
+    private static Schedule parseSavedSchedule(File file) throws IOException {
+        String scheduleData;
+        String userData;
+        String coursesData;
+        //Reads each line of saved schedule
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            scheduleData = reader.readLine();
+            userData = reader.readLine();
+            coursesData = reader.readLine();
+        }
+
+        //Split lines of csv into unique vals
+        String[] scheduleVars = scheduleData.split(",");
+        String[] userVars = userData.split(",");
+        List<String> courseVars = Arrays.asList(coursesData.split(","));
+
+        Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
+
+        User user = new User(userVars[0], userVars[1], userVars[2], Integer.parseInt(userVars[3]));
+
+        schedule.setUser(user);
+
+        ArrayList<Course> scheduleCourses = new ArrayList<>();
+
+        //Go through each Crs_code in file and add that course to schedule
+        for (Course course : getCourses()) {
+            if (courseVars.contains(course.getCrs_code())) {
+                scheduleCourses.add(course);
+            }
+        }
+
+        schedule.setCourses(scheduleCourses);
+
+        return schedule;
     }
 
     /**
@@ -154,39 +317,27 @@ private static void loadSchedule(Schedule s){
         return sb.substring(0, sb.length() - 1) + "\n";
     }
 
-        public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules){
-            Scanner scanner=new Scanner(System.in);
-            System.out.println("Your schedules are: ");//Print out all the schedules for the current user
-            for(Schedule i:userSchedules){
-                System.out.println(i.getTitle());
-            }
-            System.out.println("Which schedule do you wish to edit?");
-            String userSelectedSchedule=scanner.nextLine();
-            System.out.println("You selected "+userSelectedSchedule);
-            Schedule currentSchedule=new Schedule(user, "meh");
-            ArrayList<Course> userCurrentCourses=new ArrayList<Course>();
-            for(Schedule i:userSchedules){
-                if(i.getTitle().equals(userSelectedSchedule)){//Matches the string input with the actual schedule
-                    currentSchedule=i;
-                    userCurrentCourses=currentSchedule.getCourses();
-                }
-            }
-            System.out.println("Editing schedule "+currentSchedule.getTitle());
-            System.out.println("Entire class list:");//Lists out all the possible classes from master list
-            for(Course c:completeCourseList){
-                System.out.print(" "+c.getCrs_title());
-            }
-            System.out.println("\nEnter a course name to add it to your schedule");
-            Boolean addClass=true;
-            String courseName=scanner.nextLine();
-            addCourseToSchedule(courseName, userCurrentCourses);
-
-            System.out.println("Now showing current schedule");
-            for(Course c: userCurrentCourses){
-                System.out.println(c.getCrs_title());
-            }
-            saveSchedule(currentSchedule);
+    public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Your schedules are: ");//Print out all the schedules for the current user
+        for(Schedule i:userSchedules){
+            System.out.println(i.getTitle());
         }
+        System.out.println("Which schedule do you wish to edit?");
+        String userSelectedSchedule=scanner.nextLine();
+        System.out.println("You selected "+userSelectedSchedule);
+        Schedule currentSchedule=new Schedule(user, "meh");
+        for(Schedule i:userSchedules){
+            if(i.getTitle().equals(userSelectedSchedule)){//Matches the string input with the actual schedule
+                currentSchedule=i;
+            }
+        }
+
+
+        currentSchedule.scheduleInteract();
+
+        saveSchedule(currentSchedule);
+    }
 
         public static void addCourseToSchedule(String courseName, ArrayList<Course> userCurrentCourses){
             for(int i=0; i<userCurrentCourses.size(); i++) {
@@ -205,12 +356,12 @@ private static void loadSchedule(Schedule s){
 
             }
         }
-public static void makeDummyCourses(){
-    Course course1=new Course("Biology");
-    Course course2=new Course("Physics");
-    completeCourseList=new ArrayList<Course>();
-    completeCourseList.add(course1);
-    completeCourseList.add(course2);
-    schedules=new ArrayList<Schedule>();
-}
+    public static void makeDummyCourses(){
+        Course course1=new Course("Biology");
+        Course course2=new Course("Physics");
+        completeCourseList=new ArrayList<Course>();
+        completeCourseList.add(course1);
+        completeCourseList.add(course2);
+        schedules=new ArrayList<Schedule>();
+    }
 }
