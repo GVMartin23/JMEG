@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,4 +56,31 @@ class MainTest {
     }
 
 
+    @Test
+    void testCSV() {
+        Main.testCSV();
+
+        HashSet<Integer> termCodes = new HashSet<>();
+
+        for (Course c : Main.getCourses()) {
+            termCodes.add(c.getTrm_code());
+        }
+
+        //Only 2 termCodes currently, so should be 2
+        assertEquals(2, termCodes.size());
+    }
+
+    @Test
+    void loadCSV() throws IOException {
+        ArrayList<String[]> courses = Main.loadCSV();
+
+        ArrayList<String> courseCodes = new ArrayList<>();
+
+        for (String[] course : courses) {
+            courseCodes.add(course[2]);
+        }
+
+        //Ensures that courseCodes contains one of course codes in csv
+        assertTrue(courseCodes.contains("COMP 441  A"));
+    }
 }

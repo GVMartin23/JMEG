@@ -41,9 +41,8 @@ public class Main {
     public static void main(String[] args) {
         testCSV();
 
-//Making dummy courses and putting them in our complete class list
-       makeDummyCourses();
-
+        //Making dummy courses and putting them in our complete class list
+        makeDummyCourses();
 
 
         Scanner scanner = new Scanner(System.in);
@@ -74,8 +73,6 @@ public class Main {
             }
         }
         userScheduleSelect(user, userSchedules);
-
-
     }
 
     /**
@@ -85,7 +82,7 @@ public class Main {
      */
     public static void testCSV(){
         try {
-            List<String[]> list = loadCSV();
+            ArrayList<String[]> list = loadCSV();
             list.remove(0);
             for(String[] str : list) {
                 if(str[0].isEmpty()){
@@ -152,11 +149,8 @@ public class Main {
                         preferred_name, comment_txt);
                 courseList.add(course);
 
-
             }
-
-
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
@@ -167,21 +161,20 @@ public class Main {
      * @return string list of courses (taken from the csv)
      * @throws IOException
      */
-    public static List<String[]> loadCSV() throws IOException{
+    public static ArrayList<String[]> loadCSV() throws IOException {
         String csvFile = "2018-2019.csv";
-        List<String[]> courses = new ArrayList<>();
+        ArrayList<String[]> courses = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))){
             String line = "";
             while((line = br.readLine()) != null){
                 courses.add(line.split(","));
-                //System.out.println(line);
             }
         } catch (FileNotFoundException e){
             e.printStackTrace();
         }
         return courses;
-
     }
+
     private static Schedule createSchedule(){
         return null;
     }
