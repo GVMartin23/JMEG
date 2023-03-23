@@ -76,7 +76,7 @@ public class Search {
      * @param input string that is used to search
      * @return List of courses if identifier exits else null
      */
-    private ArrayList<Course> search(String identifier, String input) {
+    public ArrayList<Course> search(String identifier, String input) {
         if (identifier.equals("NAME")) {
             return searchCourseName(input);
         } else if (identifier.equals("DAY")) {
@@ -96,7 +96,7 @@ public class Search {
      * @param input - user input (course name) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    private ArrayList<Course> searchCourseName(String input) {
+    public ArrayList<Course> searchCourseName(String input) {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : Main.getCourses()) {
@@ -113,7 +113,7 @@ public class Search {
      * @param input- user input (course code) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    private ArrayList<Course> searchCourseCode(String input) {
+    public ArrayList<Course> searchCourseCode(String input) {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : Main.getCourses()) {
@@ -130,7 +130,7 @@ public class Search {
      * @param input- user input (course day) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    private ArrayList<Course> searchCourseDay(String input) {
+    public ArrayList<Course> searchCourseDay(String input) {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : Main.getCourses()) {
@@ -173,7 +173,7 @@ public class Search {
      * @param input- user input (course begin time) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    private ArrayList<Course> searchCourseTime(String input) {
+    public ArrayList<Course> searchCourseTime(String input) {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : Main.getCourses()) {
