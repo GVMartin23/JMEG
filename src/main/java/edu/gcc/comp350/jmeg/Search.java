@@ -206,43 +206,45 @@ public class Search {
      * @param c - course being chosen to see more details
      */
     private void viewDetails(Course c){
+        System.out.println(c);
+        c.toString();
 
-        String courseTitle = c.getCrs_title();
-        String professor = c.getFirst_name().concat(c.getLast_name());
-        int year = c.getYr_code();
-        int credits = c.getCredit_hrs();
-        int seatsLeft = c.getCrs_capacity() - c.getCrs_enrollment();
-        String monday = c.getMonday_cde();
-        String tuesday = c.getTuesday_cde();
-        String wednesday = c.getWednesday_cde();
-        String thursday = c.getThursday_cde();
-        String friday = c.getFriday_cde();
-        String beginTime = c.getBegin_tim();
-        String endTime = c.getEnd_tim();
-
-
-        System.out.println("Course Details");
-        System.out.println("Course Title" + courseTitle);
-        System.out.println("Professor" + professor);
-        System.out.println("Year:" + year);
-        System.out.println(credits + "credits");
-        System.out.println(seatsLeft + "seats /"+ c.getCrs_capacity());
-        if(monday != null){
-            System.out.println(monday);
-        }
-        if(tuesday != null){
-            System.out.println(tuesday);
-        }
-        if(wednesday != null){
-            System.out.println(wednesday);
-        }
-        if(thursday != null){
-            System.out.println(thursday);
-        }
-        if(friday != null){
-            System.out.println(friday);
-        }
-        System.out.println(beginTime + "-" + endTime);
+//        String courseTitle = c.getCrs_title();
+//        String professor = c.getFirst_name().concat(c.getLast_name());
+//        int year = c.getYr_code();
+//        int credits = c.getCredit_hrs();
+//        int seatsLeft = c.getCrs_capacity() - c.getCrs_enrollment();
+//        String monday = c.getMonday_cde();
+//        String tuesday = c.getTuesday_cde();
+//        String wednesday = c.getWednesday_cde();
+//        String thursday = c.getThursday_cde();
+//        String friday = c.getFriday_cde();
+//        String beginTime = c.getBegin_tim();
+//        String endTime = c.getEnd_tim();
+//
+//
+//        System.out.println("Course Details");
+//        System.out.println("Course Title" + courseTitle);
+//        System.out.println("Professor" + professor);
+//        System.out.println("Year:" + year);
+//        System.out.println(credits + "credits");
+//        System.out.println(seatsLeft + "seats /"+ c.getCrs_capacity());
+//        if(monday != null){
+//            System.out.println(monday);
+//        }
+//        if(tuesday != null){
+//            System.out.println(tuesday);
+//        }
+//        if(wednesday != null){
+//            System.out.println(wednesday);
+//        }
+//        if(thursday != null){
+//            System.out.println(thursday);
+//        }
+//        if(friday != null){
+//            System.out.println(friday);
+//        }
+//        System.out.println(beginTime + "-" + endTime);
 
 
 
