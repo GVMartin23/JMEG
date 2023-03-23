@@ -10,9 +10,9 @@ public class Search {
     private User currentUser;
     private String inputData;
     private Schedule currentSchedule;
-    public Search(Schedule schedule, User user, ArrayList<Course> courseList) {
+    public Search(Schedule schedule, User user, ArrayList<Course> completeCourseList) {
         currentSchedule = schedule;
-        this.completeCourseList=courseList;
+        this.completeCourseList=completeCourseList;
         this.currentUser=user;
         filters = new ArrayList<>();
         inputData = "";
@@ -54,10 +54,22 @@ public class Search {
                 if(ans.equals("Y")||ans.equals("y")){
                     System.out.println("Enter the name of the class you wish to add");
                     String classToAdd=scnr.nextLine();
-                    //currentSchedule.addCourse(classToAdd,PUT CURRENT USER COURSES, GET FULL LIST COURSES);
+                    for(int i=0; i<10; i++){
+                        System.out.println(completeCourseList.get(i).getCrs_title());
+                    }
+                    for(Course i:completeCourseList){
+                        if(i.getCrs_title().equals(classToAdd)){
+                            System.out.println("Title match!");
+                            currentSchedule.getCourses().add(i);
+
+                        }
+                    }
+                    System.out.println("Succesfully added course.  Curent course list:\n");
+                    for(Course c:currentSchedule.getCourses()){
+                        System.out.print(c.getCrs_title() + " " );
+                    }
                 }
             }
-
             System.out.println("If finished searching, type exit, else press enter: ");
             exit = scnr.nextLine().toUpperCase();
         }

@@ -22,7 +22,7 @@ public class Schedule {
         this.allCourses=allCourses;
     }
 
-    public Schedule(User user, String titlex, ArrayList<Course> allCourses) {
+    public Schedule(User user, String title, ArrayList<Course> allCourses) {
         this.user = user;
         this.title = title;
         this.allCourses=allCourses;
@@ -80,7 +80,7 @@ public class Schedule {
     }
 
    public void searchCourses() {
-        Search search = new Search(this, user, courses);
+        Search search = new Search(this, user, allCourses);
         search.searchInteraction();
         scheduleInteract();
         //TODO: search csv data for courses
@@ -103,22 +103,6 @@ public class Schedule {
    private void getDetails(Course course){
         //maybe should be in Course class?
    }
-    public void addCourse(String courseName, ArrayList<Course> userCurrentCourses, ArrayList<Course> allCourses){
-        for(int i=0; i<userCurrentCourses.size(); i++) {
-            if (userCurrentCourses.size() > 0) {
-                if (userCurrentCourses.get(i).getCrs_title() == courseName) {
-                    System.out.println("You already have this course added");
-                }
-            }
-        }
-        for (int j = 0; j < allCourses.size(); j++) {
-            if (allCourses.get(j).getCrs_title().equals(courseName)) {
-                userCurrentCourses.add(allCourses.get(j));
-                System.out.println("Successfully added class" + allCourses.get(j).getCrs_title());
-            }
-
-        }
-    }
     /**
      * UI method for working in schedule
      * Everything in here can change
@@ -130,7 +114,7 @@ public class Schedule {
        Scanner scnr = new Scanner(System.in);
 
        System.out.println("Viewing schedule "+ title);
-       if(courses==null||courses.isEmpty()){//TODO: MAKE IT SO THAT IF COURSES ARENT FILLED IN YET IT DOESNT RUN
+       if(courses==null||courses.isEmpty()){
            System.out.println("Schedule currently empty.  Add classes!");
            courses=new ArrayList<Course>();
        }else {
@@ -144,17 +128,6 @@ public class Schedule {
        String action = scnr.nextLine();
        if (action.equals("Search")) {
            searchCourses();
-           System.out.println("Would you like to add a class to your schedule?  Y/N");
-           String ans=scnr.nextLine();
-           if(ans.equals("Y")||ans.equals("y")){
-               System.out.println("Enter the name of the course you wish to add");
-               String courseTitleToAdd=scnr.nextLine();
-               addCourse(courseTitleToAdd, courses, allCourses);
-               System.out.println("Current courses added:");
-               for(Course c : courses){
-                   System.out.print(c.getCrs_title()+" ");
-               }
-           }
        } else if (action.equals("Quit")){
            return;
        }

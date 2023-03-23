@@ -293,11 +293,7 @@ public class Main {
 
     public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules){
         Scanner scanner=new Scanner(System.in);
-        if(userSchedules.size()==0){
-            System.out.println("You have no schedules currently.  Type the title of your first schedule");
-            String title=scanner.nextLine();
-            Schedule newSchedule=new Schedule(user, title, courses);
-        }
+
         System.out.println("Your schedules are: ");//Print out all the schedules for the current user
         for(Schedule i:userSchedules){
             System.out.println(i.getTitle());
@@ -306,17 +302,13 @@ public class Main {
         String userSelectedSchedule=scanner.nextLine();
         System.out.println("You selected "+userSelectedSchedule);
         Schedule currentSchedule=new Schedule(user, "empty schedule", courses);
-        if(userSchedules.size()==0){//Make a new schedule if they do not currently have one
-            System.out.println("You do not have any schedules. Enter a name for your new schedule");
-            String newScheduleName= scanner.nextLine();
-            currentSchedule.setTitle(newScheduleName);
-        }else {
+
             for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
                 if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
                     currentSchedule = i;
                 }
             }
-        }
+
         currentSchedule.scheduleInteract();
 
         saveSchedule(currentSchedule);
@@ -342,15 +334,20 @@ public class Main {
 
         public static ArrayList<Schedule> fillUserSchedules(User user){
             ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
-            Schedule schedule=new Schedule(user, user.getName()+"'s schedule", courses);//Puts a new schedule into that list
-            setCourses(courses);
-            schedules.add(schedule);
-
             for (Schedule value : schedules) {
                 if (value.getUser().getName().equals(user.getName())) {
                     //Puts all the schedules containing that user's name from the master schedule list into the list
                     userSchedules.add(value);
                 }
+            }
+            if(userSchedules.isEmpty()){
+                Scanner scanner=new Scanner(System.in);
+                System.out.println("You have no schedules currently.  Type the title of your first schedule");
+                String title=scanner.nextLine();
+                System.out.println("title:"+title);
+                Schedule newSchedule=new Schedule(user, title, courses);
+                userSchedules.add(newSchedule);
+                System.out.println(userSchedules.get(0).getTitle());
             }
             return userSchedules;
         }
@@ -361,8 +358,7 @@ public class Main {
         String returningUser=scanner.nextLine();
         if(returningUser.equals("Y")){
             System.out.println("Welcome back");
-            return schedules.get(0).getUser();
-            //TODO code here for pulling returning user info off file currently gets first in list
+            return null;//TODO change so it pulls the users data
         }else {//New user
             System.out.println("Welcome.  Enter your name");
             String userName = scanner.nextLine();
@@ -375,6 +371,7 @@ public class Main {
             scanner.nextLine();
             User user = new User(userName, major, minor, year);//Create a user
             System.out.println("Welcome, " + user.getName());
+
             //TODO: put user and their info onto file
             return user;
         }
