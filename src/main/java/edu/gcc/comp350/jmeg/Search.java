@@ -184,18 +184,14 @@ public class Search {
         return c;
     }
 
-    public void filterCourses(Filter filter, ArrayList<Course> courses) {
+    public ArrayList<Course> filterCourses(Filter filter, ArrayList<Course> courses) {
         if (filter.getFilterType() == Filter.FilterTypes.YEAR) {
-            courses = (ArrayList<Course>) courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
+            return  (ArrayList<Course>) courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
         } else if (filter.getFilterType() == Filter.FilterTypes.TERM) {
-            int termInt = filter.getFilterName().equals("SPRING") ? 10 : 30;
-            courses = (ArrayList<Course>) courses.stream().filter(c -> c.getTrm_code() == termInt).collect(Collectors.toList());
+            int termInt = filter.getFilterName().equals("FALL") ? 10 : 30;
+            return (ArrayList<Course>) courses.stream().filter(c -> c.getTrm_code() == termInt).collect(Collectors.toList());
         }
-
-
-        System.out.println(courses);
-
-
+        return null;
     }
 
     private void viewDetails(Course c){

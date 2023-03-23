@@ -96,11 +96,22 @@ class SearchTest {
     }
 
     @Test
-    void filterCourses() {
+    void filterCoursesYear() {
         Filter filter = new Filter("YEAR", "2018");
-        Main.testCSV();
 
         search.filterCourses(filter, Main.getCourses());
+
+        assertEquals(1506, Main.getCourses().size());
+
+    }
+
+    @Test
+    void filterCoursesTerm() {
+        Filter filter = new Filter("TERM", "FALL");
+
+        ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
+
+        assertEquals(765, courses.size());
 
     }
 }
