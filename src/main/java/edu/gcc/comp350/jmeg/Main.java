@@ -1,14 +1,10 @@
 package edu.gcc.comp350.jmeg;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
-import java.util.Scanner;
-
 
 
 public class Main {
@@ -291,9 +287,14 @@ public class Main {
         return sb.substring(0, sb.length() - 1) + "\n";
     }
 
+    /**
+     *
+     * @param user
+     * @param userSchedules
+     * Provides interface to select which schedule to edit
+     */
     public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules){
         Scanner scanner=new Scanner(System.in);
-
         System.out.println("Your schedules are: ");//Print out all the schedules for the current user
         for(Schedule i:userSchedules){
             System.out.println(i.getTitle());
@@ -301,7 +302,7 @@ public class Main {
         System.out.println("Which schedule do you wish to edit?");
         String userSelectedSchedule=scanner.nextLine();
         System.out.println("You selected "+userSelectedSchedule);
-        Schedule currentSchedule=new Schedule(user, "empty schedule", courses);
+        Schedule currentSchedule=new Schedule(user, "empty schedule");
 
             for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
                 if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
@@ -314,51 +315,53 @@ public class Main {
         saveSchedule(currentSchedule);
     }
 
-    public static void addCourseToSchedule(String courseName, ArrayList<Course> userCurrentCourses){
-            for(int i=0; i<userCurrentCourses.size(); i++) {
-                if (userCurrentCourses.size() > 0) {
-                    if (userCurrentCourses.get(i).getCrs_title() == courseName) {
-                        System.out.println("You already have this course added");
-                    }
-                }
-            }
-            System.out.println("Searching for "+courseName);
-            for (int j = 0; j < courses.size(); j++) {
-                if (courses.get(j).getCrs_title().equals(courseName)) {
-                    userCurrentCourses.add(courses.get(j));
-                    System.out.println("Successfully added class" + courses.get(j).getCrs_title());
-                }
-
-            }
-        }
-
+    /**
+     *
+     * @param user
+     * @return
+     * Fills the User's array of schedules with all their schedules, whether new or returning user
+     */
         public static ArrayList<Schedule> fillUserSchedules(User user){
             ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
             for (Schedule value : schedules) {
-                if (value.getUser().getName().equals(user.getName())) {
-                    //Puts all the schedules containing that user's name from the master schedule list into the list
+                if (value.getUser().getName().equals(user.getName())) {//Puts all the schedules containing that user's name from the master schedule list into the list
                     userSchedules.add(value);
                 }
             }
-            if(userSchedules.isEmpty()){
+            if(userSchedules.isEmpty()){//If you are a new user you dont have any schedules so make a new one
                 Scanner scanner=new Scanner(System.in);
                 System.out.println("You have no schedules currently.  Type the title of your first schedule");
                 String title=scanner.nextLine();
                 System.out.println("title:"+title);
-                Schedule newSchedule=new Schedule(user, title, courses);
+                Schedule newSchedule=new Schedule(user, title);
                 userSchedules.add(newSchedule);
                 System.out.println(userSchedules.get(0).getTitle());
             }
-            return userSchedules;
+            return userSchedules;//Returns the schedule you want to edit
         }
 
         public static User makeUser(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Have you used this software before? Y/N");
-        String returningUser=scanner.nextLine();
-        if(returningUser.equals("Y")){
-            System.out.println("Welcome back");
-            return null;//TODO change so it pulls the users data
+        String returningUser=scanner.nextLine().toLowerCase();
+        while(!returningUser.equals("y")&&!returningUser.equals("n")){
+            System.out.println("Invalid answer, please try again using Y/N");
+            returningUser=scanner.nextLine().toLowerCase();
+        }
+        if(returningUser.equals("y")){//Existing user
+            System.out.println("Enter your name");
+            String username=scanner.nextLine();
+            for(Schedule s: schedules){
+                if(s.getUser().getName().equals(username)){
+                    System.out.println("Welcome back "+s.getUser().getName());
+                    return s.getUser();
+                }
+            }
+            System.out.println("Didnt find the user.  Making fake: ");
+            User user=new User("Doug", "CS", "AI", 2024);
+            return user;
+            //return null;//TODO change so it pulls the users data
+
         }else {//New user
             System.out.println("Welcome.  Enter your name");
             String userName = scanner.nextLine();
@@ -369,11 +372,9 @@ public class Main {
             System.out.println("Enter your year");
             int year = scanner.nextInt();
             scanner.nextLine();
-            User user = new User(userName, major, minor, year);//Create a user
+            User user = new User(userName, major, minor, year);//Create a new user
             System.out.println("Welcome, " + user.getName());
-
-            //TODO: put user and their info onto file
             return user;
         }
-    }
+        }
 }

@@ -6,13 +6,12 @@ import java.util.Scanner;
 
 public class Search {
     private ArrayList<Filter> filters;
-    private ArrayList<Course> completeCourseList;
+    private ArrayList<Course> completeCourseList=Main.getCourses();
     private User currentUser;
     private String inputData;
     private Schedule currentSchedule;
-    public Search(Schedule schedule, User user, ArrayList<Course> completeCourseList) {
+    public Search(Schedule schedule, User user) {
         currentSchedule = schedule;
-        this.completeCourseList=completeCourseList;
         this.currentUser=user;
         filters = new ArrayList<>();
         inputData = "";
@@ -47,24 +46,19 @@ public class Search {
             } else if (results.isEmpty()) {
                 System.out.println("Search produced zero results, try a different query or identifier");
             } else {
-                System.out.println(results);
-                //TODO:  have add classes capabilities here.
-                System.out.println("Would you like to add any of these classes to your schedule? Y/N");
+                System.out.println(results);//Print the search results
+                System.out.println("Would you like to add any classes to your schedule? Y/N");
                 String ans=scnr.nextLine();
                 if(ans.equals("Y")||ans.equals("y")){
                     System.out.println("Enter the name of the class you wish to add");
                     String classToAdd=scnr.nextLine();
-                    for(int i=0; i<10; i++){
-                        System.out.println(completeCourseList.get(i).getCrs_title());
-                    }
                     for(Course i:completeCourseList){
                         if(i.getCrs_title().equals(classToAdd)){
-                            System.out.println("Title match!");
                             currentSchedule.getCourses().add(i);
 
                         }
                     }
-                    System.out.println("Succesfully added course.  Curent course list:\n");
+                    System.out.println("Successfully added course.  Current course list:\n");
                     for(Course c:currentSchedule.getCourses()){
                         System.out.print(c.getCrs_title() + " " );
                     }

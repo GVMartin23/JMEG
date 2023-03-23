@@ -22,10 +22,9 @@ public class Schedule {
         this.allCourses=allCourses;
     }
 
-    public Schedule(User user, String title, ArrayList<Course> allCourses) {
+    public Schedule(User user, String title) {
         this.user = user;
         this.title = title;
-        this.allCourses=allCourses;
     }
 
     /**
@@ -80,10 +79,9 @@ public class Schedule {
     }
 
    public void searchCourses() {
-        Search search = new Search(this, user, allCourses);
+        Search search = new Search(this, user);
         search.searchInteraction();
         scheduleInteract();
-        //TODO: search csv data for courses
    }
 
    private void removeCourse(Course course){
