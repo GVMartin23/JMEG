@@ -8,7 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
 import java.util.Scanner;
-
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -72,6 +72,9 @@ public class Main {
                 userSchedules.add(value);
             }
         }
+
+        //List<Schedule> Users = scheduleList.stream().filter(s -> s.getUser().getName().equals("Test")).collect(Collectors.toList());
+
         userScheduleSelect(user, userSchedules);
     }
 

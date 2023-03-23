@@ -3,6 +3,10 @@ package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 
 public class Filter {
+    private enum FilterTypes {
+
+    }
+
     private boolean active;
     private String filterName;
     private ArrayList<String> filterValues;
