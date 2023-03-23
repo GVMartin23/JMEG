@@ -16,10 +16,16 @@ public class Main {
     }
 
     public static ArrayList<Course> getCourses() {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
         return courses;
     }
 
     public static ArrayList<Schedule> getSchedules() {
+        if (schedules == null) {
+            schedules = new ArrayList<>();
+        }
         return schedules;
     }
 
@@ -42,7 +48,7 @@ public class Main {
      */
     public static void testCSV(){
         try {
-            List<String[]> list = loadCSV();
+            ArrayList<String[]> list = loadCSV();
             list.remove(0);
             for(String[] str : list) {
                 if(str[0].isEmpty()){
@@ -98,10 +104,7 @@ public class Main {
 
                 }
 
-                if (courses == null) {
-                    courses = new ArrayList<>();
-                }
-
+                ArrayList<Course> courseList = getCourses();
 
                 Course course = new Course(yr_code, trm_code, crs_code,
                         crs_comp1, crs_comp2, crs_comp3, crs_title,
@@ -110,13 +113,10 @@ public class Main {
                         bldg_cde, room_cde, monday_cde, tuesday_cde, wednesday_cde,
                         thursday_cde, friday_cde, begin_tim, end_tim, last_name, first_name,
                         preferred_name, comment_txt);
-                courses.add(course);
-
+                courseList.add(course);
 
             }
-
-
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
@@ -127,21 +127,20 @@ public class Main {
      * @return string list of courses (taken from the csv)
      * @throws IOException
      */
-    public static List<String[]> loadCSV() throws IOException{
+    public static ArrayList<String[]> loadCSV() throws IOException {
         String csvFile = "2018-2019.csv";
-        List<String[]> courses = new ArrayList<>();
+        ArrayList<String[]> courses = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))){
             String line = "";
             while((line = br.readLine()) != null){
                 courses.add(line.split(","));
-                //System.out.println(line);
             }
         } catch (FileNotFoundException e){
             e.printStackTrace();
         }
         return courses;
-
     }
+
     private static Schedule createSchedule(){
         return null;
     }
@@ -157,19 +156,19 @@ public class Main {
         //lambda sorting files in directory by those that are csv files
         File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
 
-        if (Main.schedules == null) {
-            Main.schedules = new ArrayList<>();
+        if (schedules == null) {
+            schedules = new File[0];
         }
 
         //Load each schedule individually
         for (File file : schedules) {
+            ArrayList<Schedule> scheduleList = Main.getSchedules();
             try {
-                Main.schedules.add(parseSavedSchedule(file));
+                scheduleList.add(parseSavedSchedule(file));
             } catch (IOException e) {
                 //File not found error or failed in reading file
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -179,7 +178,7 @@ public class Main {
      * @param filename name of file to check
      * @return true if filename is same as data files
      */
-    private static boolean isDataCSV(String filename) {
+    public static boolean isDataCSV(String filename) {
         return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv");
     }
 
@@ -216,11 +215,11 @@ public class Main {
         ArrayList<Course> scheduleCourses = new ArrayList<>();
 
         //Go through each Crs_code in file and add that course to schedule
-            for (Course course : courses) {
-                if (courseVars.contains(course.getCrs_code())) {
-                    scheduleCourses.add(course);
-                }
+        for (Course course : getCourses()) {
+            if (courseVars.contains(course.getCrs_code())) {
+                scheduleCourses.add(course);
             }
+        }
 
 
         schedule.setCourses(scheduleCourses);
@@ -273,6 +272,7 @@ public class Main {
                 user.getMinor() + "," +
                 user.getYear() + "\n";
     }
+
     /**
      * CSV formats a list of courses by course code
      * @param Courses list of courses to format
@@ -309,6 +309,7 @@ public class Main {
                     currentSchedule = i;
                 }
             }
+
 
         currentSchedule.scheduleInteract();
 

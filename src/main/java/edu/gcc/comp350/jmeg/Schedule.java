@@ -133,4 +133,15 @@ public class Schedule {
        System.out.println("Incorrect input");
    }
 
+   @Override
+   public String toString(){
+       String schedules = String.format("%s's current schedule:\n--------------------------------\n", user);
+       for (Course course: courses) {
+           schedules += course.toString();
+           if(courses.indexOf(course) != courses.size() - 1)
+               schedules += "--------------------------------\n";
+       }
+       return schedules;
+   }
+
 }
