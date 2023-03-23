@@ -55,8 +55,13 @@ public class Main {
 
         ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
         Schedule schedule=new Schedule(user, "Test schedule");//Puts a new schedule into that list
-        schedule.setCourses(completeCourseList);
+       ArrayList<Course> dummyCourses=new ArrayList<Course>();
+       for(int i=0; i<100; i+=10){
+           dummyCourses.add(courses.get(i));
+       }
+        schedule.setCourses(dummyCourses);
         schedules.add(schedule);
+        System.out.println(showCalendar(schedule));
 
 
         for (Schedule value : schedules) {
@@ -356,6 +361,37 @@ public class Main {
                 }
 
             }
+        }
+        public static String showCalendar(Schedule schedule){
+        //TODO
+            ArrayList<String> times= new ArrayList<String>();
+            times.add("08:00:00");
+            times.add("09:00:00");
+            times.add("10:00:00");
+            times.add("11:00:00");
+            times.add("12:00:00");
+            times.add("13:00:00");
+            times.add("14:00:00");
+            times.add("15:00:00");
+            ArrayList<String> days=new ArrayList<String>();
+            days.add("Monday");
+            days.add("Tuesday");
+            days.add("Wednesday");
+            days.add("Thursday");
+            days.add("Friday");
+
+            String calendar="__________________________________________________\n";
+            for(int i=0; i<5; i++){//7 days of the week
+                calendar+=days.get(i)+":";
+                for(int j=0; j<8; j++) {//8 hours a day
+                calendar+="|"+ times.get(j) +"|";
+                if(schedule.getCourses().get(i).getBegin_tim()!=""){
+                    calendar+="|"+schedule.getCourses().get(i).getCrs_title();
+                }
+                }
+                calendar+="\n__________________________________________________\n";
+            }
+            return calendar;
         }
     public static void makeDummyCourses(){
         Course course1=new Course("Biology");
