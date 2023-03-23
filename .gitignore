@@ -61,3 +61,6 @@ bin/
 hs_err_pid*
 # idea folder
 **.idea/
+
+# freaking workspace thingy
+workspace.xml
