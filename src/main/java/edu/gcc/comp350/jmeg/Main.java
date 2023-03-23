@@ -165,7 +165,7 @@ public class Main {
         String csvFile = "2018-2019.csv";
         ArrayList<String[]> courses = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))){
-            String line = "";
+            String line;
             while((line = br.readLine()) != null){
                 courses.add(line.split(","));
             }
@@ -269,7 +269,7 @@ public class Main {
         String fileName = schedule.getTitle() + "_" + schedule.getUser().getName() + ".csv";
 
         try {
-            try (PrintWriter pw = new PrintWriter(new File(fileName))) {
+            try (PrintWriter pw = new PrintWriter(fileName)) {
 
                 pw.write( formatScheduleCSV(schedule));
                 pw.write(formatUserCSV(schedule.getUser()));
@@ -340,18 +340,16 @@ public class Main {
     }
 
         public static void addCourseToSchedule(String courseName, ArrayList<Course> userCurrentCourses){
-            for(int i=0; i<userCurrentCourses.size(); i++) {
-                if (userCurrentCourses.size() > 0) {
-                    if (userCurrentCourses.get(i).getCrs_title() == courseName) {
-                        System.out.println("You already have this course added");
-                    }
+            for (Course userCurrentCours : userCurrentCourses) {
+                if (userCurrentCours.getCrs_title().equals(courseName)) {
+                    System.out.println("You already have this course added");
                 }
             }
             System.out.println("Searching for "+courseName);
-            for (int j = 0; j < completeCourseList.size(); j++) {
-                if (completeCourseList.get(j).getCrs_title().equals(courseName)) {
-                    userCurrentCourses.add(completeCourseList.get(j));
-                    System.out.println("Successfully added class" + completeCourseList.get(j).getCrs_title());
+            for (Course course : completeCourseList) {
+                if (course.getCrs_title().equals(courseName)) {
+                    userCurrentCourses.add(course);
+                    System.out.println("Successfully added class" + course.getCrs_title());
                 }
 
             }
@@ -359,9 +357,9 @@ public class Main {
     public static void makeDummyCourses(){
         Course course1=new Course("Biology");
         Course course2=new Course("Physics");
-        completeCourseList=new ArrayList<Course>();
+        completeCourseList=new ArrayList<>();
         completeCourseList.add(course1);
         completeCourseList.add(course2);
-        schedules=new ArrayList<Schedule>();
+        schedules=new ArrayList<>();
     }
 }

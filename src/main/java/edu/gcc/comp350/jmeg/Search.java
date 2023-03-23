@@ -55,7 +55,7 @@ public class Search {
     /**
      * USED FOR TESTING ONLY
      * DELETE ONCE DONE
-     * @param args
+     * @param args args
      */
     public static void main(String[] args) {
         Main.testCSV();
@@ -183,21 +183,15 @@ public class Search {
         }
         return c;
     }
-    private void clearFilters(){
-        return;
-    }
+    private void clearFilters(){}
     private Course addFilter(Filter f){
         return null;
     }
     private Course removeFilter(Filter f){
         return null;
     }
-    private void viewDetails(Course c){
-        return;
-    }
-    private void returnToSchedule(){
-        return;
-    }
+    private void viewDetails(Course c) {}
+    private void returnToSchedule() {}
 
     public ArrayList<Filter> getFilters() {
         return filters;
