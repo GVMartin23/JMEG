@@ -207,6 +207,9 @@ public class Main {
         //Split lines of csv into unique vals
         String[] scheduleVars = scheduleData.split(",");
         String[] userVars = userData.split(",");
+        if(coursesData==null){
+            coursesData="";
+        }
         List<String> courseVars = Arrays.asList(coursesData.split(","));
 
         Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
@@ -218,11 +221,12 @@ public class Main {
         ArrayList<Course> scheduleCourses = new ArrayList<>();
 
         //Go through each Crs_code in file and add that course to schedule
-        for (Course course : courses) {
-            if (courseVars.contains(course.getCrs_code())) {
-                scheduleCourses.add(course);
+            for (Course course : courses) {
+                if (courseVars.contains(course.getCrs_code())) {
+                    scheduleCourses.add(course);
+                }
             }
-        }
+
 
         schedule.setCourses(scheduleCourses);
 
