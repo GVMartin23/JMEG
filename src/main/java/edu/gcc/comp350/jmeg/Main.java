@@ -21,10 +21,16 @@ public class Main {
     }
 
     public static ArrayList<Course> getCourses() {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
         return courses;
     }
 
     public static ArrayList<Schedule> getSchedules() {
+        if (schedules == null) {
+            schedules = new ArrayList<>();
+        }
         return schedules;
     }
 
@@ -56,10 +62,12 @@ public class Main {
         ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
         Schedule schedule=new Schedule(user, "Test schedule");//Puts a new schedule into that list
         schedule.setCourses(completeCourseList);
-        schedules.add(schedule);
+
+        ArrayList<Schedule> scheduleList = getSchedules();
+        scheduleList.add(schedule);
 
 
-        for (Schedule value : schedules) {
+        for (Schedule value : getSchedules()) {
             if (value.getUser().getName().equals(userName)) {
                 //Puts all the schedules containing that user's name from the master schedule list into the list
                 userSchedules.add(value);
@@ -133,10 +141,7 @@ public class Main {
 
                 }
 
-                if (courses == null) {
-                    courses = new ArrayList<>();
-                }
-
+                ArrayList<Course> courseList = getCourses();
 
                 Course course = new Course(yr_code, trm_code, crs_code,
                         crs_comp1, crs_comp2, crs_comp3, crs_title,
@@ -145,7 +150,7 @@ public class Main {
                         bldg_cde, room_cde, monday_cde, tuesday_cde, wednesday_cde,
                         thursday_cde, friday_cde, begin_tim, end_tim, last_name, first_name,
                         preferred_name, comment_txt);
-                courses.add(course);
+                courseList.add(course);
 
 
             }
@@ -193,13 +198,14 @@ public class Main {
         //lambda sorting files in directory by those that are csv files
         File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
 
-        if (Main.schedules == null) {
-            Main.schedules = new ArrayList<>();
+        if (schedules == null) {
+            schedules = new File[0];
         }
         //Load each schedule individually
         for (File file : schedules) {
+            ArrayList<Schedule> scheduleList = Main.getSchedules();
             try {
-                Main.schedules.add(parseSavedSchedule(file));
+                scheduleList.add(parseSavedSchedule(file));
             } catch (IOException e) {
                 //File not found error or failed in reading file
                 e.printStackTrace();
@@ -213,7 +219,7 @@ public class Main {
      * @param filename name of file to check
      * @return true if filename is same as data files
      */
-    private static boolean isDataCSV(String filename) {
+    public static boolean isDataCSV(String filename) {
         return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv");
     }
 
@@ -247,7 +253,7 @@ public class Main {
         ArrayList<Course> scheduleCourses = new ArrayList<>();
 
         //Go through each Crs_code in file and add that course to schedule
-        for (Course course : courses) {
+        for (Course course : getCourses()) {
             if (courseVars.contains(course.getCrs_code())) {
                 scheduleCourses.add(course);
             }

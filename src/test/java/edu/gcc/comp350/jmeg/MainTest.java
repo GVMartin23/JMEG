@@ -2,15 +2,18 @@ package edu.gcc.comp350.jmeg;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
 
     @Test
-    void saveSchedule() {
+    void testSaveSchedule() {
         Schedule schedule = new Schedule("TITLE", 0);
         User user = new User("Joe" , "MAJOR", "MINOR", 1);
         schedule.setUser(user);
@@ -21,11 +24,22 @@ class MainTest {
         schedule.setCourses(courses);
 
         Main.saveSchedule(schedule);
+
+        File directory = new File(System.getProperty("user.dir"));
+
+        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !Main.isDataCSV(name));
+
+        ArrayList<String> titles = new ArrayList<>();
+        for (File file : schedules) {
+            titles.add(file.getName());
+        }
+
+        assertTrue(titles.contains("TITLE_Joe.csv"));
     }
 
     @Test
     void loadScheduleCorrect() throws IOException {
-        saveSchedule();
+        testSaveSchedule();
 
         Main.loadSchedule();
 
@@ -34,10 +48,10 @@ class MainTest {
         ArrayList<String> titles = new ArrayList<>();
 
         for (Schedule schedule : schedules) {
-
+            titles.add(schedule.getTitle());
         }
 
-        assertEquals("Test schedule", schedules.get(0).getTitle());
+        assertTrue(titles.contains("TITLE"));
     }
 
 
