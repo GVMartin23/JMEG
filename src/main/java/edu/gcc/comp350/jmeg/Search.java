@@ -174,10 +174,11 @@ public class Search {
      * @return - course list including courses with the course name specified by the user
      */
     private ArrayList<Course> searchCourseTime(String input) {
+
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : Main.getCourses()) {
-            if (course.getBegin_tim().contains(input)) {
+            if (course.getBegin_tim().substring(11).contains(input)) {
                 c.add(course);
             }
         }
