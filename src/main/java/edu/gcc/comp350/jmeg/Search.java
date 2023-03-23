@@ -44,6 +44,14 @@ public class Search {
                 System.out.println("Search produced zero results, try a different query or identifier");
             } else {
                 System.out.println(results);
+                //TODO:  have add classes capabilities here.
+                System.out.println("Would you like to add any of these classes to your schedule? Y/N");
+                String ans=scnr.nextLine();
+                if(ans.equals("Y")||ans.equals("y")){
+                    System.out.println("Enter the name of the class you wish to add");
+                    String classToAdd=scnr.nextLine();
+                    //currentSchedule.addCourse(classToAdd,PUT CURRENT USER COURSES, GET FULL LIST COURSES);
+                }
             }
 
             System.out.println("If finished searching, type exit, else press enter: ");
@@ -221,10 +229,6 @@ public class Search {
 
     public void setCurrentSchedule(Schedule currentSchedule) {
         this.currentSchedule = currentSchedule;
-    }
-
-    private void addCourse(Course c){
-        return;
     }
 
 }

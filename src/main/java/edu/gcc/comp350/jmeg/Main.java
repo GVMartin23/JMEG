@@ -277,7 +277,6 @@ public class Main {
                 user.getMinor() + "," +
                 user.getYear() + "\n";
     }
-
     /**
      * CSV formats a list of courses by course code
      * @param Courses list of courses to format

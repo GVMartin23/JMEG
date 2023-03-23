@@ -100,7 +100,22 @@ public class Schedule {
    private void getDetails(Course course){
         //maybe should be in Course class?
    }
+    public void addCourse(String courseName, ArrayList<Course> userCurrentCourses, ArrayList<Course> allCourses){
+        for(int i=0; i<userCurrentCourses.size(); i++) {
+            if (userCurrentCourses.size() > 0) {
+                if (userCurrentCourses.get(i).getCrs_title() == courseName) {
+                    System.out.println("You already have this course added");
+                }
+            }
+        }
+        for (int j = 0; j < allCourses.size(); j++) {
+            if (allCourses.get(j).getCrs_title().equals(courseName)) {
+                userCurrentCourses.add(allCourses.get(j));
+                System.out.println("Successfully added class" + allCourses.get(j).getCrs_title());
+            }
 
+        }
+    }
     /**
      * UI method for working in schedule
      * Everything in here can change
