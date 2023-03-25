@@ -23,9 +23,11 @@ public class Search {
      */
     public void searchInteraction() {
         Scanner scnr = new Scanner(System.in);
+        ArrayList<Course> results = null;
 
-        String exit = "Enter";
-        while (!exit.equals("EXIT")) {
+        String exit = "";
+        while (!exit.equals("N")) {
+
             System.out.println("Search by,");
             System.out.println("Name    Day     Time    Code");
             //Determine how they are searching
@@ -35,20 +37,60 @@ public class Search {
             String search = scnr.nextLine().toUpperCase();
 
             //Gets list of results from search
-            ArrayList<Course> results = search(identifier, search);
+            if (results == null) {
+                results = search(identifier, search, Main.getCourses());
+            } else {
+                results = search(identifier, search, results);
+            }
+
 
             if (results == null) {
                 System.out.println("Incorrect Search or Identifier");
-                continue;
             } else if (results.isEmpty()) {
                 System.out.println("Search produced zero results, try a different query or identifier");
             } else {
                 System.out.println(results);
+                System.out.println("Filter By?");
+                System.out.println("Year    Term    None");
+                String filterBy = scnr.nextLine().toUpperCase();
+                if (!filterBy.equals("NONE")) {
+                    results = filterInteract(filterBy, results);
+                    System.out.println(results);
+                }
+
             }
 
-            System.out.println("If finished searching, type exit, else press enter: ");
+
+            System.out.println("Continue Searching? (Y/N): ");
             exit = scnr.nextLine().toUpperCase();
         }
+    }
+
+    private ArrayList<Course> filterInteract(String filterBy, ArrayList<Course> courseList) {
+        Scanner scnr = new Scanner(System.in);
+        Filter filter = null;
+        String filterVal;
+        if (filterBy.equals("YEAR")) {
+            System.out.println("Enter year (2018, 2019, 2020): ");
+            filterVal = scnr.next();
+            if(filterVal.equals("2018") || filterVal.equals("2019") || filterVal.equals("2020")) {
+                filter = new Filter(filterBy, filterVal);
+            } else {
+                System.out.println("Error, invalid input.");
+            }
+        } else if (filterBy.equals("TERM")) {
+            System.out.println("Enter term (Spring, Fall): ");
+            filterVal = scnr.next().toUpperCase();
+            if (filterVal.equals("FALL") || filterVal.equals("SPRING")) {
+                filter = new Filter(filterBy, filterVal);
+            }
+        }
+
+        if (filter != null) {
+            return filterCourses(filter, courseList);
+        }
+        System.out.println("Invalid filter");
+        return courseList;
     }
 
     /**
@@ -57,15 +99,15 @@ public class Search {
      * @param input string that is used to search
      * @return List of courses if identifier exits else null
      */
-    public ArrayList<Course> search(String identifier, String input) {
+    public ArrayList<Course> search(String identifier, String input, ArrayList<Course> searchList) {
         if (identifier.equals("NAME")) {
-            return searchCourseName(input);
+            return searchCourseName(input, searchList);
         } else if (identifier.equals("DAY")) {
-            return searchCourseDay(input);
+            return searchCourseDay(input, searchList);
         } else if (identifier.equals("TIME")) {
-            return searchCourseTime(input);
+            return searchCourseTime(input, searchList);
         } else if (identifier.equals("CODE")) {
-            return searchCourseCode(input);
+            return searchCourseCode(input, searchList);
         }
 
         return null;
@@ -77,10 +119,10 @@ public class Search {
      * @param input - user input (course name) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    public ArrayList<Course> searchCourseName(String input) {
+    public ArrayList<Course> searchCourseName(String input, ArrayList<Course> searchList) {
         ArrayList<Course> c = new ArrayList<>();
 
-        for (Course course : Main.getCourses()) {
+        for (Course course : searchList) {
             if (course.getCrs_title().contains(input)) {
                 c.add(course);
             }
@@ -94,10 +136,10 @@ public class Search {
      * @param input- user input (course code) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    public ArrayList<Course> searchCourseCode(String input) {
+    public ArrayList<Course> searchCourseCode(String input, ArrayList<Course> searchList) {
         ArrayList<Course> c = new ArrayList<>();
 
-        for (Course course : Main.getCourses()) {
+        for (Course course : searchList) {
             if (course.getCrs_code().contains(input)) {
                 c.add(course);
             }
@@ -111,10 +153,10 @@ public class Search {
      * @param input- user input (course day) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    public ArrayList<Course> searchCourseDay(String input) {
+    public ArrayList<Course> searchCourseDay(String input, ArrayList<Course> searchList) {
         ArrayList<Course> c = new ArrayList<>();
 
-        for (Course course : Main.getCourses()) {
+        for (Course course : searchList) {
             if(input.equals("M") || input.equals("MON") || input.equals("MONDAY")){
                 if (course.getMonday_cde().contains(input)) {
                     c.add(course);
@@ -154,11 +196,11 @@ public class Search {
      * @param input- user input (course begin time) as a string
      * @return - course list including courses with the course name specified by the user
      */
-    private ArrayList<Course> searchCourseTime(String input) {
+    private ArrayList<Course> searchCourseTime(String input, ArrayList<Course> searchList) {
 
         ArrayList<Course> c = new ArrayList<>();
 
-        for (Course course : Main.getCourses()) {
+        for (Course course : searchList) {
             if (course.getBegin_tim().substring(11).contains(input)) {
                 c.add(course);
             }
@@ -167,6 +209,14 @@ public class Search {
     }
 
     public ArrayList<Course> filterCourses(Filter filter, ArrayList<Course> courses) {
+        ArrayList<Filter> filterList = getFilters();
+        if (filterList.contains(filter)) {
+            System.out.println("Already filtered by " + filter.getFilterType().toString().toLowerCase());
+            return courses;
+        } else {
+            filterList.add(filter);
+        }
+
         if (filter.getFilterType() == Filter.FilterTypes.YEAR) {
             return  (ArrayList<Course>) courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
         } else if (filter.getFilterType() == Filter.FilterTypes.TERM) {
@@ -184,6 +234,9 @@ public class Search {
     }
 
     public ArrayList<Filter> getFilters() {
+        if (filters == null) {
+            filters = new ArrayList<>();
+        }
         return filters;
     }
 
