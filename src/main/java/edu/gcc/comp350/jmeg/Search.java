@@ -27,7 +27,6 @@ public class Search {
 
         String exit = "";
         while (!exit.equals("N")) {
-
             System.out.println("Search by,");
             System.out.println("Name    Day     Time    Code");
             //Determine how they are searching
@@ -49,45 +48,69 @@ public class Search {
             } else if (results.isEmpty()) {
                 System.out.println("Search produced zero results, try a different query or identifier");
             } else {
-                System.out.println(results);//Print the search results
-                System.out.println("Would you like to add any classes to your schedule? Y/N");
-                String ans=scnr.nextLine();
-                if(ans.equals("Y")||ans.equals("y")){
-                    System.out.println("Enter the name of the class you wish to add");
-                    String classToAdd=scnr.nextLine();
-                    for(Course i : Main.getCourses()){
-                        if(i.getCrs_title().equals(classToAdd)){
-                            currentSchedule.getCourses().add(i);
-
-                        }
-                    }
-                    System.out.println("Successfully added course.  Current course list:\n");
-                    for(Course c:currentSchedule.getCourses()){
-                        System.out.print(c.getCrs_title() + " " );
-                    }
-                }
-            }
-            System.out.println(results);
-            System.out.println("Filter By?");
-            System.out.println("Year    Term    None");
-            String filterBy = scnr.nextLine().toUpperCase();
-            if (!filterBy.equals("NONE")) {
-                results = filterInteract(filterBy, results);
-                System.out.println(results);
+                results = resultsInteract(results);
             }
 
-        }
-
-
-        System.out.println("Continue Searching? (Y/N): ");
-
-            System.out.println("If finished searching, type exit, else press enter: ");
+            System.out.println("Continue Searching? (Y/N): ");
             exit = scnr.nextLine().toUpperCase();
         }
     }
 
-    private ArrayList<Course> filterInteract(String filterBy, ArrayList<Course> courseList) {
+    private void addCourseInteract(ArrayList<Course> results) {
         Scanner scnr = new Scanner(System.in);
+
+        System.out.println("Would you like to add any classes to your schedule? Y/N");
+        String ans=scnr.nextLine().toUpperCase();
+        if(ans.equals("Y")){
+            System.out.println("Enter the name of the class you wish to add");
+            String classToAdd=scnr.nextLine();
+            for(Course i : results){
+                if(i.getCrs_title().equals(classToAdd)){
+                    currentSchedule.getCourses().add(i);
+                }
+            }
+            System.out.println("Successfully added course.  Current course list:\n");
+            for(Course c:currentSchedule.getCourses()){
+                System.out.print(c.getCrs_title() + " " );
+            }
+        }
+    }
+
+    private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
+        Scanner scnr = new Scanner(System.in);
+        while (true) {
+            System.out.println(courseList);
+            System.out.println("What would you like to do?");
+            System.out.println("Add Course     Filter      View Details     Continue Searching");
+            String input = scnr.nextLine().strip().toUpperCase();
+            if (input.equals("ADD COURSE")) {
+                addCourseInteract(courseList);
+            } else if (input.equals("FILTER")) {
+                courseList = filterInteract(courseList);
+            } else if (input.equals("VIEW DETAILS")) {
+                viewDetailsInteract(courseList);
+            } else if ("CONTINUE SEARCHING".contains(input) || input.contains("CONTINUE SEARCHING")) {
+                System.out.println("Returning to search");
+                break;
+            } else {
+                System.out.println("Error, invalid input");
+            }
+        }
+
+        return courseList;
+    }
+
+
+
+    private ArrayList<Course> filterInteract(ArrayList<Course> courseList) {
+        Scanner scnr = new Scanner(System.in);
+        System.out.println("Filter By?");
+        System.out.println("Year    Term    None");
+        String filterBy = scnr.nextLine().toUpperCase();
+        if (filterBy.equals("NONE")) {
+            return courseList;
+        }
+
         Filter filter = null;
         String filterVal;
         if (filterBy.equals("YEAR")) {
@@ -111,6 +134,11 @@ public class Search {
         }
         System.out.println("Invalid filter");
         return courseList;
+    }
+
+    private void viewDetailsInteract(ArrayList<Course> courseList) {
+        //TODO: allow viewDetails to interact with the search list
+        //TODO: Get User input as to what course they wish to view details of, then call viewDetails with that course
     }
 
     /**
