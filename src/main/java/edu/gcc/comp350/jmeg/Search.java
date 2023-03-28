@@ -43,31 +43,27 @@ public class Search {
             } else if (results.isEmpty()) {
                 System.out.println("Search produced zero results, try a different query or identifier");
             } else {
-                System.out.println(results);
-            }
+                System.out.println(results);//Print the search results
+                System.out.println("Would you like to add any classes to your schedule? Y/N");
+                String ans=scnr.nextLine();
+                if(ans.equals("Y")||ans.equals("y")){
+                    System.out.println("Enter the name of the class you wish to add");
+                    String classToAdd=scnr.nextLine();
+                    for(Course i : Main.getCourses()){
+                        if(i.getCrs_title().equals(classToAdd)){
+                            currentSchedule.getCourses().add(i);
 
+                        }
+                    }
+                    System.out.println("Successfully added course.  Current course list:\n");
+                    for(Course c:currentSchedule.getCourses()){
+                        System.out.print(c.getCrs_title() + " " );
+                    }
+                }
+            }
             System.out.println("If finished searching, type exit, else press enter: ");
             exit = scnr.nextLine().toUpperCase();
         }
-    }
-
-
-    /**
-     * USED FOR TESTING ONLY
-     * DELETE ONCE DONE
-     * @param args
-     */
-    public static void main(String[] args) {
-        Main.testCSV();
-        Scanner scnr = new Scanner(System.in);
-
-        Search search = new Search(new Schedule("TEST", 0));
-
-        System.out.println("Enter Code of Class");
-        String input = scnr.nextLine();
-
-        //search.searchCourseName(input);
-        search.searchCourseCode(input);
     }
 
     /**
@@ -184,7 +180,6 @@ public class Search {
         return c;
     }
     private void clearFilters(){
-        return;
     }
     private Course addFilter(Filter f){
         return null;
@@ -221,10 +216,6 @@ public class Search {
 
     public void setCurrentSchedule(Schedule currentSchedule) {
         this.currentSchedule = currentSchedule;
-    }
-
-    private void addCourse(Course c){
-        return;
     }
 
 }

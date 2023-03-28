@@ -7,10 +7,6 @@ public class Filter {
     private String filterName;
     private ArrayList<String> filterValues;
 
-    public void Filter(){
-
-    }
-
     public boolean isActive() {
         return active;
     }
