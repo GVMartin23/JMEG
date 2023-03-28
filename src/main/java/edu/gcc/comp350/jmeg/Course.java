@@ -319,4 +319,20 @@ public class Course {
         crs += String.format("\t\tCredit Hours: %d\n", credit_hrs);
         return crs;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Course)) {
+            return false;
+        }
+        Course course = (Course) obj;
+
+        if (this == obj) {
+            return true;
+        }
+
+        return this.crs_code.equals(course.crs_code)
+                && this.trm_code == course.trm_code
+                && this.yr_code == course.yr_code;
+    }
 }
