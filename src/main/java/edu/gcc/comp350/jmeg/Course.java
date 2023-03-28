@@ -1,10 +1,7 @@
 package edu.gcc.comp350.jmeg;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class Course {
 
@@ -36,9 +33,6 @@ public class Course {
     String preferred_name;
     String comment_txt;
 
-public Course(String title){
-    this.crs_title=title;
-}
     public Course(int yr_code, int trm_code, String crs_code, String crs_comp1, String crs_comp2,
                   String crs_comp3, String crs_title, int credit_hrs, String x_listed_parnt_crs,
                   String acad_credit_varies, String acad_credit_label, int crs_capacity, int max_capacity,

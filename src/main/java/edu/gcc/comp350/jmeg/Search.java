@@ -49,19 +49,39 @@ public class Search {
             } else if (results.isEmpty()) {
                 System.out.println("Search produced zero results, try a different query or identifier");
             } else {
-                System.out.println(results);
-                System.out.println("Filter By?");
-                System.out.println("Year    Term    None");
-                String filterBy = scnr.nextLine().toUpperCase();
-                if (!filterBy.equals("NONE")) {
-                    results = filterInteract(filterBy, results);
-                    System.out.println(results);
-                }
+                System.out.println(results);//Print the search results
+                System.out.println("Would you like to add any classes to your schedule? Y/N");
+                String ans=scnr.nextLine();
+                if(ans.equals("Y")||ans.equals("y")){
+                    System.out.println("Enter the name of the class you wish to add");
+                    String classToAdd=scnr.nextLine();
+                    for(Course i : Main.getCourses()){
+                        if(i.getCrs_title().equals(classToAdd)){
+                            currentSchedule.getCourses().add(i);
 
+                        }
+                    }
+                    System.out.println("Successfully added course.  Current course list:\n");
+                    for(Course c:currentSchedule.getCourses()){
+                        System.out.print(c.getCrs_title() + " " );
+                    }
+                }
+            }
+            System.out.println(results);
+            System.out.println("Filter By?");
+            System.out.println("Year    Term    None");
+            String filterBy = scnr.nextLine().toUpperCase();
+            if (!filterBy.equals("NONE")) {
+                results = filterInteract(filterBy, results);
+                System.out.println(results);
             }
 
+        }
 
-            System.out.println("Continue Searching? (Y/N): ");
+
+        System.out.println("Continue Searching? (Y/N): ");
+
+            System.out.println("If finished searching, type exit, else press enter: ");
             exit = scnr.nextLine().toUpperCase();
         }
     }
@@ -258,10 +278,6 @@ public class Search {
 
     public void setCurrentSchedule(Schedule currentSchedule) {
         this.currentSchedule = currentSchedule;
-    }
-
-    private void addCourse(Course c){
-        return;
     }
 
 }
