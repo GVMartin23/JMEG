@@ -26,12 +26,12 @@ class SearchTest {
 
     @Test
     void search() {
-        assertNull(search.search("",""));
+        assertNull(search.search("","", new ArrayList<>()));
     }
 
     @Test
     void searchCourseName() {
-        ArrayList<Course> courses = search.search("NAME", "COST ACCOUNTING");
+        ArrayList<Course> courses = search.search("NAME", "COST ACCOUNTING", Main.getCourses());
 
         assertEquals(courses.get(0).getCrs_title(), "COST ACCOUNTING");
     }
@@ -40,7 +40,7 @@ class SearchTest {
     void searchCourseCode() {
         HashSet<String> courseCodes = new HashSet<>();
 
-        for (Course c : search.search("CODE", "INBS")) {
+        for (Course c : search.search("CODE", "INBS", Main.getCourses())) {
             courseCodes.add(c.getCrs_comp1());
         }
 
@@ -52,7 +52,7 @@ class SearchTest {
     @Test
     void searchCourseDayMonday() {
         boolean onMonday = true;
-        for (Course c : search.search("DAY", "M")) {
+        for (Course c : search.search("DAY", "M", Main.getCourses())) {
             if (!c.getMonday_cde().equals("M")) {
                 onMonday = false;
                 break;
@@ -62,7 +62,7 @@ class SearchTest {
         assertTrue(onMonday);
 
         onMonday = true;
-        for (Course c : search.search("DAY", "MON")) {
+        for (Course c : search.search("DAY", "MON", Main.getCourses())) {
             if (!c.getMonday_cde().equals("M")) {
                 onMonday = false;
                 break;
@@ -72,7 +72,7 @@ class SearchTest {
         assertTrue(onMonday);
 
         onMonday = true;
-        for (Course c : search.search("DAY", "MONDAY")) {
+        for (Course c : search.search("DAY", "MONDAY", Main.getCourses())) {
             if (!c.getMonday_cde().equals("M")) {
                 onMonday = false;
                 break;
@@ -86,7 +86,7 @@ class SearchTest {
     void searchCourseTime() {
         ArrayList<String> courseTimes = new ArrayList<>();
 
-        for (Course c : search.search("TIME", "8")) {
+        for (Course c : search.search("TIME", "8", Main.getCourses())) {
             courseTimes.add(c.getBegin_tim());
         }
 
