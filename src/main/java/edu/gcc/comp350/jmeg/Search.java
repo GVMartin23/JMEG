@@ -180,7 +180,6 @@ public class Search {
         return c;
     }
     private void clearFilters(){
-        return;
     }
     private Course addFilter(Filter f){
         return null;

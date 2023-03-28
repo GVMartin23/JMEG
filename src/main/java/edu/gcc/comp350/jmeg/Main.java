@@ -125,13 +125,13 @@ public class Main {
      * This method loads the 2018-2019 csv in the project
      * Reads each line/row and delimits by commas
      * @return string list of courses (taken from the csv)
-     * @throws IOException
+     * @throws IOException if reading file fails
      */
     public static ArrayList<String[]> loadCSV() throws IOException {
         String csvFile = "2018-2019.csv";
         ArrayList<String[]> courses = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))){
-            String line = "";
+            String line;
             while((line = br.readLine()) != null){
                 courses.add(line.split(","));
             }
@@ -239,7 +239,7 @@ public class Main {
         String fileName = schedule.getTitle() + "_" + schedule.getUser().getName() + ".csv";
 
         try {
-            try (PrintWriter pw = new PrintWriter(new File(fileName))) {
+            try (PrintWriter pw = new PrintWriter(fileName)) {
 
                 pw.write( formatScheduleCSV(schedule));
                 pw.write(formatUserCSV(schedule.getUser()));
@@ -289,8 +289,8 @@ public class Main {
 
     /**
      *
-     * @param user
-     * @param userSchedules
+     * @param user Specified User to narrow schedules to
+     * @param userSchedules List of schedules to select from
      * Provides interface to select which schedule to edit
      */
     public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules){
@@ -318,30 +318,30 @@ public class Main {
 
     /**
      *
-     * @param user
+     * @param user User to sort schedules by
      * @return
      * Fills the User's array of schedules with all their schedules, whether new or returning user
      */
-        public static ArrayList<Schedule> fillUserSchedules(User user){
-            ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
-            for (Schedule value : schedules) {
-                if (value.getUser().getName().equals(user.getName())) {//Puts all the schedules containing that user's name from the master schedule list into the list
-                    userSchedules.add(value);
-                }
+    public static ArrayList<Schedule> fillUserSchedules(User user){
+        ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
+        for (Schedule value : schedules) {
+            if (value.getUser().getName().equals(user.getName())) {//Puts all the schedules containing that user's name from the master schedule list into the list
+                userSchedules.add(value);
             }
-            if(userSchedules.isEmpty()){//If you are a new user you dont have any schedules so make a new one
-                Scanner scanner=new Scanner(System.in);
-                System.out.println("You have no schedules currently.  Type the title of your first schedule");
-                String title=scanner.nextLine();
-                System.out.println("title:"+title);
-                Schedule newSchedule=new Schedule(user, title);
-                userSchedules.add(newSchedule);
-                System.out.println(userSchedules.get(0).getTitle());
-            }
-            return userSchedules;//Returns the schedule you want to edit
         }
+        if(userSchedules.isEmpty()){//If you are a new user you don't have any schedules so make a new one
+            Scanner scanner=new Scanner(System.in);
+            System.out.println("You have no schedules currently.  Type the title of your first schedule");
+            String title=scanner.nextLine();
+            System.out.println("title:"+title);
+            Schedule newSchedule=new Schedule(user, title);
+            userSchedules.add(newSchedule);
+            System.out.println(userSchedules.get(0).getTitle());
+        }
+        return userSchedules;//Returns the schedule you want to edit
+    }
 
-        public static User makeUser(){
+    public static User makeUser() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Have you used this software before? Y/N");
         String returningUser=scanner.nextLine().toLowerCase();
@@ -359,8 +359,7 @@ public class Main {
                 }
             }
             System.out.println("Didnt find the user.  Making fake: ");
-            User user=new User("Doug", "CS", "AI", 2024);
-            return user;
+            return new User("Doug", "CS", "AI", 2024);
             //return null;//TODO change so it pulls the users data
 
         }else {//New user
@@ -377,5 +376,5 @@ public class Main {
             System.out.println("Welcome, " + user.getName());
             return user;
         }
-        }
+    }
 }

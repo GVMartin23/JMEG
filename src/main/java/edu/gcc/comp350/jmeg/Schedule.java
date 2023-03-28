@@ -1,6 +1,5 @@
 package edu.gcc.comp350.jmeg;
 
-import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,7 +8,6 @@ public class Schedule {
     private String title;
     private int credits;
     private ArrayList<Course> courses;
-    private ArrayList<Course> allCourses;
     private Calendar calendar;
 
     public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar, ArrayList<Course> allCourses){
@@ -19,7 +17,6 @@ public class Schedule {
         this.credits = credits;
         this.courses = courses;
         this.calendar = calendar;
-        this.allCourses=allCourses;
     }
 
     public Schedule(User user, String title) {
@@ -114,7 +111,7 @@ public class Schedule {
        System.out.println("Viewing schedule "+ title);
        if(courses==null||courses.isEmpty()){
            System.out.println("Schedule currently empty.  Add classes!");
-           courses=new ArrayList<Course>();
+           courses=new ArrayList<>();
        }else {
            System.out.println("Entire class list:");//Lists out all classes in schedule
            for (Course c : courses) {
@@ -135,13 +132,13 @@ public class Schedule {
 
    @Override
    public String toString(){
-       String schedules = String.format("%s's current schedule:\n--------------------------------\n", user);
+       StringBuilder schedules = new StringBuilder(String.format("%s's current schedule:\n--------------------------------\n", user));
        for (Course course: courses) {
-           schedules += course.toString();
+           schedules.append(course.toString());
            if(courses.indexOf(course) != courses.size() - 1)
-               schedules += "--------------------------------\n";
+               schedules.append("--------------------------------\n");
        }
-       return schedules;
+       return schedules.toString();
    }
 
 }
