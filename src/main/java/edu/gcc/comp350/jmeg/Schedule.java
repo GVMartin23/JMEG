@@ -79,7 +79,7 @@ public class Schedule {
     }
 
    public void searchCourses() {
-        Search search = new Search(this, user);
+        Search search = new Search(this);
         search.searchInteraction();
         scheduleInteract();
    }

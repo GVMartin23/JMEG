@@ -6,13 +6,10 @@ import java.util.Scanner;
 
 public class Search {
     private ArrayList<Filter> filters;
-    private ArrayList<Course> completeCourseList=Main.getCourses();
-    private User currentUser;
     private String inputData;
     private Schedule currentSchedule;
-    public Search(Schedule schedule, User user) {
+    public Search(Schedule schedule) {
         currentSchedule = schedule;
-        this.currentUser=user;
         filters = new ArrayList<>();
         inputData = "";
     }
@@ -52,7 +49,7 @@ public class Search {
                 if(ans.equals("Y")||ans.equals("y")){
                     System.out.println("Enter the name of the class you wish to add");
                     String classToAdd=scnr.nextLine();
-                    for(Course i:completeCourseList){
+                    for(Course i : Main.getCourses()){
                         if(i.getCrs_title().equals(classToAdd)){
                             currentSchedule.getCourses().add(i);
 
@@ -67,25 +64,6 @@ public class Search {
             System.out.println("If finished searching, type exit, else press enter: ");
             exit = scnr.nextLine().toUpperCase();
         }
-    }
-
-
-    /**
-     * USED FOR TESTING ONLY
-     * DELETE ONCE DONE
-     * @param args
-     */
-    public static void main(String[] args) {
-        Main.testCSV();
-        Scanner scnr = new Scanner(System.in);
-
-        //Search search = new Search(new Schedule("TEST", 0), );
-
-        System.out.println("Enter Code of Class");
-        String input = scnr.nextLine();
-
-        //search.searchCourseName(input);
-      //  search.searchCourseCode(input);
     }
 
     /**
