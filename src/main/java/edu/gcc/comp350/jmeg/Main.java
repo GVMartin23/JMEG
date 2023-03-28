@@ -284,6 +284,9 @@ public class Main {
             sb.append(c.getCrs_code()).append(",");
         }
 
+        if (sb.length() == 0) {
+            return "";
+        }
         return sb.substring(0, sb.length() - 1) + "\n";
     }
 
@@ -304,11 +307,11 @@ public class Main {
         System.out.println("You selected "+userSelectedSchedule);
         Schedule currentSchedule=new Schedule(user, "empty schedule");
 
-            for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
-                if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
-                    currentSchedule = i;
-                }
+        for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
+            if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
+                currentSchedule = i;
             }
+        }
 
 
         currentSchedule.scheduleInteract();
@@ -333,10 +336,8 @@ public class Main {
             Scanner scanner=new Scanner(System.in);
             System.out.println("You have no schedules currently.  Type the title of your first schedule");
             String title=scanner.nextLine();
-            System.out.println("title:"+title);
             Schedule newSchedule=new Schedule(user, title);
             userSchedules.add(newSchedule);
-            System.out.println(userSchedules.get(0).getTitle());
         }
         return userSchedules;//Returns the schedule you want to edit
     }
@@ -371,7 +372,7 @@ public class Main {
             String minor = scanner.nextLine();
             System.out.println("Enter your year");
             int year = scanner.nextInt();
-            scanner.nextLine();
+            System.out.println("\n");
             User user = new User(userName, major, minor, year);//Create a new user
             System.out.println("Welcome, " + user.getName());
             return user;

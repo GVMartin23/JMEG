@@ -293,13 +293,12 @@ public class Course {
 
     public static String formatTimeOfDay(LocalTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ha");
-        String formattedTime = time.format(formatter);
-        return formattedTime;
+        return time.format(formatter);
     }
 
     public static String convertStringToTime(String timeString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTime localTime = LocalTime.parse(timeString, formatter);
+        LocalTime localTime = LocalTime.parse(timeString.substring(11), formatter);
         return formatTimeOfDay(localTime);
     }
 
@@ -319,5 +318,21 @@ public class Course {
         crs += String.format("\t\tCapacity: %d/%d\n", crs_enrollment, crs_capacity);
         crs += String.format("\t\tCredit Hours: %d\n", credit_hrs);
         return crs;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Course)) {
+            return false;
+        }
+        Course course = (Course) obj;
+
+        if (this == obj) {
+            return true;
+        }
+
+        return this.crs_code.equals(course.crs_code)
+                && this.trm_code == course.trm_code
+                && this.yr_code == course.yr_code;
     }
 }

@@ -100,10 +100,8 @@ public class Schedule {
    }
     /**
      * UI method for working in schedule
-     * Everything in here can change
-     * Some of stuff in userSheduleSelect in Main moved here
-     * Main use is giving way to choose between searching courses
-     * and Quitting program
+     * Used to navigate different functions that can be taken in schedule
+     * Current functions are Searching or Quiting program
      */
    public void scheduleInteract() {
        Scanner scnr = new Scanner(System.in);
@@ -141,4 +139,20 @@ public class Schedule {
        return schedules.toString();
    }
 
+    @Override
+    public boolean equals(Object obj) {
+       if (!(obj instanceof Schedule)) {
+           return false;
+       }
+
+       Schedule schedule = (Schedule) obj;
+
+       if (this == schedule) {
+           return true;
+       }
+
+
+        return this.title.equals(schedule.title)
+                && this.user.equals(schedule.user);
+    }
 }
