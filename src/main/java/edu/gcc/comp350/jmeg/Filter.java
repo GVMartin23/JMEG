@@ -18,6 +18,8 @@ public class Filter {
 
     public Filter(){
 
+    }
+
 
     public FilterTypes getFilterType() {
         return filterType;
