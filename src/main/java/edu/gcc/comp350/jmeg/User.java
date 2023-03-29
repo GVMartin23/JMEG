@@ -44,4 +44,23 @@ public class User {
     public void setYear(int year) {
         this.year = year;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof User)) {
+            return false;
+        }
+
+        User user = (User) obj;
+
+        if (this == user) {
+            return true;
+        }
+
+        return this.name.equals(user.name)
+                && this.major.equals(user.major)
+                && this.minor.equals(user.minor)
+                && this.year == user.year;
+    }
 }

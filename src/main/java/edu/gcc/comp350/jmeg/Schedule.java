@@ -1,6 +1,5 @@
 package edu.gcc.comp350.jmeg;
 
-import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,7 +10,7 @@ public class Schedule {
     private ArrayList<Course> courses;
     private Calendar calendar;
 
-    public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar){
+    public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar, ArrayList<Course> allCourses){
         //Might not need
         this.user = user;
         this.title = title;
@@ -80,7 +79,6 @@ public class Schedule {
         Search search = new Search(this);
         search.searchInteraction();
         scheduleInteract();
-        //TODO: search csv data for courses
    }
 
    private void removeCourse(Course course){
@@ -100,32 +98,72 @@ public class Schedule {
    private void getDetails(Course course){
         //maybe should be in Course class?
    }
-
     /**
      * UI method for working in schedule
-     * Everything in here can change
-     * Some of stuff in userSheduleSelect in Main moved here
-     * Main use is giving way to choose between searching courses
-     * and Quitting program
+     * Used to navigate different functions that can be taken in schedule
+     * Current functions are Searching or Quiting program
      */
    public void scheduleInteract() {
        Scanner scnr = new Scanner(System.in);
 
        System.out.println("Viewing schedule "+ title);
-       System.out.println("Entire class list:");//Lists out all the possible classes from master list
-       for(Course c: courses){
-           System.out.print(" "+c.getCrs_title());
-       }
-       System.out.println("\nWhat would you like to do?\nSearch     Quit");
-
-       String action = scnr.nextLine();
-       if (action.equals("Search")) {
-           searchCourses();
-       } else if (action.equals("Quit")) {
-           return;
+       if(courses==null||courses.isEmpty()){
+           System.out.println("Schedule currently empty.  Add classes!");
+           courses=new ArrayList<>();
+       }else {
+           System.out.println("Entire class list:");//Lists out all classes in schedule
+           for (Course c : courses) {
+               System.out.print(" " + c.getCrs_title());
+           }
        }
 
-       System.out.println("Incorrect input");
+       while (true) {
+           System.out.println("Entire class list:");//Lists out all classes in schedule
+           for (Course c : courses) {
+               System.out.print(" " + c.getCrs_title());
+           }
+
+           System.out.println("\nWhat would you like to do?\nSearch     Quit");
+           String action = scnr.nextLine();
+
+           if (action.equals("Search")) {
+               searchCourses();
+
+           } else if (action.equals("Quit")) {
+               return;
+           } else {
+               System.out.println("Incorrect input");
+           }
+       }
+
+
    }
 
+   @Override
+   public String toString(){
+       StringBuilder schedules = new StringBuilder(String.format("%s's current schedule:\n--------------------------------\n", user));
+       for (Course course: courses) {
+           schedules.append(course.toString());
+           if(courses.indexOf(course) != courses.size() - 1)
+               schedules.append("--------------------------------\n");
+       }
+       return schedules.toString();
+   }
+
+    @Override
+    public boolean equals(Object obj) {
+       if (!(obj instanceof Schedule)) {
+           return false;
+       }
+
+       Schedule schedule = (Schedule) obj;
+
+       if (this == schedule) {
+           return true;
+       }
+
+
+        return this.title.equals(schedule.title)
+                && this.user.equals(schedule.user);
+    }
 }

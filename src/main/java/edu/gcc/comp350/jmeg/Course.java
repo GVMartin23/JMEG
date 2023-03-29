@@ -1,7 +1,7 @@
 package edu.gcc.comp350.jmeg;
 
-import java.util.ArrayList;
-
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Course {
 
@@ -33,9 +33,6 @@ public class Course {
     String preferred_name;
     String comment_txt;
 
-public Course(String title){
-    this.crs_title=title;
-}
     public Course(int yr_code, int trm_code, String crs_code, String crs_comp1, String crs_comp2,
                   String crs_comp3, String crs_title, int credit_hrs, String x_listed_parnt_crs,
                   String acad_credit_varies, String acad_credit_label, int crs_capacity, int max_capacity,
@@ -294,15 +291,48 @@ public Course(String title){
         this.comment_txt = comment_txt;
     }
 
+    public static String formatTimeOfDay(LocalTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ha");
+        return time.format(formatter);
+    }
 
+    public static String convertStringToTime(String timeString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime localTime = LocalTime.parse(timeString.substring(11), formatter);
+        return formatTimeOfDay(localTime);
+    }
 
-//    @Override
-//    public String toString(){
-//        String crs = "";
-//        crs += name + "\n";
-//        crs += "--------------------------------\n";
-//        crs += "Course and Section Code: " + courseCode + sectionCode;
-//
-//        return null;
-//    }
+    @Override
+    public String toString(){
+        String crs = "";
+        crs += crs_title + "\n";
+        crs += "--------------------------------\n";
+        crs += "Course and Section Code: " + crs_comp1 + " " + crs_comp2 + " " + crs_comp3 + "\t\t";
+
+        String st_time = convertStringToTime(begin_tim);
+        String end_time = convertStringToTime(end_tim);
+
+        String meets = String.format("Meets: %s/%s/%s/%s/%s\t\tFrom: %s to %s\n", monday_cde, tuesday_cde, wednesday_cde, thursday_cde, friday_cde, st_time, end_time);
+        crs += meets;
+        crs += "Professor: " + last_name + ", " + first_name;
+        crs += String.format("\t\tCapacity: %d/%d\n", crs_enrollment, crs_capacity);
+        crs += String.format("\t\tCredit Hours: %d\n", credit_hrs);
+        return crs;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Course)) {
+            return false;
+        }
+        Course course = (Course) obj;
+
+        if (this == obj) {
+            return true;
+        }
+
+        return this.crs_code.equals(course.crs_code)
+                && this.trm_code == course.trm_code
+                && this.yr_code == course.yr_code;
+    }
 }
