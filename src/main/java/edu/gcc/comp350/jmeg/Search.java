@@ -6,12 +6,10 @@ import java.util.stream.Collectors;
 
 public class Search {
     private ArrayList<Filter> filters;
-    private String inputData;
-    private Schedule currentSchedule;
+    private final Schedule currentSchedule;
     public Search(Schedule schedule) {
         currentSchedule = schedule;
         filters = new ArrayList<>();
-        inputData = "";
     }
 
     /**
@@ -275,10 +273,10 @@ public class Search {
     }
 
     private void viewDetails(Course c){
-        return;
+
     }
     private void returnToSchedule(){
-        return;
+
     }
 
     public ArrayList<Filter> getFilters() {
@@ -291,21 +289,4 @@ public class Search {
     public void setFilters(ArrayList<Filter> filters) {
         this.filters = filters;
     }
-
-    public String getInputData() {
-        return inputData;
-    }
-
-    public void setInputData(String inputData) {
-        this.inputData = inputData;
-    }
-
-    public Schedule getCurrentSchedule() {
-        return currentSchedule;
-    }
-
-    public void setCurrentSchedule(Schedule currentSchedule) {
-        this.currentSchedule = currentSchedule;
-    }
-
 }

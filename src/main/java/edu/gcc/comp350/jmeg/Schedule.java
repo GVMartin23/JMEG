@@ -116,16 +116,27 @@ public class Schedule {
                System.out.print(" " + c.getCrs_title());
            }
        }
-       System.out.println("\nWhat would you like to do?\nSearch     Quit");
 
-       String action = scnr.nextLine();
-       if (action.equals("Search")) {
-           searchCourses();
-       } else if (action.equals("Quit")){
-           return;
+       while (true) {
+           System.out.println("Entire class list:");//Lists out all classes in schedule
+           for (Course c : courses) {
+               System.out.print(" " + c.getCrs_title());
+           }
+
+           System.out.println("\nWhat would you like to do?\nSearch     Quit");
+           String action = scnr.nextLine();
+
+           if (action.equals("Search")) {
+               searchCourses();
+
+           } else if (action.equals("Quit")) {
+               return;
+           } else {
+               System.out.println("Incorrect input");
+           }
        }
 
-       System.out.println("Incorrect input");
+
    }
 
    @Override

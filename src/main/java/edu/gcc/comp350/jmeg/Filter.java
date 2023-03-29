@@ -1,7 +1,5 @@
 package edu.gcc.comp350.jmeg;
 
-import java.util.ArrayList;
-
 public class Filter {
     enum FilterTypes {
         YEAR, TERM,
@@ -15,7 +13,6 @@ public class Filter {
         this.filterName = filterName;
         this.filterType = FilterTypes.valueOf(filterType.toUpperCase());
     }
-
 
 
     public FilterTypes getFilterType() {
@@ -53,6 +50,6 @@ public class Filter {
 
         Filter filter = (Filter) obj;
 
-        return filter.filterName.equals(this.filterName) && filter.filterType == this.filterType;
+        return filter.filterType == this.filterType;
     }
 }
