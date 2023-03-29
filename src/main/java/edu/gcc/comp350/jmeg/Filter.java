@@ -1,14 +1,26 @@
 package edu.gcc.comp350.jmeg;
 
-import java.util.ArrayList;
-
 public class Filter {
+    enum FilterTypes {
+        YEAR, TERM,
+    }
+
+    private FilterTypes filterType;
     private boolean active;
     private String filterName;
-    private ArrayList<String> filterValues;
 
-    public void Filter(){
+    public Filter(String filterType, String filterName){
+        this.filterName = filterName;
+        this.filterType = FilterTypes.valueOf(filterType.toUpperCase());
+    }
 
+
+    public FilterTypes getFilterType() {
+        return filterType;
+    }
+
+    public void setFilterType(FilterTypes filterType) {
+        this.filterType = filterType;
     }
 
     public boolean isActive() {
@@ -27,11 +39,17 @@ public class Filter {
         this.filterName = filterName;
     }
 
-    public ArrayList<String> getFilterValues() {
-        return filterValues;
-    }
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Filter)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
 
-    public void setFilterValues(ArrayList<String> filterValues) {
-        this.filterValues = filterValues;
+        Filter filter = (Filter) obj;
+
+        return filter.filterType == this.filterType;
     }
 }
