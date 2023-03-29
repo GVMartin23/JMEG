@@ -1,22 +1,28 @@
 package edu.gcc.comp350.jmeg;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SearchTest {
     static Search search;
+    private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     @BeforeAll
     static void setup() {
-        Schedule schedule = new Schedule("TESTING", 0);
         Main.testCSV();
+        System.setOut(new PrintStream(outContent));
+    }
+
+    @BeforeEach
+    void prelim() {
+        Schedule schedule = new Schedule("TESTING", 0);
         search = new Search(schedule);
     }
 
@@ -31,28 +37,38 @@ class SearchTest {
 
     @Test
     void searchCourseName() {
-        ArrayList<Course> courses = search.search("NAME", "COST ACCOUNTING", Main.getCourses());
+        ArrayList<Course> courses = search.search("NAME", "COMP", Main.getCourses());
 
-        assertEquals(courses.get(0).getCrs_title(), "COST ACCOUNTING");
+        assertEquals(courses.get(0).getCrs_title(), "COMP PROGRAMMING I");
+        assertEquals(courses.get(courses.size()-1).getCrs_title(), "COMPUTATION METHODS/PHYS");
     }
 
     @Test
     void searchCourseCode() {
-        HashSet<String> courseCodes = new HashSet<>();
+        ArrayList<Course> courses = search.search("CODE", "201", Main.getCourses());
 
-        for (Course c : search.search("CODE", "INBS", Main.getCourses())) {
-            courseCodes.add(c.getCrs_comp1());
-        }
-
-
-
-        assertEquals(1, courseCodes.size());
+        assertEquals(courses.size(), courses.stream().filter(c -> c.crs_code.contains("201")).count());
+        assertEquals("PRINCIPLES OF ACCOUNTING I", courses.get(0).getCrs_title());
+        assertEquals("LABORATORY", courses.get(courses.size()-1).getCrs_title());
     }
 
     @Test
     void searchCourseDayMonday() {
         boolean onMonday = true;
-        for (Course c : search.search("DAY", "M", Main.getCourses())) {
+        ArrayList<Course> courses = search.search("DAY", "M", Main.getCourses());
+        for (Course c : courses) {
+            if (!c.getMonday_cde().equals("M")) {
+                onMonday = false;
+                break;
+            }
+        }
+
+        assertTrue(onMonday);
+        assertEquals("PRINCIPLES OF ACCOUNTING I", courses.get(0).getCrs_title());
+        assertEquals("SCREENWRITING", courses.get(courses.size()-1).getCrs_title());
+
+        courses = search.search("DAY", "MON", Main.getCourses());
+        for (Course c : courses) {
             if (!c.getMonday_cde().equals("M")) {
                 onMonday = false;
                 break;
@@ -61,18 +77,8 @@ class SearchTest {
 
         assertTrue(onMonday);
 
-        onMonday = true;
-        for (Course c : search.search("DAY", "MON", Main.getCourses())) {
-            if (!c.getMonday_cde().equals("M")) {
-                onMonday = false;
-                break;
-            }
-        }
-
-        assertTrue(onMonday);
-
-        onMonday = true;
-        for (Course c : search.search("DAY", "MONDAY", Main.getCourses())) {
+        courses = search.search("DAY", "MONDAY", Main.getCourses());
+        for (Course c : courses) {
             if (!c.getMonday_cde().equals("M")) {
                 onMonday = false;
                 break;
@@ -84,24 +90,36 @@ class SearchTest {
 
     @Test
     void searchCourseTime() {
-        ArrayList<String> courseTimes = new ArrayList<>();
+        ArrayList<Course> courses = search.search("TIME", "12", Main.getCourses());
 
-        for (Course c : search.search("TIME", "8", Main.getCourses())) {
-            courseTimes.add(c.getBegin_tim());
+        boolean isTime = true;
+
+        for (Course c : courses) {
+            isTime = c.getBegin_tim().contains("12");
         }
 
-        System.out.println(courseTimes);
+        assertTrue(isTime);
 
-        assertEquals(1, courseTimes.size());
+        assertEquals("PRINCIPLES OF ACCOUNTING I", courses.get(0).getCrs_title());
+        assertEquals("FOUNDATIONS OF ACADEMIC DISCOURSE", courses.get(courses.size()-1).getCrs_title());
     }
+
+    @Test
+    void searchBadIdentifier() {
+        ArrayList<Course> courses = search.search("TEST", "", Main.getCourses());
+
+        assertNull(courses);
+    }
+
+
 
     @Test
     void filterCoursesYear() {
         Filter filter = new Filter("YEAR", "2018");
 
-        search.filterCourses(filter, Main.getCourses());
+        ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
-        assertEquals(1506, Main.getCourses().size());
+        assertEquals(courses.size(), courses.stream().filter(c -> c.yr_code == 2018).count());
 
     }
 
@@ -111,7 +129,18 @@ class SearchTest {
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
-        assertEquals(765, courses.size());
+        assertEquals(courses.size(), courses.stream().filter(c -> c.trm_code == 10).count());
+    }
 
+    @Test
+    void filterCoursesTwice() {
+        Filter filter = new Filter("YEAR", "2018");
+        Filter filter2 = new Filter("YEAR", "2019");
+
+        ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
+        courses = search.filterCourses(filter2, courses);
+
+        assertEquals(courses.size(), courses.stream().filter(c -> c.yr_code == 2018).count());
+        assertEquals("Already filtered by year", outContent.toString().trim());
     }
 }
