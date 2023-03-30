@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 
 public class Search {
-    private IO io;
+    private final IO io;
     private ArrayList<Filter> filters;
     private final Schedule currentSchedule;
     public Search(Schedule schedule) {
@@ -23,7 +23,7 @@ public class Search {
      * then a return will send it back to that method
      */
     public void searchInteraction() {
-        Scanner scnr = io.getScanner()
+        Scanner scnr = io.getScanner();
         ArrayList<Course> results = null;
 
         String exit = "";
@@ -145,7 +145,7 @@ public class Search {
     private void viewDetailsInteract(ArrayList<Course> courseList) {
         //TODO: allow viewDetails to interact with the search list
         //TODO: Get User input as to what course they wish to view details of, then call viewDetails with that course
-        Scanner scan = new Scanner(System.in);
+        Scanner scan = io.getScanner();
         System.out.println("Which course would you like to view details on?");
         System.out.println("Choose one of the following:");
         for(Course c : courseList) {
@@ -303,49 +303,8 @@ public class Search {
      * capacity, credits
      * @param c - course searched for
      */
-    private void viewDetails(Course c){
+    private void viewDetails(Course c) {
         System.out.println(c);
-
-//        String courseTitle = c.getCrs_title();
-//        String professor = c.getFirst_name().concat(c.getLast_name());
-//        int year = c.getYr_code();
-//        int credits = c.getCredit_hrs();
-//        int seatsLeft = c.getCrs_capacity() - c.getCrs_enrollment();
-//        String monday = c.getMonday_cde();
-//        String tuesday = c.getTuesday_cde();
-//        String wednesday = c.getWednesday_cde();
-//        String thursday = c.getThursday_cde();
-//        String friday = c.getFriday_cde();
-//        String beginTime = c.getBegin_tim();
-//        String endTime = c.getEnd_tim();
-//
-//
-//        System.out.println("Course Details");
-//        System.out.println("Course Title" + courseTitle);
-//        System.out.println("Professor" + professor);
-//        System.out.println("Year:" + year);
-//        System.out.println(credits + "credits");
-//        System.out.println(seatsLeft + "seats /"+ c.getCrs_capacity());
-//        if(monday != null){
-//            System.out.println(monday);
-//        }
-//        if(tuesday != null){
-//            System.out.println(tuesday);
-//        }
-//        if(wednesday != null){
-//            System.out.println(wednesday);
-//        }
-//        if(thursday != null){
-//            System.out.println(thursday);
-//        }
-//        if(friday != null){
-//            System.out.println(friday);
-//        }
-//        System.out.println(beginTime + "-" + endTime);
-
-    }
-    private void returnToSchedule(){
-
     }
 
     public ArrayList<Filter> getFilters() {
