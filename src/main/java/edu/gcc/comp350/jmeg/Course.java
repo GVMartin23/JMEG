@@ -65,6 +65,10 @@ public class Course {
 
     }
 
+    public TimeSlot getTimeSlot() {
+        return timeSlot;
+    }
+
     public int getYr_code() {
         return yr_code;
     }
