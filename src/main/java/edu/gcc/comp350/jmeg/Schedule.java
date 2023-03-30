@@ -1,6 +1,7 @@
 package edu.gcc.comp350.jmeg;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Schedule {
@@ -23,7 +24,11 @@ public class Schedule {
         this.user = user;
         this.title = title;
     }
-
+public Schedule(User user, String title, ArrayList<Course> courses){
+        this.user=user;
+        this.title=title;
+        this.courses=courses;
+}
     /**
      * Constructor for Schedule
      * Used in loading a schedule
@@ -129,14 +134,17 @@ public class Schedule {
                }
            }
 
-           System.out.println("\nWhat would you like to do?\nSearch     Quit");
-           String action = scnr.nextLine();
+           System.out.println("\nWhat would you like to do?\nSearch     View Calendar   Quit");
+           String action = scnr.nextLine().toUpperCase(Locale.ROOT);
 
-           if (action.equals("Search")) {
+           if (action.equals("SEARCH")) {
                searchCourses();
 
-           } else if (action.equals("Quit")) {
+           } else if (action.equals("QUIT")) {
                return;
+           }else if(action.equals("VIEW CALENDAR")){
+               Calendar c=new Calendar(this);
+               System.out.println(c.showCalendar(this));
            } else {
                System.out.println("Incorrect input");
            }
