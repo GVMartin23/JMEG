@@ -76,7 +76,7 @@ timeMinusAmPM=time.replace("AM", "");
             }
             string+="\n";
         }
-        System.out.println(string);
+       // System.out.println(string);
         return string;
     }
     public Schedule getCurrentSchedule() {
