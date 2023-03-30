@@ -7,6 +7,11 @@ public class Calendar {
 this.currentSchedule=currentSchedule;
     }
 
+    /**
+     *
+     * @param schedule
+     * @return string visualizing the calendar. Use sysout(showCalendar) to print it out.
+     */
     public String showCalendar(Schedule schedule){
         String[][] calendarArray=new String[5][10];
         calendarArray[0][0]="Monday\t\t";
@@ -20,13 +25,11 @@ this.currentSchedule=currentSchedule;
             time = Course.convertStringToTime(time);
             String timeMinusAmPM="";
             if(time.contains("AM")) {
-timeMinusAmPM=time.replace("AM", "");
+            timeMinusAmPM=time.replace("AM", "");
             }else if(time.contains("PM")) {
                 timeMinusAmPM = time.replace("PM", "");
             }
-
             int timeInt=Integer.parseInt(timeMinusAmPM);
-           // System.out.println("time: "+time.charAt(0);
             String courseName = currentSchedule.getCourses().get(k).getCrs_title();
             if (currentSchedule.getCourses().get(k).getMonday_cde().equals("M")) {//TODO change k
               if(timeInt>4) {
@@ -76,7 +79,6 @@ timeMinusAmPM=time.replace("AM", "");
             }
             string+="\n";
         }
-       // System.out.println(string);
         return string;
     }
     public Schedule getCurrentSchedule() {

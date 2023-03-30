@@ -18,20 +18,18 @@ class CalendarTest {
         Course c2= courses.get(2);//176);// Course("Course2", "12/12/2000 12:00:00", "12/12/2000 02:00:00");
         Course c3=courses.get(3);//12);
         Course c4=courses.get(78);
-Course c5=courses.get(200);
-       //
-        // System.out.prinln(c3.getCrs_title());
+        Course c5=courses.get(200);
+
         ArrayList<Course> fakeCourseList=new ArrayList<Course>();
         fakeCourseList.add(c);
         fakeCourseList.add(c2);
         fakeCourseList.add(c3);
         fakeCourseList.add(c4);
         fakeCourseList.add(c5);
-
-        Schedule s=new Schedule(u, "Fake schedule", fakeCourseList);
-
+        Schedule s=new Schedule(u,"Test Calendar", fakeCourseList);
         Calendar cal=new Calendar(s);
-        cal.showCalendar(s);
+        System.out.println( cal.showCalendar(s));
+
     }
 
 }

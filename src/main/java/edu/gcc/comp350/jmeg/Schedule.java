@@ -23,7 +23,11 @@ public class Schedule {
         this.user = user;
         this.title = title;
     }
-
+public Schedule(User user, String title, ArrayList<Course> courses){
+        this.user=user;
+        this.title=title;
+        this.courses=courses;
+}
     /**
      * Constructor for Schedule
      * Used in loading a schedule
