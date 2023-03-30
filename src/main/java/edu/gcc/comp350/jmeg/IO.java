@@ -206,7 +206,7 @@ public class IO {
      * @param filename name of file to check
      * @return true if filename is same as data files
      */
-    private static boolean isDataCSV(String filename) {
+    public boolean isDataCSV(String filename) {
         return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv");
     }
 

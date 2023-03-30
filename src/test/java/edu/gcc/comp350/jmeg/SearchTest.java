@@ -16,7 +16,7 @@ class SearchTest {
 
     @BeforeAll
     static void setup() {
-        Main.testCSV();
+        IO.getInstance().importCSVData();
         System.setOut(new PrintStream(outContent));
     }
 
