@@ -55,39 +55,30 @@ public class IO {
                     str[7] = "0";
                 }
                 int credit_hrs = Integer.parseInt(str[7]);
-                String x_listed_parnt_crs = str[8];
-                String acad_credit_varies = str[9];
-                String acad_credit_label = str[10];
-                if(str[11].isEmpty()){
-                    str[11] = "0";
+                if(str[8].isEmpty() || str[8].equals(" ")){
+                    str[8] = "0";
                 }
-                int crs_capacity = Integer.parseInt(str[11]);
-                if(str[12].isEmpty()){
-                    str[12] = "0";
+                int crs_capacity = Integer.parseInt(str[8]);
+                if(str[9].isEmpty()){
+                    str[9] = "0";
                 }
-                int max_capacity = Integer.parseInt(str[12]);
-                if(str[13].isEmpty()){
-                    str[13] = "0";
-                }
-                int crs_enrollment = Integer.parseInt(str[13]);
-                String bldg_cde = str[14];
-                String room_cde = str[15];
-                String monday_cde = str[16];
-                String tuesday_cde = str[17];
-                String wednesday_cde = str[18];
-                String thursday_cde = str[19];
-                String friday_cde = str[20];
-                String begin_tim = str[21];
-                String end_tim = str[22];
-                String last_name = str[23];
-                String first_name = str[24];
+                int crs_enrollment = Integer.parseInt(str[9]);
+                String monday_cde = str[10];
+                String tuesday_cde = str[11];
+                String wednesday_cde = str[12];
+                String thursday_cde = str[13];
+                String friday_cde = str[14];
+                String begin_tim = str[15];
+                String end_tim = str[16];
+                String last_name = str[17];
+                String first_name = str[18];
                 String preferred_name = " ";
-                if(str.length == 26){
-                    preferred_name = str[25];
+                if(str.length == 20){
+                    preferred_name = str[19];
                 }
                 String comment_txt = " ";
-                if(str.length == 27){
-                    comment_txt = str[26];
+                if(str.length == 21){
+                    comment_txt = str[20];
 
                 }
 
@@ -95,10 +86,9 @@ public class IO {
 
                 Course course = new Course(yr_code, trm_code, crs_code,
                         crs_comp1, crs_comp2, crs_comp3, crs_title,
-                        credit_hrs, x_listed_parnt_crs, acad_credit_varies,
-                        acad_credit_label, crs_capacity, max_capacity, crs_enrollment,
-                        bldg_cde, room_cde, monday_cde, tuesday_cde, wednesday_cde,
-                        thursday_cde, friday_cde, begin_tim, end_tim, last_name, first_name,
+                        credit_hrs, crs_capacity, crs_enrollment, monday_cde,
+                        tuesday_cde, wednesday_cde, thursday_cde, friday_cde,
+                        begin_tim, end_tim, last_name, first_name,
                         preferred_name, comment_txt);
                 courseList.add(course);
 
@@ -115,7 +105,7 @@ public class IO {
      * @throws IOException if reading file fails
      */
     private ArrayList<String[]> loadCSV() throws IOException {
-        String csvFile = "2018-2019.csv";
+        String csvFile = "UnifiedCSV.csv";
         ArrayList<String[]> courses = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))){
             String line;
@@ -207,7 +197,7 @@ public class IO {
      * @return true if filename is same as data files
      */
     public boolean isDataCSV(String filename) {
-        return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv");
+        return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv") || filename.contentEquals("UnifiedCSV.csv");
     }
 
     /**

@@ -5,40 +5,35 @@ import java.time.format.DateTimeFormatter;
 
 public class Course {
 
-    int yr_code;
-    int trm_code;
-    String crs_code;
-    String crs_comp1;
-    String crs_comp2;
-    String crs_comp3;
-    String crs_title;
-    int credit_hrs;
-    String x_listed_parnt_crs;
-    String acad_credit_varies;
-    String acad_credit_label;
-    int crs_capacity;
-    int max_capacity;
-    int crs_enrollment;
-    String bldg_cde;
-    String room_cde;
-    String monday_cde;
-    String tuesday_cde;
-    String wednesday_cde;
-    String thursday_cde;
-    String friday_cde;
-    String begin_tim;
-    String end_tim;
-    String last_name;
-    String first_name;
-    String preferred_name;
-    String comment_txt;
+    private TimeSlot timeSlot;
+
+    private int yr_code;
+    private int trm_code;
+    private String crs_code;
+    private String crs_comp1;
+    private String crs_comp2;
+    private String crs_comp3;
+    private String crs_title;
+    private int credit_hrs;
+    private int crs_capacity;
+    private int crs_enrollment;
+    private String monday_cde;
+    private String tuesday_cde;
+    private String wednesday_cde;
+    private String thursday_cde;
+    private String friday_cde;
+    private String begin_tim;
+    private String end_tim;
+    private String last_name;
+    private String first_name;
+    private String preferred_name;
+    private String comment_txt;
 
     public Course(int yr_code, int trm_code, String crs_code, String crs_comp1, String crs_comp2,
-                  String crs_comp3, String crs_title, int credit_hrs, String x_listed_parnt_crs,
-                  String acad_credit_varies, String acad_credit_label, int crs_capacity, int max_capacity,
-                  int crs_enrollment, String bldg_cde, String room_cde, String monday_cde, String tuesday_cde,
-                  String wednesday_cde, String thursday_cde, String friday_cde, String begin_tim, String end_tim,
-                  String last_name, String first_name, String preferred_name, String comment_txt) {
+                  String crs_comp3, String crs_title, int credit_hrs, int crs_capacity, int crs_enrollment,
+                  String monday_cde, String tuesday_cde, String wednesday_cde, String thursday_cde,
+                  String friday_cde, String begin_tim, String end_tim, String last_name, String first_name,
+                  String preferred_name, String comment_txt) {
         this.yr_code = yr_code;
         this.trm_code = trm_code;
         this.crs_code = crs_code;
@@ -47,25 +42,20 @@ public class Course {
         this.crs_comp3 = crs_comp3;
         this.crs_title = crs_title;
         this.credit_hrs = credit_hrs;
-        this.x_listed_parnt_crs = x_listed_parnt_crs;
-        this.acad_credit_varies = acad_credit_varies;
-        this.acad_credit_label = acad_credit_label;
         this.crs_capacity = crs_capacity;
-        this.max_capacity = max_capacity;
         this.crs_enrollment = crs_enrollment;
-        this.bldg_cde = bldg_cde;
-        this.room_cde = room_cde;
         this.monday_cde = monday_cde;
         this.tuesday_cde = tuesday_cde;
         this.wednesday_cde = wednesday_cde;
         this.thursday_cde = thursday_cde;
         this.friday_cde = friday_cde;
-        this.begin_tim = begin_tim;
-        this.end_tim = end_tim;
+        this.begin_tim = convertStringToTime(begin_tim);
+        this.end_tim = convertStringToTime(end_tim);
         this.last_name = last_name;
         this.first_name = first_name;
         this.preferred_name = preferred_name;
         this.comment_txt = comment_txt;
+        timeSlot = new TimeSlot(this);
     }
 
     /**
@@ -73,6 +63,10 @@ public class Course {
      */
     public Course() {
 
+    }
+
+    public TimeSlot getTimeSlot() {
+        return timeSlot;
     }
 
     public int getYr_code() {
@@ -139,30 +133,6 @@ public class Course {
         this.credit_hrs = credit_hrs;
     }
 
-    public String getX_listed_parnt_crs() {
-        return x_listed_parnt_crs;
-    }
-
-    public void setX_listed_parnt_crs(String x_listed_parnt_crs) {
-        this.x_listed_parnt_crs = x_listed_parnt_crs;
-    }
-
-    public String getAcad_credit_varies() {
-        return acad_credit_varies;
-    }
-
-    public void setAcad_credit_varies(String acad_credit_varies) {
-        this.acad_credit_varies = acad_credit_varies;
-    }
-
-    public String getAcad_credit_label() {
-        return acad_credit_label;
-    }
-
-    public void setAcad_credit_label(String acad_credit_label) {
-        this.acad_credit_label = acad_credit_label;
-    }
-
     public int getCrs_capacity() {
         return crs_capacity;
     }
@@ -171,36 +141,12 @@ public class Course {
         this.crs_capacity = crs_capacity;
     }
 
-    public int getMax_capacity() {
-        return max_capacity;
-    }
-
-    public void setMax_capacity(int max_capacity) {
-        this.max_capacity = max_capacity;
-    }
-
     public int getCrs_enrollment() {
         return crs_enrollment;
     }
 
     public void setCrs_enrollment(int crs_enrollment) {
         this.crs_enrollment = crs_enrollment;
-    }
-
-    public String getBldg_cde() {
-        return bldg_cde;
-    }
-
-    public void setBldg_cde(String bldg_cde) {
-        this.bldg_cde = bldg_cde;
-    }
-
-    public String getRoom_cde() {
-        return room_cde;
-    }
-
-    public void setRoom_cde(String room_cde) {
-        this.room_cde = room_cde;
     }
 
     public String getMonday_cde() {
@@ -297,8 +243,11 @@ public class Course {
     }
 
     public static String convertStringToTime(String timeString) {
+        if (timeString.length() == 7) {
+            timeString = "0" + timeString;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTime localTime = LocalTime.parse(timeString.substring(11), formatter);
+        LocalTime localTime = LocalTime.parse(timeString, formatter);
         return formatTimeOfDay(localTime);
     }
 
@@ -309,8 +258,8 @@ public class Course {
         crs += "--------------------------------\n";
         crs += "Course and Section Code: " + crs_comp1 + " " + crs_comp2 + " " + crs_comp3 + "\t\t";
 
-        String st_time = convertStringToTime(begin_tim);
-        String end_time = convertStringToTime(end_tim);
+        String st_time = begin_tim;
+        String end_time = end_tim;
 
         String meets = String.format("Meets: %s/%s/%s/%s/%s\t\tFrom: %s to %s\n", monday_cde, tuesday_cde, wednesday_cde, thursday_cde, friday_cde, st_time, end_time);
         crs += meets;

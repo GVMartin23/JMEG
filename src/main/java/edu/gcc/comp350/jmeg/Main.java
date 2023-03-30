@@ -44,7 +44,6 @@ public class Main {
     }
 
 
-
     /**
      *
      * @param user Specified User to narrow schedules to

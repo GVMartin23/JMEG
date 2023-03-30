@@ -8,11 +8,10 @@ this.currentSchedule=currentSchedule;
     }
 
     /**
-     *
-     * @param schedule
-     * @return string visualizing the calendar. Use sysout(showCalendar) to print it out.
+     * Converts schedule into Calendar based on what time classes are taken
+     * @return Formatted Schedule in String
      */
-    public String showCalendar(Schedule schedule){
+    public String showCalendar(){
         String[][] calendarArray=new String[5][10];
         calendarArray[0][0]="Monday\t\t";
         calendarArray[1][0]="Tuesday\t\t";
@@ -21,65 +20,48 @@ this.currentSchedule=currentSchedule;
         calendarArray[4][0]="Friday\t\t";
 
         for(int k=0; k<currentSchedule.getCourses().size(); k++) {
-            String time = currentSchedule.getCourses().get(k).getBegin_tim();
-            time = Course.convertStringToTime(time);
-            String timeMinusAmPM="";
-            if(time.contains("AM")) {
-            timeMinusAmPM=time.replace("AM", "");
-            }else if(time.contains("PM")) {
-                timeMinusAmPM = time.replace("PM", "");
-            }
-            int timeInt=Integer.parseInt(timeMinusAmPM);
+            Course course = currentSchedule.getCourses().get(k);
             String courseName = currentSchedule.getCourses().get(k).getCrs_title();
-            if (currentSchedule.getCourses().get(k).getMonday_cde().equals("M")) {//TODO change k
-              if(timeInt>4) {
-                  calendarArray[0][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
-              }else{
-                  calendarArray[0][timeInt+5]=time+" "+courseName;
-              }
-              }
-            if (currentSchedule.getCourses().get(k).getTuesday_cde().equals("T")) {
-                if(timeInt>4) {
-                    calendarArray[1][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
-                }else{
-                    calendarArray[1][timeInt+5]=time+" "+courseName;
-                }            }
-            if (currentSchedule.getCourses().get(k).getWednesday_cde().equals("W")) {
-                if(timeInt>4) {
-                    calendarArray[2][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
-                }else{
-                    calendarArray[2][timeInt+5]=time+" "+courseName;
-                }            }
-            if (currentSchedule.getCourses().get(k).getThursday_cde().equals("R")) {
-                if(timeInt>4) {
-                    calendarArray[3][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
-                }else{
-                    calendarArray[3][timeInt+5]=time+" "+courseName;
-                }            }
-            if (currentSchedule.getCourses().get(k).getFriday_cde().equals("F")) {
-                if(timeInt>4) {
-                    calendarArray[4][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
-                }else{
-                    calendarArray[4][timeInt+5]=time+" "+courseName;
-                }            }
+            TimeSlot slot = course.getTimeSlot();
+            int[] timeCodes = slot.beginTimeCodes;
+            if (slot.isOnMonday()) {//TODO change k
+                int timeCode = timeCodes[0] - 8;
+                calendarArray[0][timeCode]=course.getBegin_tim()+" "+courseName;
+            }
+            if (slot.isOnTuesday()) {
+                int timeCode = timeCodes[1] - 8;
+                calendarArray[1][timeCode]=course.getBegin_tim()+" "+courseName;
+            }
+            if (slot.isOnWednesday()) {
+                int timeCode = timeCodes[2] - 8;
+                calendarArray[2][timeCode]=course.getBegin_tim()+" "+courseName;
+            }
+            if (slot.isOnThursday()) {
+                int timeCode = timeCodes[3] - 8;
+                calendarArray[3][timeCode]=course.getBegin_tim()+" "+courseName;
+            }
+            if (slot.isOnFriday()) {
+                int timeCode = timeCodes[4] - 8;
+                calendarArray[4][timeCode]=course.getBegin_tim()+" "+courseName;
+            }
         }
 
-            String string="";
+            StringBuilder string= new StringBuilder();
         for(int i=0; i<5; i++){
             for(int j=0; j<10; j++){
                 if(calendarArray[i][j]==null){
                     if(j>4){
-                        string+=(j-4)+"|";
+                        string.append(j - 4).append("|");
                     }else{
-                        string+=(j+8)+"|";
+                        string.append(j + 8).append("|");
                     }
                 }else {
-                    string += calendarArray[i][j] + "|";//Building the calendar string
+                    string.append(calendarArray[i][j]).append("|");//Building the calendar string
                 }
             }
-            string+="\n";
+            string.append("\n");
         }
-        return string;
+        return string.toString();
     }
     public Schedule getCurrentSchedule() {
         return currentSchedule;
