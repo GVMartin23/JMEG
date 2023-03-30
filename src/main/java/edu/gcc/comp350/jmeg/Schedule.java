@@ -104,6 +104,7 @@ public class Schedule {
      * Current functions are Searching or Quiting program
      */
    public void scheduleInteract() {
+       boolean firstTime = true;
        Scanner scnr = IO.getInstance().getScanner();
 
        System.out.println("Viewing schedule "+ title);
@@ -118,9 +119,14 @@ public class Schedule {
        }
 
        while (true) {
-           System.out.println("Entire class list:");//Lists out all classes in schedule
-           for (Course c : courses) {
-               System.out.print(" " + c.getCrs_title());
+           if (firstTime) {
+               firstTime = false;
+           } else {
+               System.out.println("Entire class list:");
+               //Lists out all classes in schedule
+               for (Course c : courses) {
+                   System.out.print(" " + c.getCrs_title());
+               }
            }
 
            System.out.println("\nWhat would you like to do?\nSearch     Quit");
@@ -161,7 +167,6 @@ public class Schedule {
        if (this == schedule) {
            return true;
        }
-
 
         return this.title.equals(schedule.title)
                 && this.user.equals(schedule.user);

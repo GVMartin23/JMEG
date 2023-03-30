@@ -15,6 +15,7 @@ public class Filter {
     }
 
 
+
     public FilterTypes getFilterType() {
         return filterType;
     }
