@@ -8,11 +8,10 @@ this.currentSchedule=currentSchedule;
     }
 
     /**
-     *
-     * @param schedule
-     * @return string visualizing the calendar. Use sysout(showCalendar) to print it out.
+     * Converts schedule into Calendar based on what time classes are taken
+     * @return Formatted Schedule in String
      */
-    public String showCalendar(Schedule schedule){
+    public String showCalendar(){
         String[][] calendarArray=new String[5][10];
         calendarArray[0][0]="Monday\t\t";
         calendarArray[1][0]="Tuesday\t\t";

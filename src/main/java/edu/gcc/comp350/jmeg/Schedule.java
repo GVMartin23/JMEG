@@ -97,8 +97,13 @@ public Schedule(User user, String title, ArrayList<Course> courses){
         removeCourse(old_course);
         courses.add(new_course);
    }
-   private void showCalendar(ArrayList<Course> courses){
-        //TODO: once calendar is implemented
+
+    /**
+     * Creates a new calendar and prints out string created by calendar
+     */
+   private void showCalendar() {
+       Calendar c=new Calendar(this);
+       System.out.println(c.showCalendar());
    }
    private void getDetails(Course course){
         //maybe should be in Course class?
@@ -117,7 +122,8 @@ public Schedule(User user, String title, ArrayList<Course> courses){
            System.out.println("Schedule currently empty.  Add classes!");
            courses=new ArrayList<>();
        }else {
-           System.out.println("Entire class list:");//Lists out all classes in schedule
+           System.out.println("Entire class list:");
+           //Lists out all classes in schedule
            for (Course c : courses) {
                System.out.print(" " + c.getCrs_title());
            }
@@ -139,12 +145,10 @@ public Schedule(User user, String title, ArrayList<Course> courses){
 
            if (action.equals("SEARCH")) {
                searchCourses();
-
            } else if (action.equals("QUIT")) {
                return;
            }else if(action.equals("VIEW CALENDAR")){
-               Calendar c=new Calendar(this);
-               System.out.println(c.showCalendar(this));
+               showCalendar();
            } else {
                System.out.println("Incorrect input");
            }

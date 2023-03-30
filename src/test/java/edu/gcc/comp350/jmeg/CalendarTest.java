@@ -28,7 +28,7 @@ class CalendarTest {
         fakeCourseList.add(c5);
         Schedule s=new Schedule(u,"Test Calendar", fakeCourseList);
         Calendar cal=new Calendar(s);
-        System.out.println( cal.showCalendar(s));
+        System.out.println( cal.showCalendar());
 
     }
 
