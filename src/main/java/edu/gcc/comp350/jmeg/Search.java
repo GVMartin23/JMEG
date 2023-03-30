@@ -1,15 +1,18 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 
 public class Search {
+    private final IO io;
     private ArrayList<Filter> filters;
     private final Schedule currentSchedule;
     public Search(Schedule schedule) {
         currentSchedule = schedule;
         filters = new ArrayList<>();
+        io = IO.getInstance();
     }
 
     /**
@@ -20,7 +23,7 @@ public class Search {
      * then a return will send it back to that method
      */
     public void searchInteraction() {
-        Scanner scnr = new Scanner(System.in);
+        Scanner scnr = io.getScanner();
         ArrayList<Course> results = null;
 
         String exit = "";
@@ -55,13 +58,13 @@ public class Search {
     }
 
     private void addCourseInteract(ArrayList<Course> results) {
-        Scanner scnr = new Scanner(System.in);
+        Scanner scnr = io.getScanner();
 
         System.out.println("Would you like to add any classes to your schedule? Y/N");
         String ans=scnr.nextLine().toUpperCase();
         if(ans.equals("Y")){
             System.out.println("Enter the name of the class you wish to add");
-            String classToAdd=scnr.nextLine();
+            String classToAdd=scnr.nextLine().toUpperCase().strip();
             for(Course i : results){
                 if(i.getCrs_title().equals(classToAdd)){
                     currentSchedule.getCourses().add(i);
@@ -75,7 +78,7 @@ public class Search {
     }
 
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
-        Scanner scnr = new Scanner(System.in);
+        Scanner scnr = io.getScanner();
         while (true) {
             System.out.println(courseList);
             System.out.println("What would you like to do?");
@@ -101,7 +104,7 @@ public class Search {
 
 
     private ArrayList<Course> filterInteract(ArrayList<Course> courseList) {
-        Scanner scnr = new Scanner(System.in);
+        Scanner scnr = io.getScanner();
         System.out.println("Filter By?");
         System.out.println("Year    Term    None");
         String filterBy = scnr.nextLine().toUpperCase();
@@ -134,9 +137,30 @@ public class Search {
         return courseList;
     }
 
+    /**
+     * This method finds the course the user wants more details on and uses the viewDetails method
+     * to take that course and display more info on it
+     * @param courseList - list of courses in csv
+     */
     private void viewDetailsInteract(ArrayList<Course> courseList) {
         //TODO: allow viewDetails to interact with the search list
         //TODO: Get User input as to what course they wish to view details of, then call viewDetails with that course
+        Scanner scan = io.getScanner();
+        System.out.println("Which course would you like to view details on?");
+        System.out.println("Choose one of the following:");
+        for(Course c : courseList) {
+            System.out.println(c.getCrs_code());
+        }
+        String courseCode = scan.nextLine().toUpperCase().strip();
+
+        List<Course> courses = courseList.stream().filter(c -> c.getCrs_code().equals(courseCode)).collect(Collectors.toList());
+
+        if (courses.size() == 0) {
+            System.out.println("Error, invalid course code, please enter correct code.");
+            return;
+        }
+
+        viewDetails(courses.get(0));
     }
 
     /**
@@ -272,11 +296,15 @@ public class Search {
         return null;
     }
 
-    private void viewDetails(Course c){
-
-    }
-    private void returnToSchedule(){
-
+    /**
+     * This method takes in a course after the user searches for it and
+     * displays more information on the specified course.
+     * Displays the course title, code, begin and end time, day, professor,
+     * capacity, credits
+     * @param c - course searched for
+     */
+    private void viewDetails(Course c) {
+        System.out.println(c);
     }
 
     public ArrayList<Filter> getFilters() {
