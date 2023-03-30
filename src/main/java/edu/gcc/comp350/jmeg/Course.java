@@ -49,8 +49,8 @@ public class Course {
         this.wednesday_cde = wednesday_cde;
         this.thursday_cde = thursday_cde;
         this.friday_cde = friday_cde;
-        this.begin_tim = begin_tim;
-        this.end_tim = end_tim;
+        this.begin_tim = convertStringToTime(begin_tim);
+        this.end_tim = convertStringToTime(end_tim);
         this.last_name = last_name;
         this.first_name = first_name;
         this.preferred_name = preferred_name;
@@ -251,8 +251,8 @@ public class Course {
         crs += "--------------------------------\n";
         crs += "Course and Section Code: " + crs_comp1 + " " + crs_comp2 + " " + crs_comp3 + "\t\t";
 
-        String st_time = convertStringToTime(begin_tim);
-        String end_time = convertStringToTime(end_tim);
+        String st_time = begin_tim;
+        String end_time = end_tim;
 
         String meets = String.format("Meets: %s/%s/%s/%s/%s\t\tFrom: %s to %s\n", monday_cde, tuesday_cde, wednesday_cde, thursday_cde, friday_cde, st_time, end_time);
         crs += meets;
