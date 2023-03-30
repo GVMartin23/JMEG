@@ -82,8 +82,8 @@ public class TimeSlot {
         onThursday = c.getThursday_cde().equals("R");
         onFriday = c.getFriday_cde().equals("F");
         inPerson = onMonday || onTuesday || onWednesday || onThursday || onFriday;
-        beginTimeCodes = new int[5];
-        endTimeCodes = new int[5];
+        beginTimeCodes = new int[]{0, 0, 0, 0, 0};
+        endTimeCodes = new int[]{0, 0, 0, 0, 0};
         getTimeCodes(c);
     }
 
@@ -121,25 +121,21 @@ public class TimeSlot {
      * @return corresponding time
      */
     private int getCode(String timeString) {
-        String[] parseBeginTime = timeString.split(":");
+        int parsedInt = Integer.parseInt(timeString.substring(0,timeString.length()-2));
+        if (timeString.contains("PM")) {
+            return convertToMilitary(parsedInt);
+        }
 
-        //Convert Hour to minutes
-        int time = convertToMilitary(Integer.parseInt(parseBeginTime[0])) * 60;
-        //Add minutes to
-        time += Integer.parseInt(parseBeginTime[1]);
-
-        return time;
+        return parsedInt;
     }
 
     /**
-     * Converts hours 1,2,3,4,5,6,7 to military time
-     * Used so that they are comparable
+     * Converts hours to military time
      * @param num num to convert
-     * @return if num < 8 (earliest classes) and not 0 (assigned to classes with no times)
-     * Then add 12 to number, Else return number
+     * @return num + 12
      */
     private int convertToMilitary(int num) {
-        return num < 8 && num != 0 ? num + 12 : num;
+        return num + 12;
     }
 
 }

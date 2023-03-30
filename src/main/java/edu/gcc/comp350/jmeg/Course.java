@@ -239,6 +239,9 @@ public class Course {
     }
 
     public static String convertStringToTime(String timeString) {
+        if (timeString.length() == 7) {
+            timeString = "0" + timeString;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalTime localTime = LocalTime.parse(timeString, formatter);
         return formatTimeOfDay(localTime);
