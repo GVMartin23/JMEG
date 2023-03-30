@@ -51,16 +51,20 @@ public class Main {
      * @param userSchedules List of schedules to select from
      * Provides interface to select which schedule to edit
      */
-    public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules){
-        Scanner scanner= io.getScanner();
-        System.out.println("Your schedules are: ");//Print out all the schedules for the current user
-        for(Schedule i:userSchedules){
+    public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules) {
+        Scanner scanner = io.getScanner();
+
+            System.out.println("Your schedules are: ");//Print out all the schedules for the current user
+        for (Schedule i : userSchedules) {
             System.out.println(i.getTitle());
         }
         System.out.println("Which schedule do you wish to edit?");
-        String userSelectedSchedule=scanner.nextLine();
-        System.out.println("You selected "+userSelectedSchedule);
-        Schedule currentSchedule=new Schedule(user, "empty schedule");
+        String userSelectedSchedule = scanner.nextLine();
+        while(userSelectedSchedule.equals("")){
+            userSelectedSchedule=scanner.nextLine();
+        }
+        System.out.println("You selected " + userSelectedSchedule);
+        Schedule currentSchedule = new Schedule(user, "empty schedule");
 
         for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
             if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
@@ -91,6 +95,9 @@ public class Main {
             Scanner scanner = io.getScanner();
             System.out.println("You have no schedules currently.  Type the title of your first schedule");
             String title=scanner.nextLine();
+            while(title.equals("")){
+                title=scanner.nextLine();
+            }
             Schedule newSchedule=new Schedule(user, title);
             userSchedules.add(newSchedule);
         }
