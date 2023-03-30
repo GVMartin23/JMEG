@@ -5,11 +5,13 @@ import java.util.stream.Collectors;
 
 
 public class Search {
+    private IO io;
     private ArrayList<Filter> filters;
     private final Schedule currentSchedule;
     public Search(Schedule schedule) {
         currentSchedule = schedule;
         filters = new ArrayList<>();
+        io = IO.getInstance();
     }
 
     /**
@@ -20,7 +22,7 @@ public class Search {
      * then a return will send it back to that method
      */
     public void searchInteraction() {
-        Scanner scnr = new Scanner(System.in);
+        Scanner scnr = io.getScanner()
         ArrayList<Course> results = null;
 
         String exit = "";
@@ -55,7 +57,7 @@ public class Search {
     }
 
     private void addCourseInteract(ArrayList<Course> results) {
-        Scanner scnr = new Scanner(System.in);
+        Scanner scnr = io.getScanner();
 
         System.out.println("Would you like to add any classes to your schedule? Y/N");
         String ans=scnr.nextLine().toUpperCase();
@@ -75,7 +77,7 @@ public class Search {
     }
 
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
-        Scanner scnr = new Scanner(System.in);
+        Scanner scnr = io.getScanner();
         while (true) {
             System.out.println(courseList);
             System.out.println("What would you like to do?");
@@ -101,7 +103,7 @@ public class Search {
 
 
     private ArrayList<Course> filterInteract(ArrayList<Course> courseList) {
-        Scanner scnr = new Scanner(System.in);
+        Scanner scnr = io.getScanner();
         System.out.println("Filter By?");
         System.out.println("Year    Term    None");
         String filterBy = scnr.nextLine().toUpperCase();

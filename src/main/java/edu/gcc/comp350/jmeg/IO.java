@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class IO {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     private static IO io;
 

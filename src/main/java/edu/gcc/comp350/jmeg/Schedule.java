@@ -104,7 +104,7 @@ public class Schedule {
      * Current functions are Searching or Quiting program
      */
    public void scheduleInteract() {
-       Scanner scnr = new Scanner(System.in);
+       Scanner scnr = IO.getInstance().getScanner();
 
        System.out.println("Viewing schedule "+ title);
        if(courses==null||courses.isEmpty()){
