@@ -47,7 +47,7 @@ class SearchTest {
     void searchCourseCode() {
         ArrayList<Course> courses = search.search("CODE", "201", Main.getCourses());
 
-        assertEquals(courses.size(), courses.stream().filter(c -> c.crs_code.contains("201")).count());
+        assertEquals(courses.size(), courses.stream().filter(c -> c.getCrs_code().contains("201")).count());
         assertEquals("PRINCIPLES OF ACCOUNTING I", courses.get(0).getCrs_title());
         assertEquals("LABORATORY", courses.get(courses.size()-1).getCrs_title());
     }
@@ -119,7 +119,7 @@ class SearchTest {
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
-        assertEquals(courses.size(), courses.stream().filter(c -> c.yr_code == 2018).count());
+        assertEquals(courses.size(), courses.stream().filter(c -> c.getYr_code() == 2018).count());
 
     }
 
@@ -129,7 +129,7 @@ class SearchTest {
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
-        assertEquals(courses.size(), courses.stream().filter(c -> c.trm_code == 10).count());
+        assertEquals(courses.size(), courses.stream().filter(c -> c.getTrm_code() == 10).count());
     }
 
     @Test
@@ -140,7 +140,7 @@ class SearchTest {
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
         courses = search.filterCourses(filter2, courses);
 
-        assertEquals(courses.size(), courses.stream().filter(c -> c.yr_code == 2018).count());
+        assertEquals(courses.size(), courses.stream().filter(c -> c.getYr_code() == 2018).count());
         assertEquals("Already filtered by year", outContent.toString().trim());
     }
 }

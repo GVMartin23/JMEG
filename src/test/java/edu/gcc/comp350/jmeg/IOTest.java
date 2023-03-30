@@ -21,14 +21,8 @@ class IOTest {
     void importCSVData() {
         io.importCSVData();
 
-        HashSet<Integer> termCodes = new HashSet<>();
-
-        for (Course c : Main.getCourses()) {
-            termCodes.add(c.getTrm_code());
-        }
-
         //Only 2 termCodes currently, so should be 2
-        assertEquals(2, termCodes.size());
+        assertEquals(4525, Main.getCourses().size());
     }
 
     @Test
