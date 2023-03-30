@@ -82,7 +82,7 @@ public class Search {
         while (true) {
             System.out.println(courseList);
             System.out.println("What would you like to do?");
-            System.out.println("Add Course     Filter      View Details     Continue Searching");
+            System.out.println("Add Course     Filter    View Details     Continue Searching");
             String input = scnr.nextLine().strip().toUpperCase();
             if (input.equals("ADD COURSE")) {
                 addCourseInteract(courseList);
