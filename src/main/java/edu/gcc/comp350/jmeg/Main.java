@@ -116,7 +116,7 @@ public class Main {
             }
             System.out.println("Didnt find the user.  Making fake: ");
             return new User("Doug", "CS", "AI", 2024);
-            //return null;//TODO change so it pulls the users data
+            //return null;//TODO change so this doesn't make a fake user
 
         }else {//New user
             System.out.println("Welcome.  Enter your name");
