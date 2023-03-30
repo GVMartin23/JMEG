@@ -18,22 +18,47 @@ this.currentSchedule=currentSchedule;
         for(int k=0; k<currentSchedule.getCourses().size(); k++) {
             String time = currentSchedule.getCourses().get(k).getBegin_tim();
             time = Course.convertStringToTime(time);
+            String timeMinusAmPM="";
+            if(time.contains("AM")) {
+timeMinusAmPM=time.replace("AM", "");
+            }else if(time.contains("PM")) {
+                timeMinusAmPM = time.replace("PM", "");
+            }
+
+            int timeInt=Integer.parseInt(timeMinusAmPM);
+           // System.out.println("time: "+time.charAt(0);
             String courseName = currentSchedule.getCourses().get(k).getCrs_title();
             if (currentSchedule.getCourses().get(k).getMonday_cde().equals("M")) {//TODO change k
-                calendarArray[0][k+1] = time + " " + courseName;//[0][?] change from k+1
-            }
+              if(timeInt>4) {
+                  calendarArray[0][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
+              }else{
+                  calendarArray[0][timeInt+5]=time+" "+courseName;
+              }
+              }
             if (currentSchedule.getCourses().get(k).getTuesday_cde().equals("T")) {
-                calendarArray[1][k+1] = time + " " + courseName;
-            }
+                if(timeInt>4) {
+                    calendarArray[1][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
+                }else{
+                    calendarArray[1][timeInt+5]=time+" "+courseName;
+                }            }
             if (currentSchedule.getCourses().get(k).getWednesday_cde().equals("W")) {
-                calendarArray[2][k+1] = time + " " + courseName;
-            }
+                if(timeInt>4) {
+                    calendarArray[2][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
+                }else{
+                    calendarArray[2][timeInt+5]=time+" "+courseName;
+                }            }
             if (currentSchedule.getCourses().get(k).getThursday_cde().equals("R")) {
-                calendarArray[3][k+1] = time + " " + courseName;
-            }
+                if(timeInt>4) {
+                    calendarArray[3][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
+                }else{
+                    calendarArray[3][timeInt+5]=time+" "+courseName;
+                }            }
             if (currentSchedule.getCourses().get(k).getFriday_cde().equals("F")) {
-                calendarArray[4][k+1] = time + " " + courseName;
-            }
+                if(timeInt>4) {
+                    calendarArray[4][timeInt-8] = time + " " + courseName;//[0][?] change from k+1
+                }else{
+                    calendarArray[4][timeInt+5]=time+" "+courseName;
+                }            }
         }
 
             String string="";
