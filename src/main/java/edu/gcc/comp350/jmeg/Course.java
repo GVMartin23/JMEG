@@ -5,33 +5,35 @@ import java.time.format.DateTimeFormatter;
 
 public class Course {
 
-    int yr_code;
-    int trm_code;
-    String crs_code;
-    String crs_comp1;
-    String crs_comp2;
-    String crs_comp3;
-    String crs_title;
-    int credit_hrs;
-    String x_listed_parnt_crs;
-    String acad_credit_varies;
-    String acad_credit_label;
-    int crs_capacity;
-    int max_capacity;
-    int crs_enrollment;
-    String bldg_cde;
-    String room_cde;
-    String monday_cde;
-    String tuesday_cde;
-    String wednesday_cde;
-    String thursday_cde;
-    String friday_cde;
-    String begin_tim;
-    String end_tim;
-    String last_name;
-    String first_name;
-    String preferred_name;
-    String comment_txt;
+    private TimeSlot timeSlot;
+
+    private int yr_code;
+    private int trm_code;
+    private String crs_code;
+    private String crs_comp1;
+    private String crs_comp2;
+    private String crs_comp3;
+    private String crs_title;
+    private int credit_hrs;
+    private String x_listed_parnt_crs;
+    private String acad_credit_varies;
+    private String acad_credit_label;
+    private int crs_capacity;
+    private int max_capacity;
+    private int crs_enrollment;
+    private String bldg_cde;
+    private String room_cde;
+    private String monday_cde;
+    private String tuesday_cde;
+    private String wednesday_cde;
+    private String thursday_cde;
+    private String friday_cde;
+    private String begin_tim;
+    private String end_tim;
+    private String last_name;
+    private String first_name;
+    private String preferred_name;
+    private String comment_txt;
 
     public Course(int yr_code, int trm_code, String crs_code, String crs_comp1, String crs_comp2,
                   String crs_comp3, String crs_title, int credit_hrs, String x_listed_parnt_crs,
@@ -66,6 +68,7 @@ public class Course {
         this.first_name = first_name;
         this.preferred_name = preferred_name;
         this.comment_txt = comment_txt;
+        timeSlot = new TimeSlot(this);
     }
 
     /**
