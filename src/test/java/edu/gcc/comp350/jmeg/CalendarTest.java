@@ -10,7 +10,7 @@ class CalendarTest {
 
     @Test
     public void calendarTest(){
-        Main.testCSV();
+        IO.getInstance().importCSVData();
         ArrayList<Course> courses=Main.getCourses();
 
         User u=new User("Ethan", "CS", "AI", 2024);
