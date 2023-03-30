@@ -1,5 +1,6 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,7 @@ public class Search {
         String ans=scnr.nextLine().toUpperCase();
         if(ans.equals("Y")){
             System.out.println("Enter the name of the class you wish to add");
-            String classToAdd=scnr.nextLine();
+            String classToAdd=scnr.nextLine().toUpperCase().strip();
             for(Course i : results){
                 if(i.getCrs_title().equals(classToAdd)){
                     currentSchedule.getCourses().add(i);
@@ -148,11 +149,16 @@ public class Search {
         for(Course c : courseList) {
             System.out.println(c.getCrs_code());
         }
-        String course = scan.nextLine().toUpperCase();
+        String courseCode = scan.nextLine().toUpperCase().strip();
 
-        viewDetails(courseList.stream().filter(c -> c.getCrs_code().equals(course)).collect(Collectors.toList()).get(0));
+        List<Course> courses = courseList.stream().filter(c -> c.getCrs_code().equals(courseCode)).collect(Collectors.toList());
 
+        if (courses.size() == 0) {
+            System.out.println("Error, invalid course code, please enter correct code.");
+            return;
+        }
 
+        viewDetails(courses.get(0));
     }
 
     /**
@@ -297,7 +303,6 @@ public class Search {
      */
     private void viewDetails(Course c){
         System.out.println(c);
-        c.toString();
 
 //        String courseTitle = c.getCrs_title();
 //        String professor = c.getFirst_name().concat(c.getLast_name());
