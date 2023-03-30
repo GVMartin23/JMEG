@@ -240,7 +240,7 @@ public class Course {
 
     public static String convertStringToTime(String timeString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTime localTime = LocalTime.parse(timeString.substring(11), formatter);
+        LocalTime localTime = LocalTime.parse(timeString, formatter);
         return formatTimeOfDay(localTime);
     }
 

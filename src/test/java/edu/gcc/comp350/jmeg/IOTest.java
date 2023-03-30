@@ -22,7 +22,7 @@ class IOTest {
         io.importCSVData();
 
         //Only 2 termCodes currently, so should be 2
-        assertEquals(4525, Main.getCourses().size());
+        assertEquals(4526, Main.getCourses().size());
     }
 
     @Test

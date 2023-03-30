@@ -271,7 +271,7 @@ public class Search {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : searchList) {
-            if (course.getBegin_tim().substring(11).contains(input)) {
+            if (course.getBegin_tim().contains(input)) {
                 c.add(course);
             }
         }

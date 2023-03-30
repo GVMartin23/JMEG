@@ -39,8 +39,8 @@ class SearchTest {
     void searchCourseName() {
         ArrayList<Course> courses = search.search("NAME", "COMP", Main.getCourses());
 
-        assertEquals(courses.get(0).getCrs_title(), "COMP PROGRAMMING I");
-        assertEquals(courses.get(courses.size()-1).getCrs_title(), "COMPUTATION METHODS/PHYS");
+        assertEquals("COMP PROGRAMMING I", courses.get(0).getCrs_title());
+        assertEquals("COMPARATIVE POLITICS", courses.get(courses.size()-1).getCrs_title());
     }
 
     @Test
@@ -49,7 +49,7 @@ class SearchTest {
 
         assertEquals(courses.size(), courses.stream().filter(c -> c.getCrs_code().contains("201")).count());
         assertEquals("PRINCIPLES OF ACCOUNTING I", courses.get(0).getCrs_title());
-        assertEquals("LABORATORY", courses.get(courses.size()-1).getCrs_title());
+        assertEquals("INTERMEDIATE SPANISH I", courses.get(courses.size()-1).getCrs_title());
     }
 
     @Test

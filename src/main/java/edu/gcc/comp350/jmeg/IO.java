@@ -197,7 +197,7 @@ public class IO {
      * @return true if filename is same as data files
      */
     public boolean isDataCSV(String filename) {
-        return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv");
+        return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv") || filename.contentEquals("UnifiedCSV.csv");
     }
 
     /**
