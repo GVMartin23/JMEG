@@ -73,16 +73,8 @@ public class Course {
         return yr_code;
     }
 
-    public void setYr_code(int yr_code) {
-        this.yr_code = yr_code;
-    }
-
     public int getTrm_code() {
         return trm_code;
-    }
-
-    public void setTrm_code(int trm_code) {
-        this.trm_code = trm_code;
     }
 
     public String getCrs_code() {
@@ -97,144 +89,72 @@ public class Course {
         return crs_comp1;
     }
 
-    public void setCrs_comp1(String crs_comp1) {
-        this.crs_comp1 = crs_comp1;
-    }
-
     public String getCrs_comp2() {
         return crs_comp2;
-    }
-
-    public void setCrs_comp2(String crs_comp2) {
-        this.crs_comp2 = crs_comp2;
     }
 
     public String getCrs_comp3() {
         return crs_comp3;
     }
 
-    public void setCrs_comp3(String crs_comp3) {
-        this.crs_comp3 = crs_comp3;
-    }
-
     public String getCrs_title() {
         return crs_title;
-    }
-
-    public void setCrs_title(String crs_title) {
-        this.crs_title = crs_title;
     }
 
     public int getCredit_hrs() {
         return credit_hrs;
     }
 
-    public void setCredit_hrs(int credit_hrs) {
-        this.credit_hrs = credit_hrs;
-    }
-
     public int getCrs_capacity() {
         return crs_capacity;
-    }
-
-    public void setCrs_capacity(int crs_capacity) {
-        this.crs_capacity = crs_capacity;
     }
 
     public int getCrs_enrollment() {
         return crs_enrollment;
     }
 
-    public void setCrs_enrollment(int crs_enrollment) {
-        this.crs_enrollment = crs_enrollment;
-    }
-
     public String getMonday_cde() {
         return monday_cde;
-    }
-
-    public void setMonday_cde(String monday_cde) {
-        this.monday_cde = monday_cde;
     }
 
     public String getTuesday_cde() {
         return tuesday_cde;
     }
 
-    public void setTuesday_cde(String tuesday_cde) {
-        this.tuesday_cde = tuesday_cde;
-    }
-
     public String getWednesday_cde() {
         return wednesday_cde;
-    }
-
-    public void setWednesday_cde(String wednesday_cde) {
-        this.wednesday_cde = wednesday_cde;
     }
 
     public String getThursday_cde() {
         return thursday_cde;
     }
 
-    public void setThursday_cde(String thursday_cde) {
-        this.thursday_cde = thursday_cde;
-    }
-
     public String getFriday_cde() {
         return friday_cde;
-    }
-
-    public void setFriday_cde(String friday_cde) {
-        this.friday_cde = friday_cde;
     }
 
     public String getBegin_tim() {
         return begin_tim;
     }
 
-    public void setBegin_tim(String begin_tim) {
-        this.begin_tim = begin_tim;
-    }
-
     public String getEnd_tim() {
         return end_tim;
-    }
-
-    public void setEnd_tim(String end_tim) {
-        this.end_tim = end_tim;
     }
 
     public String getLast_name() {
         return last_name;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
     public String getFirst_name() {
         return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
     }
 
     public String getPreferred_name() {
         return preferred_name;
     }
 
-    public void setPreferred_name(String preferred_name) {
-        this.preferred_name = preferred_name;
-    }
-
     public String getComment_txt() {
         return comment_txt;
-    }
-
-    public void setComment_txt(String comment_txt) {
-        this.comment_txt = comment_txt;
     }
 
     public static String formatTimeOfDay(LocalTime time) {
