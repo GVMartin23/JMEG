@@ -1,6 +1,7 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ public class Search {
     private final IO io;
     private ArrayList<Filter> filters;
     private final Schedule currentSchedule;
+
     public Search(Schedule schedule) {
         currentSchedule = schedule;
         filters = new ArrayList<>();
@@ -60,48 +62,63 @@ public class Search {
     private void addCourseInteract(ArrayList<Course> results) {
         Scanner scnr = io.getScanner();
 
-        System.out.println("Would you like to add any classes to your schedule? Y/N");
-        String ans=scnr.nextLine().toUpperCase();
-        if(ans.equals("Y")){
-            Boolean success=false;
-                while(!success) {
-                    System.out.println("Enter the course code of the class you wish to add, or Q to quit");
-                    String courseCodeToAdd = scnr.nextLine().toUpperCase().strip();
-                    if(courseCodeToAdd.equals("Q")){
-                        return;
-                    }
-                    for (Course i : results) {
-                        String resultCode=i.getCrs_code().replace(" ", "").strip();
-                        String userCode=courseCodeToAdd.replace(" ", "").strip();
-                        if (resultCode.equals(userCode)) {
-                            if(this.currentSchedule.getCourses().size()>0) {
-                                for (Course j : this.currentSchedule.getCourses()) {
-                                    if (j.getTimeSlot().equals(i.getTimeSlot())) {//CHANGEME
-                                        System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
-                                        return;
-                                    } else {
-                                        currentSchedule.getCourses().add(i);
-                                        success = true;
-                                        break;
-                                    }
-                                }
-                            }else{
-                                success=true;
+        Boolean success = false;
+        while (!success) {
+            System.out.println("Enter the course code of the class you wish to add, or Q to quit");
+            String courseCodeToAdd = scnr.nextLine().toUpperCase().strip();
+            if (courseCodeToAdd.equals("Q")) {
+                return;
+            }
+            for (Course i : results) {
+                String resultCode = i.getCrs_code().replace(" ", "").strip();
+                String userCode = courseCodeToAdd.replace(" ", "").strip();
+                if (resultCode.equals(userCode)) {
+                    if (this.currentSchedule.getCourses().size() > 0) {
+                        for (Course j : this.currentSchedule.getCourses()) {
+                            if (i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
+                                    i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getEndTimeCode()
+                                    ||
+                                    i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getBeginTimeCode() &&
+                                            i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode()
+                                    ||
+                                    i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
+                                            i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode()) {
+                                System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
+                                return;
+                            } else {
                                 currentSchedule.getCourses().add(i);
+                                success = true;
                                 break;
                             }
                         }
-                    }
-                    if(!success){
-                        System.out.println("Failed to add class. Invalid course code, try again");
+                    } else {
+                        System.out.println("Add course"+courseCodeToAdd+" ? Y/N");
+                        String answer=scnr.nextLine().toUpperCase();
+                        while(!answer.equals("Y")&& !answer.equals("N")){
+                        System.out.println("Invalid input. Enter Y/N");
+                        answer=scnr.nextLine();
+                        }
+                        if(answer.equals("Y")) {
+                            success = true;
+                            currentSchedule.getCourses().add(i);
+                        }
+                        break;
                     }
                 }
             }
-            System.out.println("Successfully added course.  Current course list:\n");
-            for(Course c:currentSchedule.getCourses()){
-                System.out.print(c.getCrs_title() + " " );
+            if (!success) {
+                System.out.println("Failed to add class. Invalid course code, try again");
             }
         }
+
+
+        System.out.println("Successfully added course.  Current course list:\n");
+        for (Course c : currentSchedule.getCourses()) {
+            System.out.print(c.getCrs_title() + " ");
+        }
+
+    }
+
 
 
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
