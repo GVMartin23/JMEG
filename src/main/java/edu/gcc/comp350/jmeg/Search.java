@@ -11,10 +11,13 @@ public class Search {
     private ArrayList<Filter> filters;
     private final Schedule currentSchedule;
 
+    private boolean leave;
+
     public Search(Schedule schedule) {
         currentSchedule = schedule;
         filters = new ArrayList<>();
         io = IO.getInstance();
+        leave = false;
     }
 
     /**
@@ -29,7 +32,7 @@ public class Search {
         ArrayList<Course> results = null;
 
         String exit = "";
-        while (!exit.equals("N")) {
+        while (!leave) {
             System.out.println("Search by,");
             System.out.println("Name    Day     Time    Code");
             //Determine how they are searching
@@ -54,9 +57,15 @@ public class Search {
                 results = resultsInteract(results);
             }
 
-            System.out.println("Continue Searching? (Y/N): ");
-            exit = scnr.nextLine().toUpperCase();
+            if (!leave) {
+                System.out.println("Continue Searching? (Y/N): ");
+                exit = scnr.nextLine().toUpperCase().strip();
+                if (exit.equals("N")) {
+                    leave = true;
+                }
+            }
         }
+        System.out.println("Leaving search");
     }
 
     private void addCourseInteract(ArrayList<Course> results) {
@@ -67,6 +76,7 @@ public class Search {
             System.out.println("Enter the course code of the class you wish to add, or Q to quit");
             String courseCodeToAdd = scnr.nextLine().toUpperCase().strip();
             if (courseCodeToAdd.equals("Q")) {
+                leave = true;
                 return;
             }
             String userCode = courseCodeToAdd.replace(" ", "").strip();
@@ -123,7 +133,7 @@ public class Search {
 
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
-        while (true) {
+        while (!leave) {
             System.out.print(Course.succinctCourse(courseList));
             System.out.println("What would you like to do?");
             System.out.println("Add Course     Filter    View Details     Continue Searching");
@@ -139,7 +149,7 @@ public class Search {
                 viewDetailsInteract(courseList);
             } else if (input.equals("CONTINUE SEARCHING")) {
                 System.out.println("Returning to search");
-                break;
+                leave = true;
             } else {
                 System.out.println("Error, invalid input");
             }
