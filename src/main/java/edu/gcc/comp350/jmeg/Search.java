@@ -77,7 +77,7 @@ public class Search {
                         if (resultCode.equals(userCode)) {
                             if(this.currentSchedule.getCourses().size()>0) {
                                 for (Course j : this.currentSchedule.getCourses()) {
-                                    if (j.getBegin_tim().equals(i.getBegin_tim())) {
+                                    if (j.getTimeSlot().equals(i.getTimeSlot())) {//CHANGEME
                                         System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
                                         return;
                                     } else {
