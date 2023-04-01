@@ -69,12 +69,12 @@ public class Search {
             if (courseCodeToAdd.equals("Q")) {
                 return;
             }
+            String userCode = courseCodeToAdd.replace(" ", "").strip();
             for (Course i : results) {
                 String resultCode = i.getCrs_code().replace(" ", "").strip();
-                String userCode = courseCodeToAdd.replace(" ", "").strip();
                 if (resultCode.equals(userCode)) {
-                    if (this.currentSchedule.getCourses().size() > 0) {
-                        for (Course j : this.currentSchedule.getCourses()) {
+                    if (currentSchedule.getCourses().size() > 0) {
+                        for (Course j : currentSchedule.getCourses()) {
                             if (i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
                                     i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getEndTimeCode()
                                     ||
@@ -124,11 +124,13 @@ public class Search {
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
         while (true) {
-            scnr.nextLine();//Clears scanner
             System.out.print(Course.succinctCourse(courseList));
             System.out.println("What would you like to do?");
             System.out.println("Add Course     Filter    View Details     Continue Searching");
             String input = scnr.nextLine().strip().toUpperCase();
+            while (input.equals("")) {
+                input = scnr.nextLine().strip().toUpperCase();
+            }
             if (input.equals("ADD COURSE")) {
                 addCourseInteract(courseList);
             } else if (input.equals("FILTER")) {

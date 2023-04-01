@@ -168,6 +168,11 @@ public class IO {
         }
         List<String> courseVars = Arrays.asList(coursesData.split(","));
 
+        for (int i = 0; i < courseVars.size(); i++) {
+            courseVars.set(i, courseVars.get(i).strip());
+        }
+
+
         Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
 
         User user = new User(userVars[0], userVars[1], userVars[2], Integer.parseInt(userVars[3]));
@@ -178,11 +183,11 @@ public class IO {
 
         //Go through each Crs_code in file and add that course to schedule
         for (Course course : Main.getCourses()) {
-            if (courseVars.contains(course.getCrs_code())) {
+            String courseID = course.getCrs_code() + "|" + course.getYr_code();
+            if (courseVars.contains(courseID)) {
                 scheduleCourses.add(course);
             }
         }
-
 
         schedule.setCourses(scheduleCourses);
 
@@ -254,7 +259,7 @@ public class IO {
     private String formatCourseCSV(ArrayList<Course> Courses) {
         StringBuilder sb = new StringBuilder();
         for (Course c : Courses) {
-            sb.append(c.getCrs_code()).append(",");
+            sb.append(c.getCrs_code()).append("|").append(c.getYr_code()).append(",");
         }
 
         if (sb.length() == 0) {
