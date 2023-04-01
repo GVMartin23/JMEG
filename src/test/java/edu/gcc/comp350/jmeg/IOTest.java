@@ -19,6 +19,7 @@ class IOTest {
 
     @Test
     void importCSVData() {
+        Main.setCourses(new ArrayList<>());
         io.importCSVData();
 
         //Only 2 termCodes currently, so should be 2
