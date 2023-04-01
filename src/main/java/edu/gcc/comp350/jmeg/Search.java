@@ -65,14 +65,18 @@ public class Search {
         if(ans.equals("Y")){
             System.out.println("Enter the name of the class you wish to add");
             String classToAdd=scnr.nextLine().toUpperCase().strip();
+            boolean success = false;
             for(Course i : results){
                 if(i.getCrs_title().equals(classToAdd)){
                     currentSchedule.getCourses().add(i);
+                    success = true;
                 }
             }
-            System.out.println("Successfully added course.  Current course list:\n");
-            for(Course c:currentSchedule.getCourses()){
-                System.out.print(c.getCrs_title() + " " );
+            if (success) {
+                System.out.println("Successfully added course.  Current course list:\n");
+                System.out.println(currentSchedule);
+            } else {
+                System.out.println("Failed to add course, please try again.");
             }
         }
     }
@@ -80,6 +84,7 @@ public class Search {
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
         while (true) {
+            scnr.nextLine();//Clears scanner
             System.out.print(Course.succinctCourse(courseList));
             System.out.println("What would you like to do?");
             System.out.println("Add Course     Filter    View Details     Continue Searching");
@@ -90,7 +95,7 @@ public class Search {
                 courseList = filterInteract(courseList);
             } else if (input.equals("VIEW DETAILS")) {
                 viewDetailsInteract(courseList);
-            } else if ("CONTINUE SEARCHING".contains(input) || input.contains("CONTINUE SEARCHING")) {
+            } else if (input.equals("CONTINUE SEARCHING")) {
                 System.out.println("Returning to search");
                 break;
             } else {
