@@ -148,8 +148,6 @@ public class Search {
      * @param courseList - list of courses in csv
      */
     private void viewDetailsInteract(ArrayList<Course> courseList) {
-        //TODO: allow viewDetails to interact with the search list
-        //TODO: Get User input as to what course they wish to view details of, then call viewDetails with that course
         Scanner scan = io.getScanner();
         System.out.println("Which course would you like to view details on?");
         System.out.println("Choose one of the following:");

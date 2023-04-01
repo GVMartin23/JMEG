@@ -53,19 +53,25 @@ public class Main {
     public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules) {
         Scanner scanner = io.getScanner();
 
+        if (!userSchedules.isEmpty()) {
             System.out.println("Your schedules are: ");//Print out all the schedules for the current user
-        for (Schedule i : userSchedules) {
-            System.out.println(i.getTitle());
+            for (Schedule i : userSchedules) {
+                System.out.println(i.getTitle());
+            }
+            System.out.println("Which schedule do you wish to edit?");
+            System.out.println("If you want to create a new schedule, type the name below:");
+        } else {
+            System.out.println("Enter the name of your first schedule:");
         }
-        System.out.println("Which schedule do you wish to edit?");
-        System.out.println("If you want to create a new schedule, type the name below:");
-        String userSelectedSchedule = scanner.nextLine();
 
-//        while(userSelectedSchedule.equals("")){
-//            userSelectedSchedule=scanner.nextLine();
-//        }
+        String userSelectedSchedule = scanner.nextLine().strip();
+
+        while(userSelectedSchedule.equals("")){
+            userSelectedSchedule=scanner.nextLine().strip();
+        }
         System.out.println("You selected " + userSelectedSchedule);
-        Schedule currentSchedule = new Schedule(user, "empty schedule");
+
+        Schedule currentSchedule = new Schedule(user, userSelectedSchedule);
 
         for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
             if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
@@ -92,16 +98,6 @@ public class Main {
             if (value.getUser().getName().equals(user.getName())) {//Puts all the schedules containing that user's name from the master schedule list into the list
                 userSchedules.add(value);
             }
-        }
-        if(userSchedules.isEmpty()){//If you are a new user you don't have any schedules so make a new one
-            Scanner scanner = io.getScanner();
-            System.out.println("You have no schedules currently.  Type the title of your first schedule");
-            String title=scanner.nextLine();
-            while(title.equals("")){
-                title=scanner.nextLine();
-            }
-            Schedule newSchedule=new Schedule(user, title);
-            userSchedules.add(newSchedule);
         }
         return userSchedules;//Returns the schedule you want to edit
     }
@@ -136,9 +132,8 @@ public class Main {
             String minor = scanner.nextLine();
             System.out.println("Enter your year");
             int year = scanner.nextInt();
-            System.out.println("\n");
             User user = new User(userName, major, minor, year);//Create a new user
-            System.out.println("Welcome, " + user.getName());
+            System.out.println("\nWelcome, " + user.getName());
             return user;
         }
     }
