@@ -1,8 +1,10 @@
 package edu.gcc.comp350.jmeg;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Schedule {
     private User user;
@@ -86,8 +88,8 @@ public Schedule(User user, String title, ArrayList<Course> courses){
         scheduleInteract();
    }
 
-   private void removeCourse(Course course){
-        courses.remove(course);
+   private boolean removeCourse(Course course){
+        return courses.remove(course);
    }
 
    private void getRecommendedSchedule(User user){
@@ -140,8 +142,8 @@ public Schedule(User user, String title, ArrayList<Course> courses){
                }
            }
 
-           System.out.println("\nWhat would you like to do?\nSearch     View Calendar   Quit");
-           String action = scnr.nextLine().toUpperCase(Locale.ROOT);
+           System.out.println("\nWhat would you like to do?\nSearch     View Calendar       Remove Course       Quit");
+           String action = scnr.nextLine().toUpperCase(Locale.ROOT).strip();
 
            if (action.equals("SEARCH")) {
                searchCourses();
@@ -149,12 +151,32 @@ public Schedule(User user, String title, ArrayList<Course> courses){
                return;
            }else if(action.equals("VIEW CALENDAR")){
                showCalendar();
+           } else if (action.equals("REMOVE COURSE")) {
+               removeCourseInteract();
            } else {
                System.out.println("Incorrect input");
            }
        }
+   }
 
-
+   private void removeCourseInteract() {
+       Scanner scnr = IO.getInstance().getScanner();
+       while (true) {
+           System.out.print(Course.succinctCourse(courses));
+           System.out.println("Which Course would you like to remove?\nEnter code:");
+           String inputCode = scnr.nextLine().strip().toUpperCase();
+           List<Course> removable = courses.stream().filter(c -> c.getCrs_code().equals(inputCode)).collect(Collectors.toList());
+           if (removable.size() == 1) {
+               if (removeCourse(removable.get(0))) {
+                   System.out.println("Removed: " + removable.get(0));
+               } else {
+                   System.out.println("Error, could not remove course.");
+               }
+               break;
+           } else {
+               System.out.println("Error, invalid course code.");
+           }
+       }
    }
 
    @Override

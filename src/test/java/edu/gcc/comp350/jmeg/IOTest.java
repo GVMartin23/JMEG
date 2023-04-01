@@ -19,9 +19,8 @@ class IOTest {
 
     @Test
     void importCSVData() {
-        if (Main.getCourses().isEmpty()) {
-            IO.getInstance().importCSVData();
-        }
+        Main.setCourses(new ArrayList<>());
+        io.importCSVData();
 
         //Only 2 termCodes currently, so should be 2
         assertEquals(4526, Main.getCourses().size());

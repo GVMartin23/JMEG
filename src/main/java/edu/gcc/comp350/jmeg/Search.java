@@ -80,7 +80,7 @@ public class Search {
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
         while (true) {
-            System.out.println(courseList);
+            System.out.print(Course.succinctCourse(courseList));
             System.out.println("What would you like to do?");
             System.out.println("Add Course     Filter    View Details     Continue Searching");
             String input = scnr.nextLine().strip().toUpperCase();

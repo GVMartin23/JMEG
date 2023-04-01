@@ -2,6 +2,7 @@ package edu.gcc.comp350.jmeg;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Course {
 
@@ -36,7 +37,7 @@ public class Course {
                   String preferred_name, String comment_txt) {
         this.yr_code = yr_code;
         this.trm_code = trm_code;
-        this.crs_code = crs_code;
+        this.crs_code = crs_code.replace("  ", " ");
         this.crs_comp1 = crs_comp1;
         this.crs_comp2 = crs_comp2;
         this.crs_comp3 = crs_comp3;
@@ -203,5 +204,25 @@ public class Course {
         return this.crs_code.equals(course.crs_code)
                 && this.trm_code == course.trm_code
                 && this.yr_code == course.yr_code;
+    }
+
+
+    /**
+     * Used in place of toString when all we want is short on line course description
+     * @param courses ArrayList of Courses to convert to String
+     * @return String containing year, title, code for each course in list
+     */
+    public static String succinctCourse(ArrayList<Course> courses) {
+        StringBuilder sb = new StringBuilder();
+        for (Course c : courses) {
+            sb.append(c.getYr_code());
+            sb.append("| Title: ");
+            sb.append(c.getCrs_title());
+            sb.append("| Code: ");
+            sb.append(c.getCrs_code());
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 }

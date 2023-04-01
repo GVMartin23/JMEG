@@ -19,7 +19,6 @@ class SearchTest {
         if (Main.getCourses().isEmpty()) {
             IO.getInstance().importCSVData();
         }
-
         System.setOut(new PrintStream(outContent));
     }
 
