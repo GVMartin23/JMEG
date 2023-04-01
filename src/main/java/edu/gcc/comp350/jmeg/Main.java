@@ -58,19 +58,22 @@ public class Main {
             System.out.println(i.getTitle());
         }
         System.out.println("Which schedule do you wish to edit?");
+        System.out.println("If you want to create a new schedule, type the name below:");
         String userSelectedSchedule = scanner.nextLine();
-        while(userSelectedSchedule.equals("")){
-            userSelectedSchedule=scanner.nextLine();
-        }
+
+//        while(userSelectedSchedule.equals("")){
+//            userSelectedSchedule=scanner.nextLine();
+//        }
         System.out.println("You selected " + userSelectedSchedule);
         Schedule currentSchedule = new Schedule(user, "empty schedule");
 
         for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
             if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
                 currentSchedule = i;
+            }else{
+                currentSchedule = new Schedule(user, userSelectedSchedule);
             }
         }
-
 
         currentSchedule.scheduleInteract();
 
