@@ -16,7 +16,9 @@ class SearchTest {
 
     @BeforeAll
     static void setup() {
-        IO.getInstance().importCSVData();
+        if (Main.getCourses().isEmpty()) {
+            IO.getInstance().importCSVData();
+        }
         System.setOut(new PrintStream(outContent));
     }
 
@@ -90,7 +92,7 @@ class SearchTest {
 
     @Test
     void searchCourseTime() {
-        ArrayList<Course> courses = search.search("TIME", "12", Main.getCourses());
+        ArrayList<Course> courses = search.search("TIME", "12PM", Main.getCourses());
 
         boolean isTime = true;
 
@@ -101,7 +103,7 @@ class SearchTest {
         assertTrue(isTime);
 
         assertEquals("PRINCIPLES OF ACCOUNTING I", courses.get(0).getCrs_title());
-        assertEquals("FOUNDATIONS OF ACADEMIC DISCOURSE", courses.get(courses.size()-1).getCrs_title());
+        assertEquals("SCIENCE  FAITH  AND TECHNOLOGY", courses.get(courses.size()-1).getCrs_title());
     }
 
     @Test

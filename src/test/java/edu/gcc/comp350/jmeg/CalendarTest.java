@@ -1,16 +1,24 @@
 package edu.gcc.comp350.jmeg;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CalendarTest {
 
+    @BeforeAll
+    static void setup() {
+        if (Main.getCourses().isEmpty()) {
+            IO.getInstance().importCSVData();
+        }
+    }
+
     @Test
     public void calendarTest(){
-        IO.getInstance().importCSVData();
         ArrayList<Course> courses=Main.getCourses();
 
         User u=new User("Ethan", "CS", "AI", 2024);
