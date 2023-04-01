@@ -23,30 +23,25 @@ this.currentSchedule=currentSchedule;
             Course course = currentSchedule.getCourses().get(k);
             String courseName = currentSchedule.getCourses().get(k).getCrs_title();
             TimeSlot slot = course.getTimeSlot();
-            int[] timeCodes = slot.beginTimeCodes;
+            int timeCode = slot.getBeginTimeCode() - 8;
             if (slot.isOnMonday()) {//TODO change k
-                int timeCode = timeCodes[0] - 8;
                 calendarArray[0][timeCode]=course.getBegin_tim()+" "+courseName;
             }
             if (slot.isOnTuesday()) {
-                int timeCode = timeCodes[1] - 8;
                 calendarArray[1][timeCode]=course.getBegin_tim()+" "+courseName;
             }
             if (slot.isOnWednesday()) {
-                int timeCode = timeCodes[2] - 8;
                 calendarArray[2][timeCode]=course.getBegin_tim()+" "+courseName;
             }
             if (slot.isOnThursday()) {
-                int timeCode = timeCodes[3] - 8;
                 calendarArray[3][timeCode]=course.getBegin_tim()+" "+courseName;
             }
             if (slot.isOnFriday()) {
-                int timeCode = timeCodes[4] - 8;
                 calendarArray[4][timeCode]=course.getBegin_tim()+" "+courseName;
             }
         }
 
-            StringBuilder string= new StringBuilder();
+        StringBuilder string= new StringBuilder();
         for(int i=0; i<5; i++){
             for(int j=0; j<10; j++){
                 if(calendarArray[i][j]==null){

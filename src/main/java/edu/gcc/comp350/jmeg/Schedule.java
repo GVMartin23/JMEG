@@ -25,11 +25,13 @@ public class Schedule {
     public Schedule(User user, String title) {
         this.user = user;
         this.title = title;
+        credits = 0;
     }
 public Schedule(User user, String title, ArrayList<Course> courses){
         this.user=user;
         this.title=title;
         this.courses=courses;
+        credits = 0;
 }
     /**
      * Constructor for Schedule
