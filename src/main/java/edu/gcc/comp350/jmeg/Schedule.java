@@ -82,13 +82,21 @@ public Schedule(User user, String title, ArrayList<Course> courses){
         this.calendar = calendar;
     }
 
+    /**
+     * Creates new Search class then enters the searchInteraction method in search
+     * Used to go from scheduleInteract to searchInteraction
+     */
    public void searchCourses() {
         Search search = new Search(this);
         search.searchInteraction();
-        scheduleInteract();
    }
 
-   private boolean removeCourse(Course course){
+    /**
+     * Removes course from schedule courses list
+     * @param course course to remove
+     * @return true if successful, false otherwise
+     */
+   public boolean removeCourse(Course course){
         return courses.remove(course);
    }
 
@@ -107,9 +115,7 @@ public Schedule(User user, String title, ArrayList<Course> courses){
        Calendar c=new Calendar(this);
        System.out.println(c.showCalendar());
    }
-   private void getDetails(Course course){
-        //maybe should be in Course class?
-   }
+
     /**
      * UI method for working in schedule
      * Used to navigate different functions that can be taken in schedule
