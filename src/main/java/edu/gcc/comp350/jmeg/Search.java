@@ -1,7 +1,6 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -98,7 +97,6 @@ public class Search {
                     }
                 }
             }
-
             System.out.println("Successfully added course.  Current course list:\n");
             for(Course c:currentSchedule.getCourses()){
                 System.out.print(c.getCrs_title() + " " );
@@ -109,6 +107,7 @@ public class Search {
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
         while (true) {
+            scnr.nextLine();//Clears scanner
             System.out.print(Course.succinctCourse(courseList));
             System.out.println("What would you like to do?");
             System.out.println("Add Course     Filter    View Details     Continue Searching");
@@ -119,7 +118,7 @@ public class Search {
                 courseList = filterInteract(courseList);
             } else if (input.equals("VIEW DETAILS")) {
                 viewDetailsInteract(courseList);
-            } else if ("CONTINUE SEARCHING".contains(input) || input.contains("CONTINUE SEARCHING")) {
+            } else if (input.equals("CONTINUE SEARCHING")) {
                 System.out.println("Returning to search");
                 break;
             } else {

@@ -8,8 +8,8 @@ public class TimeSlot {
     private boolean onFriday;
     private boolean inPerson;
 
-    int[] beginTimeCodes;
-    int[] endTimeCodes;
+    int beginTimeCode;
+    int endTimeCode;
 
     public boolean isOnMonday() {
         return onMonday;
@@ -59,20 +59,20 @@ public class TimeSlot {
         this.inPerson = inPerson;
     }
 
-    public int[] getBeginTimeCodes() {
-        return beginTimeCodes;
+    public int getBeginTimeCode() {
+        return beginTimeCode;
     }
 
-    public void setBeginTimeCodes(int[] beginTimeCodes) {
-        this.beginTimeCodes = beginTimeCodes;
+    public void setBeginTimeCode(int beginTimeCodes) {
+        this.beginTimeCode = beginTimeCodes;
     }
 
-    public int[] getEndTimeCodes() {
-        return endTimeCodes;
+    public int getEndTimeCode() {
+        return endTimeCode;
     }
 
-    public void setEndTimeCodes(int[] endTimeCodes) {
-        this.endTimeCodes = endTimeCodes;
+    public void setEndTimeCode(int endTimeCodes) {
+        this.endTimeCode = endTimeCodes;
     }
 
     public TimeSlot (Course c) {
@@ -82,36 +82,14 @@ public class TimeSlot {
         onThursday = c.getThursday_cde().equals("R");
         onFriday = c.getFriday_cde().equals("F");
         inPerson = onMonday || onTuesday || onWednesday || onThursday || onFriday;
-        beginTimeCodes = new int[]{0, 0, 0, 0, 0};
-        endTimeCodes = new int[]{0, 0, 0, 0, 0};
+        beginTimeCode = 0;
+        endTimeCode = 0;
         getTimeCodes(c);
     }
 
     private void getTimeCodes(Course c) {
-        if (onMonday) {
-            beginTimeCodes[0] = getCode(c.getBegin_tim());
-            endTimeCodes[0] = getCode(c.getEnd_tim());
-        }
-
-        if (onTuesday) {
-            beginTimeCodes[1] = getCode(c.getBegin_tim());
-            endTimeCodes[1] = getCode(c.getEnd_tim());
-        }
-
-        if (onWednesday) {
-            beginTimeCodes[2] = getCode(c.getBegin_tim());
-            endTimeCodes[2] = getCode(c.getEnd_tim());
-        }
-
-        if (onThursday) {
-            beginTimeCodes[3] = getCode(c.getBegin_tim());
-            endTimeCodes[3] = getCode(c.getEnd_tim());
-        }
-
-        if (onFriday) {
-            beginTimeCodes[4] = getCode(c.getBegin_tim());
-            endTimeCodes[4] = getCode(c.getEnd_tim());
-        }
+        beginTimeCode = getCode(c.getBegin_tim());
+        endTimeCode = getCode(c.getEnd_tim());
     }
 
     /**
