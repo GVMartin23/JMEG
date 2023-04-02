@@ -86,4 +86,18 @@ public class TimeSlot {
         return num + 12;
     }
 
+    /**
+     * Checks timeslots for day overlaps
+     * Used in search to check if there are day overlaps
+     * @param t1 slot 1
+     * @param t2 slot 2
+     * @return true if on same day, false otherwise
+     */
+    public static boolean dayOverlap(TimeSlot t1, TimeSlot t2) {
+        return t1.isOnMonday() == t2.isOnMonday()
+                || t1.isOnTuesday() == t2.isOnTuesday()
+                || t1.isOnWednesday() == t2.isOnWednesday()
+                || t1.isOnThursday() == t2. isOnThursday()
+                || t1.isOnFriday() == t2.isOnFriday();
+    }
 }

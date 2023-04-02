@@ -104,8 +104,9 @@ public class Search {
                                 return;
                             } else {
                                 currentSchedule.getCourses().add(i);
-                                success = true;
-                                break;
+                                leave = true;
+                                leaveResults = true;
+                                return;
                             }
                         }
                     } else {
@@ -116,13 +117,12 @@ public class Search {
                             answer=scnr.nextLine();
                         }
                         if(answer.equals("Y")) {
-                            success = true;
                             currentSchedule.getCourses().add(i);
                             leaveResults = true;
                             leave = true;
                             //Should send them back to searchInteract
                         }
-                        break;
+                        return;
                     }
                 }
             }
