@@ -110,7 +110,11 @@ public class Search {
                             answer=scnr.nextLine();
                         }
                         if(answer.equals("Y")) {
-                            currentSchedule.getCourses().add(i);
+                            for (Course c : results) {
+                                if (c.equals(i)) {
+                                    currentSchedule.getCourses().add(c);
+                                }
+                            }
                             leaveResults = true;
                             leave = true;
                             //Should send them back to searchInteract

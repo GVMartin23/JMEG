@@ -124,9 +124,7 @@ public Schedule(User user, String title, ArrayList<Course> courses){
        }else {
            System.out.println("Entire class list:");
            //Lists out all classes in schedule
-           for (Course c : courses) {
-               System.out.print(" " + c.getCrs_title());
-           }
+           System.out.println(Course.succinctCourse(courses));
        }
 
        while (true) {
@@ -135,9 +133,7 @@ public Schedule(User user, String title, ArrayList<Course> courses){
            } else {
                System.out.println("Entire class list:");
                //Lists out all classes in schedule
-               for (Course c : courses) {
-                   System.out.print(" " + c.getCrs_title());
-               }
+               System.out.println(Course.succinctCourse(courses));
            }
 
            System.out.println("\nWhat would you like to do?\nSearch     View Calendar       Remove Course       Quit");
