@@ -90,16 +90,9 @@ public class Search {
             for (Course i : results) {
                 String resultCode = i.getCrs_code().replace(" ", "").strip();
                 if (resultCode.equals(userCode)) {
-                    if (currentSchedule.getCourses().size() > 0) {
+                    if (currentSchedule.getCourses().size() > 0) {//If there is stuff in the existing calendar
                         for (Course j : currentSchedule.getCourses()) {
-                            if (i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
-                                    i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getEndTimeCode()
-                                    ||
-                                    i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getBeginTimeCode() &&
-                                            i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode()
-                                    ||
-                                    i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
-                                            i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode()) {
+                            if (TimeSlot.dayOverlap(i.getTimeSlot(), j.getTimeSlot()) && coursesOverlap(i, j)) {
                                 System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
                                 return;
                             } else {
@@ -109,7 +102,7 @@ public class Search {
                                 return;
                             }
                         }
-                    } else {
+                    } else {//Nothing in the schedule
                         System.out.println("Add course"+courseCodeToAdd+" ? Y/N");
                         String answer=scnr.nextLine().toUpperCase();
                         while(!answer.equals("Y")&& !answer.equals("N")){
@@ -132,6 +125,25 @@ public class Search {
         }
     }
 
+    /**
+     * returns true if courses overlap, false otherwise
+     * @param i
+     * @param j
+     * @return
+     */
+    public Boolean coursesOverlap(Course i, Course j){
+        return ((i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
+                i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getEndTimeCode())
+                ||
+                (i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getBeginTimeCode() &&
+                        i.getTimeSlot().getEndTimeCode() >= j.getTimeSlot().getEndTimeCode())
+                ||
+                (i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
+                        i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode())
+                ||
+                (i.getTimeSlot().getBeginTimeCode()<=j.getTimeSlot().getEndTimeCode() )&&
+                        i.getTimeSlot().getEndTimeCode()>=j.getTimeSlot().getBeginTimeCode());
+    }
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
         while (!leaveResults) {
