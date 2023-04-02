@@ -92,12 +92,12 @@ class SearchTest {
 
     @Test
     void searchCourseTime() {
-        ArrayList<Course> courses = search.search("TIME", "12PM", Main.getCourses());
+        ArrayList<Course> courses = search.search("TIME", "12:00PM", Main.getCourses());
 
         boolean isTime = true;
 
         for (Course c : courses) {
-            isTime = c.getBegin_tim().contains("12PM");
+            isTime = c.getBegin_tim().contains("12:00PM");
         }
 
         assertTrue(isTime);

@@ -159,7 +159,7 @@ public class Course {
     }
 
     public static String formatTimeOfDay(LocalTime time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ha");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mma");
         return time.format(formatter);
     }
 

@@ -99,12 +99,14 @@ public class TimeSlot {
      * @return corresponding time
      */
     private int getCode(String timeString) {
-        int parsedInt = Integer.parseInt(timeString.substring(0,timeString.length()-2));
+        String[] parsed = timeString.split(":");
+
+        int parsedInt = Integer.parseInt(parsed[0]);
         if (timeString.contains("PM")) {
             return convertToMilitary(parsedInt);
         }
 
-        return parsedInt;
+        return parsedInt + Integer.parseInt(parsed[1].substring(0, 2));
     }
 
     /**
