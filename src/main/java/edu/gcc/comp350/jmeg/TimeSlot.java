@@ -74,7 +74,7 @@ public class TimeSlot {
             return convertToMilitary(parsedInt);
         }
 
-        return parsedInt + Integer.parseInt(parsed[1].substring(0, 2));
+        return parsedInt;
     }
 
     /**
