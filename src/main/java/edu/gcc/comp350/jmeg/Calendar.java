@@ -58,12 +58,4 @@ this.currentSchedule=currentSchedule;
         }
         return string.toString();
     }
-    public Schedule getCurrentSchedule() {
-        return currentSchedule;
-    }
-
-    public void setCurrentSchedule(Schedule currentSchedule) {
-        this.currentSchedule = currentSchedule;
-    }
-
 }

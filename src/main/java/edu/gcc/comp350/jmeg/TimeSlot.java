@@ -1,12 +1,12 @@
 package edu.gcc.comp350.jmeg;
 
 public class TimeSlot {
-    private boolean onMonday;
-    private boolean onTuesday;
-    private boolean onWednesday;
-    private boolean onThursday;
-    private boolean onFriday;
-    private boolean inPerson;
+    private final boolean onMonday;
+    private final boolean onTuesday;
+    private final boolean onWednesday;
+    private final boolean onThursday;
+    private final boolean onFriday;
+    private final boolean inPerson;
 
     int beginTimeCode;
     int endTimeCode;
@@ -15,64 +15,32 @@ public class TimeSlot {
         return onMonday;
     }
 
-    public void setOnMonday(boolean onMonday) {
-        this.onMonday = onMonday;
-    }
-
     public boolean isOnTuesday() {
         return onTuesday;
-    }
-
-    public void setOnTuesday(boolean onTuesday) {
-        this.onTuesday = onTuesday;
     }
 
     public boolean isOnWednesday() {
         return onWednesday;
     }
 
-    public void setOnWednesday(boolean onWednesday) {
-        this.onWednesday = onWednesday;
-    }
-
     public boolean isOnThursday() {
         return onThursday;
-    }
-
-    public void setOnThursday(boolean onThursday) {
-        this.onThursday = onThursday;
     }
 
     public boolean isOnFriday() {
         return onFriday;
     }
 
-    public void setOnFriday(boolean onFriday) {
-        this.onFriday = onFriday;
-    }
-
     public boolean isInPerson() {
         return inPerson;
-    }
-
-    public void setInPerson(boolean inPerson) {
-        this.inPerson = inPerson;
     }
 
     public int getBeginTimeCode() {
         return beginTimeCode;
     }
 
-    public void setBeginTimeCode(int beginTimeCodes) {
-        this.beginTimeCode = beginTimeCodes;
-    }
-
     public int getEndTimeCode() {
         return endTimeCode;
-    }
-
-    public void setEndTimeCode(int endTimeCodes) {
-        this.endTimeCode = endTimeCodes;
     }
 
     public TimeSlot (Course c) {

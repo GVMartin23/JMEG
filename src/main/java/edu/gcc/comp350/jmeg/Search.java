@@ -60,6 +60,7 @@ public class Search {
             }
 
             if (leaveResults) {
+                leaveResults = false;
                 continue;
             }
 
@@ -157,7 +158,6 @@ public class Search {
                 System.out.println("Error, invalid input");
             }
         }
-        leaveResults = false;
 
         return courseList;
     }

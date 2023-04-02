@@ -11,7 +11,6 @@ public class Schedule {
     private String title;
     private int credits;
     private ArrayList<Course> courses;
-    private Calendar calendar;
 
     public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar, ArrayList<Course> allCourses){
         //Might not need
@@ -19,7 +18,6 @@ public class Schedule {
         this.title = title;
         this.credits = credits;
         this.courses = courses;
-        this.calendar = calendar;
     }
 
     public Schedule(User user, String title) {
@@ -74,14 +72,6 @@ public Schedule(User user, String title, ArrayList<Course> courses){
 
     public void setCourses(ArrayList<Course> courses) {
         this.courses = courses;
-    }
-
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
     }
 
     /**
