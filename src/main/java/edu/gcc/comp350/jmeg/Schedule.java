@@ -46,6 +46,10 @@ public Schedule(User user, String title, ArrayList<Course> courses){
         return user;
     }
 
+    public boolean isEmpty() {
+        return (this.title.equals(""));
+    }
+
     public void setUser(User user) {
         this.user = user;
     }

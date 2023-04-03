@@ -34,6 +34,7 @@ public class Main {
         io = IO.getInstance();
         io.importCSVData();//Load courses into arrayList from CSV
         io.loadSchedules();//Load saved schedules
+        getSchedules();
         User user=makeUser();//Use command prompt to make new user
         ArrayList<Schedule> userSchedules=fillUserSchedules(user);//Create arrayList of schedules for the user,
         userScheduleSelect(user, userSchedules);//Allow for search/add class interface
@@ -102,39 +103,90 @@ public class Main {
         return userSchedules;//Returns the schedule you want to edit
     }
 
-    public static User makeUser() {
+    public static User newUser() {
         Scanner scanner = io.getScanner();
-        System.out.println("Have you used this software before? Y/N");
-        String returningUser=scanner.nextLine().toLowerCase();
-        while(!returningUser.equals("y")&&!returningUser.equals("n")){
-            System.out.println("Invalid answer, please try again using Y/N");
-            returningUser=scanner.nextLine().toLowerCase();
+        System.out.println("Welcome.  Enter your name");
+        String userName = scanner.nextLine().toUpperCase();
+        while(true){
+            if (!userName.isEmpty()){
+                break;
+            }
+            System.out.println("Please enter a name:");
+            userName = scanner.nextLine().toUpperCase();
         }
-        if(returningUser.equals("y")){//Existing user
+
+        System.out.println("Enter your major");
+        String major = scanner.nextLine().toUpperCase();
+        while(true){
+            if (!major.isEmpty()){
+                break;
+            }
+            System.out.println("Please enter your major:");
+            major = scanner.nextLine().toUpperCase();
+        }
+
+        System.out.println("Enter your minors");
+        String minor = scanner.nextLine().toUpperCase();
+        while(true){
+            if (!minor.isEmpty()){
+                break;
+            }
+            System.out.println("Please enter your minor:");
+            minor = scanner.nextLine().toUpperCase();
+        }
+
+        System.out.println("Please enter your year");
+        //boolean flag = false;
+            while (!scanner.hasNextInt()) {
+                String line = scanner.nextLine();
+                System.out.println("Please enter a valid year");
+            }
+            int year = scanner.nextInt();
+
+        User user = new User(userName, major, minor, year); //Create a new user
+        System.out.println("\nWelcome, " + user.getName());
+        return user;
+    }
+    public static User makeUser() {
+        if (schedules.isEmpty()) { //user has no schedules so they're new
+            return newUser();
+        }
+        //otherwise ask if they would like to make a new schedule or load exisiting schedules
+        //System.out.println(schedules.get(0).getTitle());
+        Scanner scanner = io.getScanner();
+        System.out.println("Would you like to make a new schedule or load an existing schedule?" +
+                "\nCreate new\t\tLoad existing");
+        String choice =scanner.nextLine().toUpperCase();
+        while(true){
+            if(choice.equals("CREATE NEW") || choice.equals("LOAD EXISTING")){
+                break;
+            }
+            System.out.println("Please enter:\n" +
+                    "Create new\t\tLoad existing");
+            choice = scanner.nextLine().toUpperCase();
+        }
+
+        if(choice.equals("LOAD EXISTING")){ //Existing user
             System.out.println("Enter your name");
-            String username=scanner.nextLine();
+            String sessionName=scanner.nextLine();
+            while(true){
+                if (!sessionName.isEmpty()){
+                    break;
+                }
+                System.out.println("Please enter a name:");
+                sessionName = scanner.nextLine().toUpperCase();
+            }
             for(Schedule s: schedules){
-                if(s.getUser().getName().equals(username)){
+                if(s.getUser().getName().equals(sessionName)){
                     System.out.println("Welcome back "+s.getUser().getName());
                     return s.getUser();
                 }
             }
-            System.out.println("Didnt find the user.  Making fake: ");
-            return new User("Doug", "CS", "AI", 2024);
-            //return null;//TODO change so this doesn't make a fake user
+            System.out.println("Could not find your profile, sorry");
+            return newUser();
 
         }else {//New user
-            System.out.println("Welcome.  Enter your name");
-            String userName = scanner.nextLine();
-            System.out.println("Enter your major");
-            String major = scanner.nextLine();
-            System.out.println("Enter your minors");
-            String minor = scanner.nextLine();
-            System.out.println("Enter your year");
-            int year = scanner.nextInt();
-            User user = new User(userName, major, minor, year);//Create a new user
-            System.out.println("\nWelcome, " + user.getName());
-            return user;
+            return newUser();
         }
     }
 }
