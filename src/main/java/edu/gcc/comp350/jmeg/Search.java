@@ -136,6 +136,9 @@ public class Search {
      * @return
      */
     public Boolean coursesOverlap(Course i, Course j){
+        if(i.getTimeSlot().getBeginTimeCode()==j.getTimeSlot().getBeginTimeCode() || i.getTimeSlot().getEndTimeCode()==j.getTimeSlot().getEndTimeCode()){
+            return true;
+        }
         return ((i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
                 i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getEndTimeCode())
                 ||
