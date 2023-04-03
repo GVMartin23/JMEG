@@ -135,6 +135,7 @@ public Schedule(User user, String title, ArrayList<Course> courses){
            if (firstTime) {
                firstTime = false;
            } else {
+               System.out.println("Viewing schedule "+ title);
                System.out.println("Entire class list:");
                //Lists out all classes in schedule
                System.out.println(Course.succinctCourse(courses));

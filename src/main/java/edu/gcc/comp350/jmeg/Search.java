@@ -225,10 +225,7 @@ public class Search {
     private void viewDetailsInteract(ArrayList<Course> courseList) {
         Scanner scan = io.getScanner();
         System.out.println("Which course would you like to view details on?");
-        System.out.println("Choose one of the following:");
-        for(Course c : courseList) {
-            System.out.println(c.getCrs_code());
-        }
+
         String courseCode = scan.nextLine().toUpperCase().strip();
 
         List<Course> courses = courseList.stream().filter(c -> c.getCrs_code().equals(courseCode)).collect(Collectors.toList());

@@ -106,42 +106,33 @@ public class Main {
     public static User newUser() {
         Scanner scanner = io.getScanner();
         System.out.println("Welcome.  Enter your name");
-        String userName = scanner.nextLine().toUpperCase();
-        while(true){
-            if (!userName.isEmpty()){
-                break;
-            }
+        String userName = scanner.nextLine().toUpperCase().strip();
+        while (userName.isEmpty()) {
             System.out.println("Please enter a name:");
-            userName = scanner.nextLine().toUpperCase();
+            userName = scanner.nextLine().toUpperCase().strip();
         }
 
         System.out.println("Enter your major");
-        String major = scanner.nextLine().toUpperCase();
-        while(true){
-            if (!major.isEmpty()){
-                break;
-            }
+        String major = scanner.nextLine().toUpperCase().strip();
+        while (major.isEmpty()) {
             System.out.println("Please enter your major:");
-            major = scanner.nextLine().toUpperCase();
+            major = scanner.nextLine().toUpperCase().strip();
         }
 
         System.out.println("Enter your minors");
-        String minor = scanner.nextLine().toUpperCase();
-        while(true){
-            if (!minor.isEmpty()){
-                break;
-            }
+        String minor = scanner.nextLine().toUpperCase().strip();
+        while (minor.isEmpty()) {
             System.out.println("Please enter your minor:");
-            minor = scanner.nextLine().toUpperCase();
+            minor = scanner.nextLine().toUpperCase().strip();
         }
 
         System.out.println("Please enter your year");
-        //boolean flag = false;
-            while (!scanner.hasNextInt()) {
-                String line = scanner.nextLine();
-                System.out.println("Please enter a valid year");
-            }
-            int year = scanner.nextInt();
+
+        while (!scanner.hasNextInt()) {
+            String line = scanner.nextLine();
+            System.out.println("Please enter a valid year");
+        }
+        int year = scanner.nextInt();
 
         User user = new User(userName, major, minor, year); //Create a new user
         System.out.println("\nWelcome, " + user.getName());
@@ -156,37 +147,29 @@ public class Main {
         Scanner scanner = io.getScanner();
         System.out.println("Would you like to make a new schedule or load an existing schedule?" +
                 "\nCreate new\t\tLoad existing");
-        String choice =scanner.nextLine().toUpperCase();
-        while(true){
-            if(choice.equals("CREATE NEW") || choice.equals("LOAD EXISTING")){
-                break;
-            }
+        String choice =scanner.nextLine().toUpperCase().strip();
+        while (!choice.equals("CREATE NEW") && !choice.equals("LOAD EXISTING")) {
             System.out.println("Please enter:\n" +
                     "Create new\t\tLoad existing");
-            choice = scanner.nextLine().toUpperCase();
+            choice = scanner.nextLine().toUpperCase().strip();
         }
 
         if(choice.equals("LOAD EXISTING")){ //Existing user
             System.out.println("Enter your name");
-            String sessionName=scanner.nextLine();
-            while(true){
-                if (!sessionName.isEmpty()){
-                    break;
-                }
+            String sessionName=scanner.nextLine().toUpperCase().strip();
+            while (sessionName.isEmpty()) {
                 System.out.println("Please enter a name:");
-                sessionName = scanner.nextLine().toUpperCase();
+                sessionName = scanner.nextLine().toUpperCase().strip();
             }
             for(Schedule s: schedules){
-                if(s.getUser().getName().equals(sessionName)){
+                if(s.getUser().getName().toUpperCase().equals(sessionName)){
                     System.out.println("Welcome back "+s.getUser().getName());
                     return s.getUser();
                 }
             }
             System.out.println("Could not find your profile, sorry");
-            return newUser();
-
-        }else {//New user
-            return newUser();
         }
+        //New User
+        return newUser();
     }
 }
