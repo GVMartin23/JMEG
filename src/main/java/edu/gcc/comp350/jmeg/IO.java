@@ -128,9 +128,9 @@ public class IO {
         //lambda sorting files in directory by those that are csv files
         File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
 
-        if (schedules == null) {
-            schedules = new File[0];
-        }
+//        if (schedules == null) {
+//            schedules = new File[0];
+//        }
 
         //Load each schedule individually
         for (File file : schedules) {
