@@ -12,12 +12,14 @@ public class Search {
     private final Schedule currentSchedule;
 
     private boolean leave;
+    private boolean leaveResults;
 
     public Search(Schedule schedule) {
         currentSchedule = schedule;
         filters = new ArrayList<>();
         io = IO.getInstance();
         leave = false;
+        leaveResults = false;
     }
 
     /**
@@ -31,7 +33,6 @@ public class Search {
         Scanner scnr = io.getScanner();
         ArrayList<Course> results = null;
 
-        String exit = "";
         while (!leave) {
             System.out.println("Search by,");
             System.out.println("Name    Day     Time    Code");
@@ -53,13 +54,19 @@ public class Search {
                 System.out.println("Incorrect Search or Identifier");
             } else if (results.isEmpty()) {
                 System.out.println("Search produced zero results, try a different query or identifier");
+                results = null;
             } else {
                 results = resultsInteract(results);
             }
 
+            if (leaveResults) {
+                leaveResults = false;
+                continue;
+            }
+
             if (!leave) {
                 System.out.println("Continue Searching? (Y/N): ");
-                exit = scnr.nextLine().toUpperCase().strip();
+                String exit = scnr.nextLine().toUpperCase().strip();
                 if (exit.equals("N")) {
                     leave = true;
                 }
@@ -71,48 +78,48 @@ public class Search {
     private void addCourseInteract(ArrayList<Course> results) {
         Scanner scnr = io.getScanner();
 
-        Boolean success = false;
+        boolean success = false;
         while (!success) {
             System.out.println("Enter the course code of the class you wish to add, or Q to quit");
             String courseCodeToAdd = scnr.nextLine().toUpperCase().strip();
             if (courseCodeToAdd.equals("Q")) {
-                leave = true;
+                leaveResults = true;
                 return;
             }
             String userCode = courseCodeToAdd.replace(" ", "").strip();
             for (Course i : results) {
                 String resultCode = i.getCrs_code().replace(" ", "").strip();
                 if (resultCode.equals(userCode)) {
-                    if (currentSchedule.getCourses().size() > 0) {
+                    if (currentSchedule.getCourses().size() > 0) {//If there is stuff in the existing calendar
                         for (Course j : currentSchedule.getCourses()) {
-                            if (i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
-                                    i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getEndTimeCode()
-                                    ||
-                                    i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getBeginTimeCode() &&
-                                            i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode()
-                                    ||
-                                    i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
-                                            i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode()) {
+                            if (TimeSlot.dayOverlap(i.getTimeSlot(), j.getTimeSlot()) && coursesOverlap(i, j)) {
                                 System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
                                 return;
                             } else {
                                 currentSchedule.getCourses().add(i);
-                                success = true;
-                                break;
+                                leave = true;
+                                leaveResults = true;
+                                return;
                             }
                         }
-                    } else {
+                    } else {//Nothing in the schedule
                         System.out.println("Add course"+courseCodeToAdd+" ? Y/N");
                         String answer=scnr.nextLine().toUpperCase();
                         while(!answer.equals("Y")&& !answer.equals("N")){
-                        System.out.println("Invalid input. Enter Y/N");
-                        answer=scnr.nextLine();
+                            System.out.println("Invalid input. Enter Y/N");
+                            answer=scnr.nextLine();
                         }
                         if(answer.equals("Y")) {
-                            success = true;
-                            currentSchedule.getCourses().add(i);
+                            for (Course c : results) {
+                                if (c.equals(i)) {
+                                    currentSchedule.getCourses().add(c);
+                                }
+                            }
+                            leaveResults = true;
+                            leave = true;
+                            //Should send them back to searchInteract
                         }
-                        break;
+                        return;
                     }
                 }
             }
@@ -120,23 +127,36 @@ public class Search {
                 System.out.println("Failed to add class. Invalid course code, try again");
             }
         }
-
-
-        System.out.println("Successfully added course.  Current course list:\n");
-        for (Course c : currentSchedule.getCourses()) {
-            System.out.print(c.getCrs_title() + " ");
-        }
-
     }
 
-
-
+    /**
+     * returns true if courses overlap, false otherwise
+     * @param i
+     * @param j
+     * @return
+     */
+    public Boolean coursesOverlap(Course i, Course j){
+        if(i.getTimeSlot().getBeginTimeCode()==j.getTimeSlot().getBeginTimeCode() || i.getTimeSlot().getEndTimeCode()==j.getTimeSlot().getEndTimeCode()){
+            return true;
+        }
+        return ((i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
+                i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getEndTimeCode())
+                ||
+                (i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getBeginTimeCode() &&
+                        i.getTimeSlot().getEndTimeCode() >= j.getTimeSlot().getEndTimeCode())
+                ||
+                (i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
+                        i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode())
+                ||
+                (i.getTimeSlot().getBeginTimeCode()<=j.getTimeSlot().getEndTimeCode() )&&
+                        i.getTimeSlot().getEndTimeCode()>=j.getTimeSlot().getBeginTimeCode());
+    }
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
-        while (!leave) {
+        while (!leaveResults) {
             System.out.print(Course.succinctCourse(courseList));
             System.out.println("What would you like to do?");
-            System.out.println("Add Course     Filter    View Details     Continue Searching");
+            System.out.println("Add Course     Filter    View Details     Search Again      Exit");
             String input = scnr.nextLine().strip().toUpperCase();
             while (input.equals("")) {
                 input = scnr.nextLine().strip().toUpperCase();
@@ -147,8 +167,11 @@ public class Search {
                 courseList = filterInteract(courseList);
             } else if (input.equals("VIEW DETAILS")) {
                 viewDetailsInteract(courseList);
-            } else if (input.equals("CONTINUE SEARCHING")) {
+            } else if (input.equals("SEARCH AGAIN")) {
                 System.out.println("Returning to search");
+                leaveResults = true;
+            } else if (input.equals("EXIT")){
+                leaveResults = true;
                 leave = true;
             } else {
                 System.out.println("Error, invalid input");
@@ -202,10 +225,7 @@ public class Search {
     private void viewDetailsInteract(ArrayList<Course> courseList) {
         Scanner scan = io.getScanner();
         System.out.println("Which course would you like to view details on?");
-        System.out.println("Choose one of the following:");
-        for(Course c : courseList) {
-            System.out.println(c.getCrs_code());
-        }
+
         String courseCode = scan.nextLine().toUpperCase().strip();
 
         List<Course> courses = courseList.stream().filter(c -> c.getCrs_code().equals(courseCode)).collect(Collectors.toList());

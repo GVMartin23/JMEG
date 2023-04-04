@@ -129,7 +129,7 @@ public class IO {
         File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
 
         if (schedules == null) {
-            schedules = new File[0];
+            return;
         }
 
         //Load each schedule individually
@@ -183,7 +183,7 @@ public class IO {
 
         //Go through each Crs_code in file and add that course to schedule
         for (Course course : Main.getCourses()) {
-            String courseID = course.getCrs_code() + "|" + course.getYr_code();
+            String courseID = course.getCrs_code() + "|" + course.getYr_code() + "|" + course.getTrm_code();
             if (courseVars.contains(courseID)) {
                 scheduleCourses.add(course);
             }
@@ -259,7 +259,7 @@ public class IO {
     private String formatCourseCSV(ArrayList<Course> Courses) {
         StringBuilder sb = new StringBuilder();
         for (Course c : Courses) {
-            sb.append(c.getCrs_code()).append("|").append(c.getYr_code()).append(",");
+            sb.append(c.getCrs_code()).append("|").append(c.getYr_code()).append("|").append(c.getTrm_code()).append(",");
         }
 
         if (sb.length() == 0) {

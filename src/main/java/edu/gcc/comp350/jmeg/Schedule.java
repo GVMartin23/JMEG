@@ -11,7 +11,6 @@ public class Schedule {
     private String title;
     private int credits;
     private ArrayList<Course> courses;
-    private Calendar calendar;
 
     public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar, ArrayList<Course> allCourses){
         //Might not need
@@ -19,7 +18,6 @@ public class Schedule {
         this.title = title;
         this.credits = credits;
         this.courses = courses;
-        this.calendar = calendar;
     }
 
     public Schedule(User user, String title) {
@@ -48,6 +46,10 @@ public Schedule(User user, String title, ArrayList<Course> courses){
         return user;
     }
 
+    public boolean isEmpty() {
+        return (this.title.equals(""));
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -74,14 +76,6 @@ public Schedule(User user, String title, ArrayList<Course> courses){
 
     public void setCourses(ArrayList<Course> courses) {
         this.courses = courses;
-    }
-
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
     }
 
     /**
@@ -134,20 +128,17 @@ public Schedule(User user, String title, ArrayList<Course> courses){
        }else {
            System.out.println("Entire class list:");
            //Lists out all classes in schedule
-           for (Course c : courses) {
-               System.out.print(" " + c.getCrs_title());
-           }
+           System.out.println(Course.succinctCourse(courses));
        }
 
        while (true) {
            if (firstTime) {
                firstTime = false;
            } else {
+               System.out.println("Viewing schedule "+ title);
                System.out.println("Entire class list:");
                //Lists out all classes in schedule
-               for (Course c : courses) {
-                   System.out.print(" " + c.getCrs_title());
-               }
+               System.out.println(Course.succinctCourse(courses));
            }
 
            System.out.println("\nWhat would you like to do?\nSearch     View Calendar       Remove Course       Quit");

@@ -5,9 +5,9 @@ public class Filter {
         YEAR, TERM,
     }
 
-    private FilterTypes filterType;
+    private final FilterTypes filterType;
     private boolean active;
-    private String filterName;
+    private final String filterName;
 
     public Filter(String filterType, String filterName){
         this.filterName = filterName;
@@ -20,10 +20,6 @@ public class Filter {
         return filterType;
     }
 
-    public void setFilterType(FilterTypes filterType) {
-        this.filterType = filterType;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -34,10 +30,6 @@ public class Filter {
 
     public String getFilterName() {
         return filterName;
-    }
-
-    public void setFilterName(String filterName) {
-        this.filterName = filterName;
     }
 
     @Override

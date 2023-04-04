@@ -92,12 +92,12 @@ class SearchTest {
 
     @Test
     void searchCourseTime() {
-        ArrayList<Course> courses = search.search("TIME", "12PM", Main.getCourses());
+        ArrayList<Course> courses = search.search("TIME", "12:00PM", Main.getCourses());
 
         boolean isTime = true;
 
         for (Course c : courses) {
-            isTime = c.getBegin_tim().contains("12PM");
+            isTime = c.getBegin_tim().contains("12:00PM");
         }
 
         assertTrue(isTime);
@@ -144,5 +144,22 @@ class SearchTest {
 
         assertEquals(courses.size(), courses.stream().filter(c -> c.getYr_code() == 2018).count());
         assertEquals("Already filtered by year", outContent.toString().trim());
+    }
+
+    @Test
+    void overLapTimeTest() {
+        Course c1 = Main.getCourses().get(2671);
+        Course c2 = Main.getCourses().get(2673);
+        //2 different timed classes
+        assertFalse(search.coursesOverlap(c1, c2));
+
+
+        c1 = Main.getCourses().get(2673);
+        //Same class, so should overlap
+        assertTrue(search.coursesOverlap(c1, c2));
+
+
+
+
     }
 }
