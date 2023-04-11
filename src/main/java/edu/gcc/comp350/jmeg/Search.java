@@ -140,7 +140,7 @@ public class Search {
      * @param j
      * @return
      */
-    public Boolean coursesOverlap(Course i, Course j) {
+    public Boolean coursesOverlap(Course i, Course j) {//TODO Get rid of prints
         System.out.println("I start/end: " + i.getTimeSlot().getBeginTimeCode()+"-"+i.getTimeSlot().getEndTimeCode() + " J start/end: " + j.getTimeSlot().getBeginTimeCode()+"-"+j.getTimeSlot().getEndTimeCode());
         if (i.getTimeSlot().getBeginTimeCode() == j.getTimeSlot().getBeginTimeCode() || i.getTimeSlot().getEndTimeCode() == j.getTimeSlot().getEndTimeCode()) {//if they equal, they overlap
             System.out.println("Same start time");
