@@ -1,4 +1,5 @@
 package edu.gcc.comp350.jmeg;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -90,26 +91,29 @@ public class Search {
             for (Course i : results) {
                 String resultCode = i.getCrs_code().replace(" ", "").strip();
                 if (resultCode.equals(userCode)) {
+                    System.out.println("SIZE" + currentSchedule.getCourses().size());
+                    Course course = new Course();
                     if (currentSchedule.getCourses().size() > 0) {//If there is stuff in the existing calendar
                         for (Course j : currentSchedule.getCourses()) {
                             if (TimeSlot.dayOverlap(i.getTimeSlot(), j.getTimeSlot()) && coursesOverlap(i, j)) {
                                 System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
                                 return;
                             } else {
-                                currentSchedule.getCourses().add(i);
-                                leave = true;
-                                leaveResults = true;
-                                return;
+                                course = i;
                             }
                         }
+                        currentSchedule.getCourses().add(i);
+                        leave = true;
+                        leaveResults = true;
+                        return;
                     } else {//Nothing in the schedule
-                        System.out.println("Add course"+courseCodeToAdd+" ? Y/N");
-                        String answer=scnr.nextLine().toUpperCase();
-                        while(!answer.equals("Y")&& !answer.equals("N")){
+                        System.out.println("Add course" + courseCodeToAdd + " ? Y/N");
+                        String answer = scnr.nextLine().toUpperCase();
+                        while (!answer.equals("Y") && !answer.equals("N")) {
                             System.out.println("Invalid input. Enter Y/N");
-                            answer=scnr.nextLine();
+                            answer = scnr.nextLine();
                         }
-                        if(answer.equals("Y")) {
+                        if (answer.equals("Y")) {
                             for (Course c : results) {
                                 if (c.equals(i)) {
                                     currentSchedule.getCourses().add(c);
@@ -131,26 +135,33 @@ public class Search {
 
     /**
      * returns true if courses overlap, false otherwise
+     *
      * @param i
      * @param j
      * @return
      */
-    public Boolean coursesOverlap(Course i, Course j){
-        if(i.getTimeSlot().getBeginTimeCode()==j.getTimeSlot().getBeginTimeCode() || i.getTimeSlot().getEndTimeCode()==j.getTimeSlot().getEndTimeCode()){
+    public Boolean coursesOverlap(Course i, Course j) {
+        System.out.println("I start/end: " + i.getTimeSlot().getBeginTimeCode()+"-"+i.getTimeSlot().getEndTimeCode() + " J start/end: " + j.getTimeSlot().getBeginTimeCode()+"-"+j.getTimeSlot().getEndTimeCode());
+        if (i.getTimeSlot().getBeginTimeCode() == j.getTimeSlot().getBeginTimeCode() || i.getTimeSlot().getEndTimeCode() == j.getTimeSlot().getEndTimeCode()) {//if they equal, they overlap
+            System.out.println("Same start time");
             return true;
         }
-        return ((i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
-                i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getEndTimeCode())
-                ||
-                (i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getBeginTimeCode() &&
-                        i.getTimeSlot().getEndTimeCode() >= j.getTimeSlot().getEndTimeCode())
-                ||
-                (i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
-                        i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode())
-                ||
-                (i.getTimeSlot().getBeginTimeCode()<=j.getTimeSlot().getEndTimeCode() )&&
-                        i.getTimeSlot().getEndTimeCode()>=j.getTimeSlot().getBeginTimeCode());
+        if (i.getTimeSlot().getBeginTimeCode() > j.getTimeSlot().getBeginTimeCode() && i.getTimeSlot().getBeginTimeCode() < j.getTimeSlot().getEndTimeCode()) {//if start time is in between
+            System.out.println("Start time in between");
+            return true;
+        }
+        if (i.getTimeSlot().getEndTimeCode() > j.getTimeSlot().getBeginTimeCode() && i.getTimeSlot().getEndTimeCode() < j.getTimeSlot().getEndTimeCode()) {//end time is in between
+            System.out.println("End time in between");
+
+            return true;
+        }
+        if (i.getTimeSlot().getBeginTimeCode() < j.getTimeSlot().getBeginTimeCode() && i.getTimeSlot().getEndTimeCode() > j.getTimeSlot().getEndTimeCode()) {//Surrounds
+            System.out.println("Sandwich overlap (starts before and ends after)");
+            return true;
+        }
+        return false;
     }
+
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
         while (!leaveResults) {
@@ -170,7 +181,7 @@ public class Search {
             } else if (input.equals("SEARCH AGAIN")) {
                 System.out.println("Returning to search");
                 leaveResults = true;
-            } else if (input.equals("EXIT")){
+            } else if (input.equals("EXIT")) {
                 leaveResults = true;
                 leave = true;
             } else {
@@ -180,7 +191,6 @@ public class Search {
 
         return courseList;
     }
-
 
 
     private ArrayList<Course> filterInteract(ArrayList<Course> courseList) {
@@ -197,7 +207,7 @@ public class Search {
         if (filterBy.equals("YEAR")) {
             System.out.println("Enter year (2018, 2019, 2020): ");
             filterVal = scnr.next();
-            if(filterVal.equals("2018") || filterVal.equals("2019") || filterVal.equals("2020")) {
+            if (filterVal.equals("2018") || filterVal.equals("2019") || filterVal.equals("2020")) {
                 filter = new Filter(filterBy, filterVal);
             } else {
                 System.out.println("Error, invalid input.");
@@ -220,6 +230,7 @@ public class Search {
     /**
      * This method finds the course the user wants more details on and uses the viewDetails method
      * to take that course and display more info on it
+     *
      * @param courseList - list of courses in csv
      */
     private void viewDetailsInteract(ArrayList<Course> courseList) {
@@ -240,8 +251,9 @@ public class Search {
 
     /**
      * Takes in and identifier and searches based on input
+     *
      * @param identifier defines what method to search by
-     * @param input string that is used to search
+     * @param input      string that is used to search
      * @return List of courses if identifier exits else null
      */
     public ArrayList<Course> search(String identifier, String input, ArrayList<Course> searchList) {
@@ -261,6 +273,7 @@ public class Search {
     /**
      * This method takes in user input and searches the course list based on the course name
      * that is inputted
+     *
      * @param input - user input (course name) as a string
      * @return - course list including courses with the course name specified by the user
      */
@@ -278,6 +291,7 @@ public class Search {
     /**
      * This method takes in user input and searches the course list based on the course code
      * that is inputted
+     *
      * @param input- user input (course code) as a string
      * @return - course list including courses with the course name specified by the user
      */
@@ -295,6 +309,7 @@ public class Search {
     /**
      * This method takes in user input and searches the course list based on the course day
      * that is inputted
+     *
      * @param input- user input (course day) as a string
      * @return - course list including courses with the course name specified by the user
      */
@@ -302,31 +317,31 @@ public class Search {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : searchList) {
-            if(input.equals("M") || input.equals("MON") || input.equals("MONDAY")){
+            if (input.equals("M") || input.equals("MON") || input.equals("MONDAY")) {
                 if (course.getMonday_cde().contains(input)) {
                     c.add(course);
                 }
             }
 
-            if(input.equals("T") || input.equals("TUES") || input.equals("TUESDAY")){
+            if (input.equals("T") || input.equals("TUES") || input.equals("TUESDAY")) {
                 if (course.getTuesday_cde().contains(input)) {
                     c.add(course);
                 }
             }
 
-            if(input.equals("W") || input.equals("WED") || input.equals("WEDNESDAY")){
+            if (input.equals("W") || input.equals("WED") || input.equals("WEDNESDAY")) {
                 if (course.getWednesday_cde().contains(input)) {
                     c.add(course);
                 }
             }
 
-            if(input.equals("R") || input.equals("THURS") || input.equals("THURSDAY")){
+            if (input.equals("R") || input.equals("THURS") || input.equals("THURSDAY")) {
                 if (course.getThursday_cde().contains(input)) {
                     c.add(course);
                 }
             }
 
-            if(input.equals("F") || input.equals("FRI") || input.equals("FRIDAY")){
+            if (input.equals("F") || input.equals("FRI") || input.equals("FRIDAY")) {
                 if (course.getFriday_cde().contains(input)) {
                     c.add(course);
                 }
@@ -338,6 +353,7 @@ public class Search {
     /**
      * This method takes in user input and searches the course list based on the course begin time
      * that is inputted
+     *
      * @param input- user input (course begin time) as a string
      * @return - course list including courses with the course name specified by the user
      */
@@ -363,7 +379,7 @@ public class Search {
         }
 
         if (filter.getFilterType() == Filter.FilterTypes.YEAR) {
-            return  (ArrayList<Course>) courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
+            return (ArrayList<Course>) courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
         } else if (filter.getFilterType() == Filter.FilterTypes.TERM) {
             int termInt = filter.getFilterName().equals("FALL") ? 10 : 30;
             return (ArrayList<Course>) courses.stream().filter(c -> c.getTrm_code() == termInt).collect(Collectors.toList());
@@ -376,6 +392,7 @@ public class Search {
      * displays more information on the specified course.
      * Displays the course title, code, begin and end time, day, professor,
      * capacity, credits
+     *
      * @param c - course searched for
      */
     private void viewDetails(Course c) {
