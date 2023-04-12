@@ -1,7 +1,7 @@
 package edu.gcc.comp350.jmeg;
 
 public class Calendar {
-    private Schedule currentSchedule;
+    private final Schedule currentSchedule;
 
     public Calendar(Schedule currentSchedule){
 this.currentSchedule=currentSchedule;
@@ -24,7 +24,13 @@ this.currentSchedule=currentSchedule;
             String courseName = currentSchedule.getCourses().get(k).getCrs_title();
             TimeSlot slot = course.getTimeSlot();
             int timeCode = slot.getBeginTimeCode() - 8;
-            if (slot.isOnMonday()) {//TODO change k
+            if (slot.getBeginTimeCode() == 24) {
+                //Value used to represent classes that have no time
+                //Cant be shown on tradition calendar
+                //Maybe make a new Row to show classes without a specific time or day?
+                continue;
+            }
+            if (slot.isOnMonday()) {
                 calendarArray[0][timeCode]=course.getBegin_tim()+" "+courseName;
             }
             if (slot.isOnTuesday()) {
