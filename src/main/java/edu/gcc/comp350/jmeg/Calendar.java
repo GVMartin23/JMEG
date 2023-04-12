@@ -19,9 +19,8 @@ this.currentSchedule=currentSchedule;
         calendarArray[3][0]="Thursday\t";
         calendarArray[4][0]="Friday\t\t";
 
-        for(int k=0; k<currentSchedule.getCourses().size(); k++) {
-            Course course = currentSchedule.getCourses().get(k);
-            String courseName = currentSchedule.getCourses().get(k).getCrs_title();
+        for (Course course : currentSchedule.getCourses()) {
+            String courseName = course.getCrs_title();
             TimeSlot slot = course.getTimeSlot();
             int timeCode = slot.getBeginTimeCode() - 8;
             if (slot.getBeginTimeCode() == 24 || !slot.isInPerson()) {
