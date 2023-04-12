@@ -70,7 +70,13 @@ public class TimeSlot {
         String[] parsed = timeString.split(":");
 
         int parsedInt = Integer.parseInt(parsed[0]);
-        if (timeString.contains("PM")) {
+        if (timeString.contains("PM") && !timeString.contains("12")) {
+            //All PM times except Noon
+            return convertToMilitary(parsedInt);
+        }
+
+        if (timeString.contains("12") && !timeString.contains("PM")) {
+            //Catch 12AM classes
             return convertToMilitary(parsedInt);
         }
 
