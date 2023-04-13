@@ -1,12 +1,11 @@
 package edu.gcc.comp350.jmeg;
 
 public class TimeSlot {
-    private final boolean onMonday;
-    private final boolean onTuesday;
-    private final boolean onWednesday;
-    private final boolean onThursday;
-    private final boolean onFriday;
-    private final boolean inPerson;
+    private boolean onMonday;
+    private boolean onTuesday;
+    private boolean onWednesday;
+    private boolean onThursday;
+    private boolean onFriday;
 
     int beginTimeCode;
     int endTimeCode;
@@ -32,7 +31,7 @@ public class TimeSlot {
     }
 
     public boolean isInPerson() {
-        return inPerson;
+        return onMonday || onTuesday || onWednesday || onThursday || onFriday;
     }
 
     public int getBeginTimeCode() {
@@ -49,15 +48,15 @@ public class TimeSlot {
         onWednesday = c.getWednesday_cde().equals("W");
         onThursday = c.getThursday_cde().equals("R");
         onFriday = c.getFriday_cde().equals("F");
-        inPerson = onMonday || onTuesday || onWednesday || onThursday || onFriday;
-        beginTimeCode = 0;
-        endTimeCode = 0;
-        getTimeCodes(c);
-    }
-
-    private void getTimeCodes(Course c) {
         beginTimeCode = getCode(c.getBegin_tim());
         endTimeCode = getCode(c.getEnd_tim());
+    }
+
+    /**
+     * Constructor used for testing only
+     */
+    public TimeSlot() {
+
     }
 
     /**
@@ -66,13 +65,23 @@ public class TimeSlot {
      * @param timeString string to convert
      * @return corresponding time
      */
-    private int getCode(String timeString) {
+    public int getCode(String timeString) {
         String[] parsed = timeString.split(":");
 
         int parsedInt = Integer.parseInt(parsed[0]);
-        if (timeString.contains("PM")) {
-            return convertToMilitary(parsedInt);
+        if (timeString.contains("PM") && !timeString.contains("12")) {
+            //All PM times except Noon
+            parsedInt = convertToMilitary(parsedInt);
         }
+
+        if (timeString.contains("12") && !timeString.contains("PM")) {
+            //Catch 12AM classes
+            parsedInt = convertToMilitary(parsedInt);
+        }
+
+        //Convert hours to minutes and add minutes
+        parsedInt *= 60;
+        parsedInt += Integer.parseInt(parsed[1].substring(0,2));
 
         return parsedInt;
     }

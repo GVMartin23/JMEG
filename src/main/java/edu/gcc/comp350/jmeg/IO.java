@@ -168,9 +168,7 @@ public class IO {
         }
         List<String> courseVars = Arrays.asList(coursesData.split(","));
 
-        for (int i = 0; i < courseVars.size(); i++) {
-            courseVars.set(i, courseVars.get(i).strip());
-        }
+        courseVars.replaceAll(String::strip);
 
 
         Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
