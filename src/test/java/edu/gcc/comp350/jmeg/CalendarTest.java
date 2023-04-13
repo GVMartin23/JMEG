@@ -21,7 +21,7 @@ class CalendarTest {
     public void calendarTest(){
         ArrayList<Course> courses=Main.getCourses();
 
-        User u=new User("Ethan", "CS", "AI", 2024);
+        User u=new User("Ethan", "CS", "AI");
         Course c= courses.get(100);
         Course c2= courses.get(2);
         Course c3=courses.get(3);

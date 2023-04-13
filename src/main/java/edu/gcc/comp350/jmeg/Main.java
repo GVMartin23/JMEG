@@ -126,15 +126,7 @@ public class Main {
             minor = scanner.nextLine().toUpperCase().strip();
         }
 
-        System.out.println("Please enter your year");
-
-        while (!scanner.hasNextInt()) {
-            String line = scanner.nextLine();
-            System.out.println("Please enter a valid year");
-        }
-        int year = scanner.nextInt();
-
-        User user = new User(userName, major, minor, year); //Create a new user
+        User user = new User(userName, major, minor); //Create a new user
         System.out.println("\nWelcome, " + user.getName());
         return user;
     }

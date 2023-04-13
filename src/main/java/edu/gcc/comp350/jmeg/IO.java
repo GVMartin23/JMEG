@@ -173,7 +173,7 @@ public class IO {
 
         Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
 
-        User user = new User(userVars[0], userVars[1], userVars[2], Integer.parseInt(userVars[3]));
+        User user = new User(userVars[0], userVars[1], userVars[2]);
 
         schedule.setUser(user);
 
@@ -245,8 +245,7 @@ public class IO {
     private String formatUserCSV(User user) {
         return user.getName() + "," +
                 user.getMajor() + "," +
-                user.getMinor() + "," +
-                user.getYear() + "\n";
+                user.getMinor() + ",";
     }
 
     /**

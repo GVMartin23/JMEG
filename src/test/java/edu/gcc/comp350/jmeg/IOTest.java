@@ -46,7 +46,7 @@ class IOTest {
     @Test
     void saveSchedule() {
         Schedule schedule = new Schedule("TITLE", 0);
-        User user = new User("Joe" , "MAJOR", "MINOR", 1);
+        User user = new User("Joe" , "MAJOR", "MINOR");
         schedule.setUser(user);
         ArrayList<Course> courses = new ArrayList<>();
         Course course = new Course();
