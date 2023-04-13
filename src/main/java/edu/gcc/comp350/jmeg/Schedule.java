@@ -46,10 +46,6 @@ public class Schedule {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public int getCredits() {
         return credits;
     }
@@ -95,6 +91,7 @@ public class Schedule {
    private void getRecommendedSchedule(User user){
         //TODO: stretch goal
    }
+
    private void switchSection(Course old_course, Course new_course){
         removeCourse(old_course);
         courses.add(new_course);

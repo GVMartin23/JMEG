@@ -26,10 +26,6 @@ public class Main {
         return schedules;
     }
 
-    public static void setSchedules(ArrayList<Schedule> schedules) {
-        Main.schedules = schedules;
-    }
-
     public static void main(String[] args) {
         io = IO.getInstance();
         io.importCSVData();//Load courses into arrayList from CSV
@@ -39,11 +35,6 @@ public class Main {
         ArrayList<Schedule> userSchedules=fillUserSchedules(user);//Create arrayList of schedules for the user,
         userScheduleSelect(user, userSchedules);//Allow for search/add class interface
     }
-
-    private static Schedule createSchedule(){
-        return null;
-    }
-
 
     /**
      *
@@ -134,7 +125,7 @@ public class Main {
         if (schedules.isEmpty()) { //user has no schedules so they're new
             return newUser();
         }
-        //otherwise ask if they would like to make a new schedule or load exisiting schedules
+        //otherwise ask if they would like to make a new schedule or load existing schedules
         //System.out.println(schedules.get(0).getTitle());
         Scanner scanner = io.getScanner();
         System.out.println("Would you like to make a new schedule or load an existing schedule?" +

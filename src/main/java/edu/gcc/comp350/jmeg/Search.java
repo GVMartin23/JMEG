@@ -50,7 +50,7 @@ public class Search {
     /**
      * Basic method for interaction with program
      * Everything in here can change
-     * Return at end used to pass by returntoSchedule
+     * Return at end used to pass by return to Schedule
      * If this method is only called in scheduleInteract,
      * then a return will send it back to that method
      */
@@ -149,9 +149,9 @@ public class Search {
 
     /**
      * returns true if courses overlap, false otherwise
-     * @param i
-     * @param j
-     * @return
+     * @param i Course for evaluation
+     * @param j Course for evaluation
+     * @return True if courses overlap, false otherwise
      */
     public Boolean coursesOverlap(Course i, Course j){
         if(i.getTimeSlot().getBeginTimeCode()==j.getTimeSlot().getBeginTimeCode() || i.getTimeSlot().getEndTimeCode()==j.getTimeSlot().getEndTimeCode()){

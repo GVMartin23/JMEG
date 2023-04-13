@@ -160,7 +160,7 @@ public class IO {
             coursesData = reader.readLine();
         }
 
-        //Split lines of csv into unique vals
+        //Split lines of csv into unique values
         String[] scheduleVars = scheduleData.split(",");
         String[] userVars = userData.split(",");
         if(coursesData==null){
@@ -193,7 +193,7 @@ public class IO {
 
 
     /**
-     * Method to check if file is one of the data CSV's instead of a schedule
+     * Method to check if file is one of the data CSVs instead of a schedule
      * Only Needed when course data is stored in CSVs
      * @param filename name of file to check
      * @return true if filename is same as data files
@@ -252,7 +252,7 @@ public class IO {
     /**
      * CSV formats a list of courses by course code
      * @param Courses list of courses to format
-     * @return string of csv formated course codes
+     * @return string of csv formatted course codes
      */
     private String formatCourseCSV(ArrayList<Course> Courses) {
         StringBuilder sb = new StringBuilder();
