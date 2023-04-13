@@ -1,7 +1,6 @@
 package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -10,16 +9,42 @@ public class Search {
     private final IO io;
     private ArrayList<Filter> filters;
     private final Schedule currentSchedule;
-
+    private ArrayList<Course> results;
     private boolean leave;
     private boolean leaveResults;
 
-    public Search(Schedule schedule) {
+    public Search(Schedule schedule, String semester, int year) {
         currentSchedule = schedule;
-        filters = new ArrayList<>();
         io = IO.getInstance();
         leave = false;
         leaveResults = false;
+        results = initFilters(semester, year);
+    }
+
+    /**
+     * Creates filters for semester and year based on constructor input
+     * Takes full list of Courses and filters by semester and year
+     * @param semester String semester to filter by
+     * @param year int year to filter by
+     * @return Filtered list of Courses
+     */
+    private ArrayList<Course> initFilters(String semester, int year) {
+        ArrayList<Course> filteredCourses = new ArrayList<>(Main.getCourses());
+
+        semester = semester.toUpperCase();
+        if (semester.equals("FALL") || semester.equals("SPRING")) {
+            Filter semesterFilter = new Filter("TERM", semester);
+            filterCourses(semesterFilter, filteredCourses);
+            getFilters().add(semesterFilter);
+        }
+
+        if (year == 2018 || year == 2019 || year == 2020) {
+            Filter yearFilter = new Filter("YEAR", String.valueOf(year));
+            filterCourses(yearFilter, filteredCourses);
+            getFilters().add(yearFilter);
+        }
+
+        return filteredCourses;
     }
 
     /**
@@ -31,7 +56,6 @@ public class Search {
      */
     public void searchInteraction() {
         Scanner scnr = io.getScanner();
-        ArrayList<Course> results = null;
 
         while (!leave) {
             System.out.println("Search by,");
@@ -42,13 +66,7 @@ public class Search {
             System.out.println("Enter query:");
             String search = scnr.nextLine().toUpperCase();
 
-            //Gets list of results from search
-            if (results == null) {
-                results = search(identifier, search, Main.getCourses());
-            } else {
-                results = search(identifier, search, results);
-            }
-
+            results = search(identifier, search, results);
 
             if (results == null) {
                 System.out.println("Incorrect Search or Identifier");
@@ -387,9 +405,5 @@ public class Search {
             filters = new ArrayList<>();
         }
         return filters;
-    }
-
-    public void setFilters(ArrayList<Filter> filters) {
-        this.filters = filters;
     }
 }

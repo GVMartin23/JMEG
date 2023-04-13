@@ -170,8 +170,7 @@ public class IO {
 
         courseVars.replaceAll(String::strip);
 
-
-        Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
+        Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]), scheduleVars[2], Integer.parseInt(scheduleVars[3]));
 
         User user = new User(userVars[0], userVars[1], userVars[2]);
 
@@ -217,7 +216,7 @@ public class IO {
         try {
             try (PrintWriter pw = new PrintWriter(fileName)) {
 
-                pw.write( formatScheduleCSV(schedule));
+                pw.write(formatScheduleCSV(schedule));
                 pw.write(formatUserCSV(schedule.getUser()));
 
                 pw.write(formatCourseCSV(schedule.getCourses()));
@@ -234,7 +233,9 @@ public class IO {
      */
     private String formatScheduleCSV(Schedule schedule) {
         return schedule.getTitle() + "," +
-                schedule.getCredits() + "\n";
+                schedule.getCredits() + "," +
+                schedule.getSemester() + "," +
+                schedule.getYear() + "\n";
     }
 
     /**

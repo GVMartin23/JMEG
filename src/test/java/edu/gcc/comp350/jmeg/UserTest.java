@@ -2,8 +2,6 @@ package edu.gcc.comp350.jmeg;
 
 import org.junit.jupiter.api.Test;
 
-import java.sql.Time;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {

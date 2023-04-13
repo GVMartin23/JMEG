@@ -11,44 +11,32 @@ public class Schedule {
     private String title;
     private int credits;
     private ArrayList<Course> courses;
-
-    public Schedule(User user, String title, int credits, ArrayList<Course> courses, Calendar calendar, ArrayList<Course> allCourses){
-        //Might not need
-        this.user = user;
-        this.title = title;
-        this.credits = credits;
-        this.courses = courses;
-    }
+    private String semester;
+    private int year;
 
     public Schedule(User user, String title) {
         this.user = user;
         this.title = title;
         credits = 0;
     }
-public Schedule(User user, String title, ArrayList<Course> courses){
-        this.user=user;
-        this.title=title;
-        this.courses=courses;
-        credits = 0;
-}
+
     /**
      * Constructor for Schedule
      * Used in loading a schedule
      * @param title String title
      * @param credits int credits
      */
-    public Schedule(String title, int credits) {
+    public Schedule(String title, int credits, String semester, int year) {
         this.title = title;
         this.credits = credits;
+        this.semester = semester;
+        this.year = year;
     }
 
     public User getUser() {
         return user;
     }
 
-    public boolean isEmpty() {
-        return (this.title.equals(""));
-    }
 
     public void setUser(User user) {
         this.user = user;
@@ -78,12 +66,20 @@ public Schedule(User user, String title, ArrayList<Course> courses){
         this.courses = courses;
     }
 
+    public String getSemester() {
+        return semester;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     /**
      * Creates new Search class then enters the searchInteraction method in search
      * Used to go from scheduleInteract to searchInteraction
      */
    public void searchCourses() {
-        Search search = new Search(this);
+        Search search = new Search(this, semester, year);
         search.searchInteraction();
    }
 

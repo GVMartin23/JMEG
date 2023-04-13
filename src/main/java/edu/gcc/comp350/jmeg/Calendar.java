@@ -25,7 +25,7 @@ public class Calendar {
             int timeCode = slot.getBeginTimeCode() / 60;//Get timeCode Hour
             timeCode -= 8;//Convert hour to have 8AM be index 0
 
-            if (slot.isInPerson()) continue;
+            if (!slot.isInPerson()) continue;
 
             if (slot.isOnMonday()) {
                 calendarArray[0][timeCode]=course.getBegin_tim()+" "+courseName;

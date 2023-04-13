@@ -34,10 +34,9 @@ class CalendarTest {
         fakeCourseList.add(c3);
         fakeCourseList.add(c4);
         fakeCourseList.add(c5);
-        Schedule s=new Schedule(u,"Test Calendar", fakeCourseList);
+        Schedule s=new Schedule(u,"Test Calendar");
+        s.setCourses(fakeCourseList);
         Calendar cal=new Calendar(s);
-        System.out.println( cal.showCalendar());
-
+        System.out.println(cal.showCalendar());
     }
-
 }
