@@ -1,4 +1,5 @@
 package edu.gcc.comp350.jmeg;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,6 +20,17 @@ public class Search {
         leave = false;
         leaveResults = false;
         results = initFilters(semester, year);
+    }
+
+    /**
+     * Getter for filters
+     * @return filters is null, new ArrayList, else filters
+     */
+    public ArrayList<Filter> getFilters() {
+        if (filters == null) {
+            filters = new ArrayList<>();
+        }
+        return filters;
     }
 
     /**
@@ -246,7 +258,9 @@ public class Search {
 
         String courseCode = scan.nextLine().toUpperCase().strip();
 
-        List<Course> courses = courseList.stream().filter(c -> c.getCrs_code().equals(courseCode)).collect(Collectors.toList());
+        List<Course> courses = courseList.stream()
+                .filter(c -> c.getCrs_code().equals(courseCode))
+                .collect(Collectors.toList());
 
         if (courses.size() == 0) {
             System.out.println("Error, invalid course code, please enter correct code.");
@@ -283,14 +297,9 @@ public class Search {
      * @return - course list including courses with the course name specified by the user
      */
     public ArrayList<Course> searchCourseName(String input, ArrayList<Course> searchList) {
-        ArrayList<Course> c = new ArrayList<>();
-
-        for (Course course : searchList) {
-            if (course.getCrs_title().contains(input)) {
-                c.add(course);
-            }
-        }
-        return c;
+        return searchList.stream()
+                .filter(course -> course.getCrs_title().contains(input))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -300,14 +309,9 @@ public class Search {
      * @return - course list including courses with the course name specified by the user
      */
     public ArrayList<Course> searchCourseCode(String input, ArrayList<Course> searchList) {
-        ArrayList<Course> c = new ArrayList<>();
-
-        for (Course course : searchList) {
-            if (course.getCrs_code().contains(input)) {
-                c.add(course);
-            }
-        }
-        return c;
+        return searchList.stream()
+                .filter(course -> course.getCrs_code().contains(input))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -320,32 +324,33 @@ public class Search {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : searchList) {
+            TimeSlot timeSlot = course.getTimeSlot();
             if(input.equals("M") || input.equals("MON") || input.equals("MONDAY")){
-                if (course.getMonday_cde().contains(input)) {
+                if (timeSlot.isOnMonday()) {
                     c.add(course);
                 }
             }
 
             if(input.equals("T") || input.equals("TUES") || input.equals("TUESDAY")){
-                if (course.getTuesday_cde().contains(input)) {
+                if (timeSlot.isOnTuesday()) {
                     c.add(course);
                 }
             }
 
             if(input.equals("W") || input.equals("WED") || input.equals("WEDNESDAY")){
-                if (course.getWednesday_cde().contains(input)) {
+                if (timeSlot.isOnWednesday()) {
                     c.add(course);
                 }
             }
 
             if(input.equals("R") || input.equals("THURS") || input.equals("THURSDAY")){
-                if (course.getThursday_cde().contains(input)) {
+                if (timeSlot.isOnThursday()) {
                     c.add(course);
                 }
             }
 
             if(input.equals("F") || input.equals("FRI") || input.equals("FRIDAY")){
-                if (course.getFriday_cde().contains(input)) {
+                if (timeSlot.isOnFriday()) {
                     c.add(course);
                 }
             }
@@ -354,21 +359,15 @@ public class Search {
     }
 
     /**
-     * This method takes in user input and searches the course list based on the course begin time
-     * that is inputted
+     * This method takes in user input and searches the course list based on the course begin time and end time
+     * that is input
      * @param input- user input (course begin time) as a string
      * @return - course list including courses with the course name specified by the user
      */
     private ArrayList<Course> searchCourseTime(String input, ArrayList<Course> searchList) {
-
-        ArrayList<Course> c = new ArrayList<>();
-
-        for (Course course : searchList) {
-            if (course.getBegin_tim().contains(input)) {
-                c.add(course);
-            }
-        }
-        return c;
+        return searchList.stream()
+                .filter(course -> course.getBegin_tim().contains(input) || course.getEnd_tim().contains(input))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<Course> filterCourses(Filter filter, ArrayList<Course> courses) {
@@ -398,12 +397,5 @@ public class Search {
      */
     private void viewDetails(Course c) {
         System.out.println(c);
-    }
-
-    public ArrayList<Filter> getFilters() {
-        if (filters == null) {
-            filters = new ArrayList<>();
-        }
-        return filters;
     }
 }
