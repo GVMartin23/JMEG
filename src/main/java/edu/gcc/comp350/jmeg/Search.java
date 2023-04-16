@@ -399,7 +399,7 @@ public class Search {
     }
 
     /**
-     * Used for testing currently, clears previously used filters
+     * Clears previously used filters
      */
     public void clearFilters() {
         filters = new ArrayList<>();
