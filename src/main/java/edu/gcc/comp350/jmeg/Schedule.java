@@ -63,7 +63,7 @@ public class Schedule {
     }
 
     public String getSemester() {
-        return semester;
+        return semester == null ? "" : semester;
     }
 
     public int getYear() {
@@ -75,7 +75,7 @@ public class Schedule {
      * Used to go from scheduleInteract to searchInteraction
      */
    public void searchCourses() {
-        Search search = new Search(this, semester, year);
+        Search search = new Search(this);
         search.searchInteraction();
    }
 
@@ -86,10 +86,6 @@ public class Schedule {
      */
    public boolean removeCourse(Course course){
         return courses.remove(course);
-   }
-
-   private void getRecommendedSchedule(User user){
-        //TODO: stretch goal
    }
 
    private void switchSection(Course old_course, Course new_course){

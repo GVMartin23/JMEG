@@ -72,11 +72,11 @@ public class IO {
                 String end_tim = str[16];
                 String last_name = str[17];
                 String first_name = str[18];
-                String preferred_name = " ";
+                String preferred_name = "";
                 if(str.length == 20){
                     preferred_name = str[19];
                 }
-                String comment_txt = " ";
+                String comment_txt = "";
                 if(str.length == 21){
                     comment_txt = str[20];
 
@@ -125,8 +125,8 @@ public class IO {
     public void loadSchedules() {
         //Current working directory
         File directory = new File(System.getProperty("user.dir"));
-        //lambda sorting files in directory by those that are csv files
-        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !isDataCSV(name));
+        //lambda sorting files in directory by those that are csv files and are not data csv files
+        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && isNotDataCSV(name));
 
         if (schedules == null) {
             return;
@@ -193,13 +193,13 @@ public class IO {
 
 
     /**
-     * Method to check if file is one of the data CSVs instead of a schedule
+     * Method to check if file is not one of the data CSVs
      * Only Needed when course data is stored in CSVs
      * @param filename name of file to check
-     * @return true if filename is same as data files
+     * @return true if filename is not a data file
      */
-    public boolean isDataCSV(String filename) {
-        return filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv") || filename.contentEquals("UnifiedCSV.csv");
+    public boolean isNotDataCSV(String filename) {
+        return !(filename.equals("2018-2019.csv") || filename.equals("2019-2020.csv") || filename.equals("2020-2021.csv") || filename.contentEquals("UnifiedCSV.csv"));
     }
 
     /**

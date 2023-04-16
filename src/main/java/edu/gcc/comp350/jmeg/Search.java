@@ -1,5 +1,4 @@
 package edu.gcc.comp350.jmeg;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,12 +13,12 @@ public class Search {
     private boolean leave;
     private boolean leaveResults;
 
-    public Search(Schedule schedule, String semester, int year) {
+    public Search(Schedule schedule) {
         currentSchedule = schedule;
         io = IO.getInstance();
         leave = false;
         leaveResults = false;
-        results = initFilters(semester, year);
+        results = initFilters(schedule.getSemester(), schedule.getYear());
     }
 
     /**
@@ -397,5 +396,22 @@ public class Search {
      */
     private void viewDetails(Course c) {
         System.out.println(c);
+    }
+
+    /**
+     * Used for testing currently, clears previously used filters
+     */
+    public void clearFilters() {
+        filters = new ArrayList<>();
+    }
+
+    /**
+     * Probably will need in future
+     * Used so that we don't have to create a new schedule every time we want to search
+     * Will be useful when our search is a page with a searchbar instead of current implementation
+     */
+    public void resetSearch() {
+        clearFilters();
+        results = initFilters(currentSchedule.getSemester(), currentSchedule.getYear());
     }
 }

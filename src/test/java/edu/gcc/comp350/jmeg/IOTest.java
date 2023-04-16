@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,7 +57,7 @@ class IOTest {
 
         File directory = new File(System.getProperty("user.dir"));
 
-        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && !io.isDataCSV(name));
+        File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && io.isNotDataCSV(name));
 
         ArrayList<String> titles = new ArrayList<>();
         for (File file : schedules) {
