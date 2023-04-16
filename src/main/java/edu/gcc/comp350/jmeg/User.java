@@ -1,50 +1,27 @@
 package edu.gcc.comp350.jmeg;
 
 public class User {
-    private String name;
-    private String major;
-    private String minor;
-    private int year;
+    private final String name;
+    private final String major;
+    private final String minor;
 
-    public User(String name, String major, String minor, int year){
+    public User(String name, String major, String minor){
         this.name = name;
         this.major = major;
         this.minor = minor;
-        this.year = year;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getMajor() {
         return major;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
     }
 
     public String getMinor() {
         return minor;
     }
-
-    public void setMinor(String minor) {
-        this.minor = minor;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -60,7 +37,6 @@ public class User {
 
         return this.name.equals(user.name)
                 && this.major.equals(user.major)
-                && this.minor.equals(user.minor)
-                && this.year == user.year;
+                && this.minor.equals(user.minor);
     }
 }

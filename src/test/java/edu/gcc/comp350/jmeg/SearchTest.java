@@ -24,8 +24,8 @@ class SearchTest {
 
     @BeforeEach
     void prelim() {
-        Schedule schedule = new Schedule("TESTING", 0);
-        search = new Search(schedule);
+        Schedule schedule = new Schedule("TESTING", 0, "FALL", 2018);
+        search = new Search(schedule, "", 0);
     }
 
     @Test

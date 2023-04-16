@@ -23,6 +23,14 @@ class TimeSlotTest {
         c1 = Main.getCourses().get(2676);
         //Non overlapping
         assertFalse(TimeSlot.dayOverlap(c1.getTimeSlot(), c2.getTimeSlot()));
+    }
 
+    @Test
+    void getCode() {
+        TimeSlot slot = new TimeSlot();
+        assertEquals(24*60, slot.getCode("12:00AM"));
+        assertEquals(12*60, slot.getCode("12:00PM"));
+        assertEquals(13 * 60 + 50, slot.getCode("1:50PM"));
+        assertEquals(8 * 60, slot.getCode("8:00AM"));
     }
 }

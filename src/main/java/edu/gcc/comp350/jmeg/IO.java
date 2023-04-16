@@ -160,7 +160,7 @@ public class IO {
             coursesData = reader.readLine();
         }
 
-        //Split lines of csv into unique vals
+        //Split lines of csv into unique values
         String[] scheduleVars = scheduleData.split(",");
         String[] userVars = userData.split(",");
         if(coursesData==null){
@@ -168,14 +168,11 @@ public class IO {
         }
         List<String> courseVars = Arrays.asList(coursesData.split(","));
 
-        for (int i = 0; i < courseVars.size(); i++) {
-            courseVars.set(i, courseVars.get(i).strip());
-        }
+        courseVars.replaceAll(String::strip);
 
+        Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]), scheduleVars[2], Integer.parseInt(scheduleVars[3]));
 
-        Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]));
-
-        User user = new User(userVars[0], userVars[1], userVars[2], Integer.parseInt(userVars[3]));
+        User user = new User(userVars[0], userVars[1], userVars[2]);
 
         schedule.setUser(user);
 
@@ -196,7 +193,7 @@ public class IO {
 
 
     /**
-     * Method to check if file is one of the data CSV's instead of a schedule
+     * Method to check if file is one of the data CSVs instead of a schedule
      * Only Needed when course data is stored in CSVs
      * @param filename name of file to check
      * @return true if filename is same as data files
@@ -219,7 +216,7 @@ public class IO {
         try {
             try (PrintWriter pw = new PrintWriter(fileName)) {
 
-                pw.write( formatScheduleCSV(schedule));
+                pw.write(formatScheduleCSV(schedule));
                 pw.write(formatUserCSV(schedule.getUser()));
 
                 pw.write(formatCourseCSV(schedule.getCourses()));
@@ -236,7 +233,9 @@ public class IO {
      */
     private String formatScheduleCSV(Schedule schedule) {
         return schedule.getTitle() + "," +
-                schedule.getCredits() + "\n";
+                schedule.getCredits() + "," +
+                schedule.getSemester() + "," +
+                schedule.getYear() + "\n";
     }
 
     /**
@@ -247,14 +246,13 @@ public class IO {
     private String formatUserCSV(User user) {
         return user.getName() + "," +
                 user.getMajor() + "," +
-                user.getMinor() + "," +
-                user.getYear() + "\n";
+                user.getMinor() + ",";
     }
 
     /**
      * CSV formats a list of courses by course code
      * @param Courses list of courses to format
-     * @return string of csv formated course codes
+     * @return string of csv formatted course codes
      */
     private String formatCourseCSV(ArrayList<Course> Courses) {
         StringBuilder sb = new StringBuilder();
