@@ -55,6 +55,9 @@ public class Schedule {
     }
 
     public ArrayList<Course> getCourses() {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
         return courses;
     }
 
@@ -63,7 +66,10 @@ public class Schedule {
     }
 
     public String getSemester() {
-        return semester == null ? "" : semester;
+        if (semester == null) {
+            semester = "";
+        }
+        return semester;
     }
 
     public int getYear() {
@@ -88,7 +94,7 @@ public class Schedule {
         return courses.remove(course);
    }
 
-   private void switchSection(Course old_course, Course new_course){
+   public void switchSection(Course old_course, Course new_course){
         removeCourse(old_course);
         courses.add(new_course);
    }
