@@ -132,49 +132,73 @@ public class IO {
             return;
         }
 
+        ArrayList<Schedule> scheduleList = Main.getSchedules();
+
         //Load each schedule individually
         for (File file : schedules) {
-            ArrayList<Schedule> scheduleList = Main.getSchedules();
-            try {
-                scheduleList.add(parseSavedSchedule(file));
-            } catch (IOException e) {
-                //File not found error or failed in reading file
-                e.printStackTrace();
+            Schedule schedule = parseSavedFile(file);
+
+            if (schedule != null) {
+                scheduleList.add(schedule);
             }
         }
     }
 
     /**
-     * Takes input CSV file and parse information to load Schedule
+     * Takes input CSV file and parse information to create a Schedule
      * @param file File to parse
-     * @throws IOException if fileNotFound, or data read incorrectly
+     * @return Schedule based on file inputs
      */
-    private Schedule parseSavedSchedule(File file) throws IOException {
-        String scheduleData;
-        String userData;
-        String coursesData;
-        //Reads each line of saved schedule
+    private Schedule parseSavedFile(File file) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            scheduleData = reader.readLine();
-            userData = reader.readLine();
-            coursesData = reader.readLine();
+            Schedule schedule = parseSavedSchedule(reader.readLine());
+            User user = parseSavedUser(reader.readLine());
+            ArrayList<Course> courses = parseSavedCourses(reader.readLine());
+            schedule.setUser(user);
+            schedule.setCourses(courses);
+            return schedule;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
+    }
 
-        //Split lines of csv into unique values
+    /**
+     * Takes string of csv values and then creates Schedule based on the values in the String
+     * @param scheduleData raw data to parse
+     * @return Schedule based on parsed values
+     */
+    private Schedule parseSavedSchedule(String scheduleData) {
         String[] scheduleVars = scheduleData.split(",");
+
+        return new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]), scheduleVars[2], Integer.parseInt(scheduleVars[3]));
+    }
+
+    /**
+     * Takes string of csv values and then creates User based on values in String
+     * @param userData raw data to parse
+     * @return User based on parsed values
+     */
+    private User parseSavedUser(String userData) {
         String[] userVars = userData.split(",");
+
+        return new User(userVars[0], userVars[1], userVars[2]);
+    }
+
+    /**
+     * Takes string of potential csv Course raw data
+     * Converts each Course '|' seperated raw data into a course
+     * Returns list of Courses that were describe in raw String
+     * @param coursesData raw csv data to be parsed
+     * @return if null, empty list, else ArrayList of Courses parsed from raw data
+     */
+    private ArrayList<Course> parseSavedCourses(String coursesData) {
         if(coursesData==null){
             coursesData="";
         }
         List<String> courseVars = Arrays.asList(coursesData.split(","));
 
         courseVars.replaceAll(String::strip);
-
-        Schedule schedule = new Schedule(scheduleVars[0], Integer.parseInt(scheduleVars[1]), scheduleVars[2], Integer.parseInt(scheduleVars[3]));
-
-        User user = new User(userVars[0], userVars[1], userVars[2]);
-
-        schedule.setUser(user);
 
         ArrayList<Course> scheduleCourses = new ArrayList<>();
 
@@ -186,9 +210,7 @@ public class IO {
             }
         }
 
-        schedule.setCourses(scheduleCourses);
-
-        return schedule;
+        return scheduleCourses;
     }
 
 
@@ -218,7 +240,6 @@ public class IO {
 
                 pw.write(formatScheduleCSV(schedule));
                 pw.write(formatUserCSV(schedule.getUser()));
-
                 pw.write(formatCourseCSV(schedule.getCourses()));
             }
         } catch (FileNotFoundException fne) {
@@ -246,7 +267,7 @@ public class IO {
     private String formatUserCSV(User user) {
         return user.getName() + "," +
                 user.getMajor() + "," +
-                user.getMinor() + ",";
+                user.getMinor() + "\n";
     }
 
     /**
@@ -257,13 +278,15 @@ public class IO {
     private String formatCourseCSV(ArrayList<Course> Courses) {
         StringBuilder sb = new StringBuilder();
         for (Course c : Courses) {
+            //Creates string to represent each unique Course
+            //has format "Crs_code|Yr_code|Trm_code,"
             sb.append(c.getCrs_code()).append("|").append(c.getYr_code()).append("|").append(c.getTrm_code()).append(",");
         }
 
         if (sb.length() == 0) {
             return "";
         }
-        return sb.substring(0, sb.length() - 1) + "\n";
+        return sb.substring(0, sb.length() - 1) + "\n";//Returns whole string except last ','
     }
 
 
