@@ -121,12 +121,13 @@ public class Search {
                 String resultCode = i.getCrs_code().replace(" ", "").strip();
                 if (resultCode.equals(userCode)) {
                     System.out.println("SIZE" + currentSchedule.getCourses().size());
-                    for (Course j : currentSchedule.getCourses()) {
-                        if (TimeSlot.dayOverlap(i.getTimeSlot(), j.getTimeSlot()) && coursesOverlap(i, j)) {
-                            System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
-                            return;
-                        }
+
+                    if (checkForOverlap(i, currentSchedule.getCourses())) {
+                        System.out.println("Cannot add course as there already exists a course with the time " + i.getBegin_tim() + " on the same day as this course.\n"
+                        + "Please remove the overlap and retry");
+                        return;
                     }
+
                     addToSchedule(currentSchedule, i, results);
 
                     //Should send them back to searchInteract
@@ -156,6 +157,21 @@ public class Search {
     }
 
     /**
+     * Checks course against List of courses to see if there are any overlaps
+     * @param course Course that is to be added
+     * @param overlapList Current list of courses that may overlap with Course
+     * @return true if overlap exists, false if there are no overlaps
+     */
+    public boolean checkForOverlap(Course course, List<Course> overlapList) {
+        for (Course overlapCourse : overlapList) {
+            if (TimeSlot.dayOverlap(course.getTimeSlot(), overlapCourse.getTimeSlot()) && coursesOverlap(course, overlapCourse)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * returns true if courses overlap, false otherwise
      * @param c1 Course for evaluation
      * @param c2 Course for evaluation
@@ -169,18 +185,17 @@ public class Search {
 
         boolean overlap = false;
 
-        System.out.println("I start/end: " + c1Begin+"-"+c1End + " J start/end: " + c2Begin+"-"+c2End);
-        if (c1Begin == c2Begin || c1End == c2End) {//if they equal, they overlap
-            System.out.println("Same start time");
+        if (c1Begin == c2Begin || c1End == c2End) {
+            //if they equal, they overlap
             overlap = true;
-        } else if (c1Begin > c2Begin && c1Begin < c2End) {//if start time is in between
-            System.out.println("Start time in between");
+        } else if (c1Begin > c2Begin && c1Begin < c2End) {
+            //if start time is in between
             overlap = true;
-        } else if (c1End > c2Begin && c1End < c2End) {//end time is in between
-            System.out.println("End time in between");
+        } else if (c1End > c2Begin && c1End < c2End) {
+            //end time is in between
             overlap = true;
-        } else if (c1Begin < c2Begin && c1End > c2End) {//Surrounds
-            System.out.println("Sandwich overlap (starts before and ends after)");
+        } else if (c1Begin < c2Begin && c1End > c2End) {
+            //Surrounds
             overlap = true;
         }
         return overlap;
@@ -192,7 +207,7 @@ public class Search {
             System.out.print(Course.succinctCourse(courseList));
             System.out.println("What would you like to do?");
             System.out.println("Add Course     Filter    View Details     Search Again      Exit");
-            String input = scnr.nextLine().strip().toUpperCase();
+            String input = "";
             while (input.equals("")) {
                 input = scnr.nextLine().strip().toUpperCase();
             }
@@ -254,7 +269,6 @@ public class Search {
     /**
      * This method finds the course the user wants more details on and uses the viewDetails method
      * to take that course and display more info on it
-     *
      * @param courseList - list of courses in csv
      */
     private void viewDetailsInteract(ArrayList<Course> courseList) {
@@ -277,7 +291,6 @@ public class Search {
 
     /**
      * Takes in and identifier and searches based on input
-     *
      * @param identifier defines what method to search by
      * @param input      string that is used to search
      * @return List of courses if identifier exits else null

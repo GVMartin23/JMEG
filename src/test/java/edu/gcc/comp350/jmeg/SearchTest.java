@@ -159,10 +159,6 @@ class SearchTest {
         c1 = Main.getCourses().get(2673);
         //Same class, so should overlap
         assertTrue(search.coursesOverlap(c1, c2));
-
-
-
-
     }
 
     @Test
@@ -179,5 +175,18 @@ class SearchTest {
 
         assertEquals(schedule.getCourses().size(), 2);
 
+    }
+
+    @Test
+    void checkForOverlap() {
+        Course c = Main.getCourses().get(407);
+        Course c2 = Main.getCourses().get(409);
+        ArrayList<Course> courses = new ArrayList<>();
+        courses.add(c);
+        schedule.setCourses(courses);
+
+        assertTrue(search.checkForOverlap(c, schedule.getCourses()));
+
+        assertFalse(search.checkForOverlap(c2, schedule.getCourses()));
     }
 }
