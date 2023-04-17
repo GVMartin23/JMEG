@@ -137,7 +137,7 @@ public class Schedule {
            }
 
            System.out.println("\nWhat would you like to do?\nSearch     View Calendar       Remove Course       Quit");
-           String action = scnr.nextLine().toUpperCase(Locale.ROOT).strip();
+           String action = scnr.nextLine().toUpperCase().strip();
 
            if (action.equals("SEARCH")) {
                searchCourses();

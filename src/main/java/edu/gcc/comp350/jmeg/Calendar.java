@@ -1,7 +1,7 @@
 package edu.gcc.comp350.jmeg;
 
 public class Calendar {
-    private Schedule currentSchedule;
+    private final Schedule currentSchedule;
 
     public Calendar(Schedule currentSchedule){
         this.currentSchedule=currentSchedule;
