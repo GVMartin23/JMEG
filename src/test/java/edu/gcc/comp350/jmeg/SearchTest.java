@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SearchTest {
     static Search search;
     private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private Schedule schedule;
 
     @BeforeAll
     static void setup() {
@@ -24,7 +25,7 @@ class SearchTest {
 
     @BeforeEach
     void prelim() {
-        Schedule schedule = new Schedule("TESTING", 0, "FALL", 2018);
+        schedule = new Schedule("TESTING", 0, "FALL", 2018);
         search = new Search(schedule);
         search.clearFilters();
     }
@@ -161,6 +162,22 @@ class SearchTest {
 
 
 
+
+    }
+
+    @Test
+    void addToSchedule() {
+        Course c = Main.getCourses().get(407);
+        schedule.setCourses(new ArrayList<>());
+        Filter filter = new Filter("YEAR", "2018");
+        Filter filter2 = new Filter("TERM", "FALL");
+
+        ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
+        courses = search.filterCourses(filter2, courses);
+
+        search.addToSchedule(schedule, c, courses);
+
+        assertEquals(schedule.getCourses().size(), 2);
 
     }
 }

@@ -109,8 +109,7 @@ public class Search {
     private void addCourseInteract(ArrayList<Course> results) {
         Scanner scnr = io.getScanner();
 
-        boolean success = false;
-        while (!success) {
+        while (true) {
             System.out.println("Enter the course code of the class you wish to add, or Q to quit");
             String courseCodeToAdd = scnr.nextLine().toUpperCase().strip();
             if (courseCodeToAdd.equals("Q")) {
@@ -122,73 +121,69 @@ public class Search {
                 String resultCode = i.getCrs_code().replace(" ", "").strip();
                 if (resultCode.equals(userCode)) {
                     System.out.println("SIZE" + currentSchedule.getCourses().size());
-                    Course course = new Course();
-                    if (currentSchedule.getCourses().size() > 0) {//If there is stuff in the existing calendar
-                        for (Course j : currentSchedule.getCourses()) {
-                            if (TimeSlot.dayOverlap(i.getTimeSlot(), j.getTimeSlot()) && coursesOverlap(i, j)) {
-                                System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
-                                return;
-                            } else {
-                                course = i;
-                            }
+                    for (Course j : currentSchedule.getCourses()) {
+                        if (TimeSlot.dayOverlap(i.getTimeSlot(), j.getTimeSlot()) && coursesOverlap(i, j)) {
+                            System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
+                            return;
                         }
-                        currentSchedule.getCourses().add(i);
-                        leave = true;
-                        leaveResults = true;
-                        return;
-                    } else {//Nothing in the schedule
-                        System.out.println("Add course" + courseCodeToAdd + " ? Y/N");
-                        String answer = scnr.nextLine().toUpperCase();
-                        while (!answer.equals("Y") && !answer.equals("N")) {
-                            System.out.println("Invalid input. Enter Y/N");
-                            answer = scnr.nextLine();
-                        }
-                        if (answer.equals("Y")) {
-                            for (Course c : results) {
-                                if (c.equals(i)) {
-                                    currentSchedule.getCourses().add(c);
-                                }
-                            }
-                            leaveResults = true;
-                            leave = true;
-                            //Should send them back to searchInteract
-                        }
-                        return;
                     }
+                    addToSchedule(currentSchedule, i, results);
+
+                    //Should send them back to searchInteract
+                    leave = true;
+                    leaveResults = true;
+                    return;
                 }
             }
-            if (!success) {
-                System.out.println("Failed to add class. Invalid course code, try again");
+            System.out.println("Failed to add class. Invalid course code, try again");
+        }
+    }
+
+    /**
+     * Adds all courses that are equivalent to courseToAdd that exist in resultList.
+     * This deals with classes such as Math classes where the data splits them into two classes,
+     * one meeting MWF and 10 and the other that meets on Tuesday at a different time since these are 4 credit classes.
+     * @param schedule Schedule to add the Course(s) to
+     * @param courseToAdd Course that is used to determine which courses to add
+     * @param resultList List of search results containing the Course(s) to add
+     */
+    public void addToSchedule(Schedule schedule, Course courseToAdd, List<Course> resultList) {
+        for (Course c : resultList) {
+            if (c.equals(courseToAdd)) {
+                schedule.getCourses().add(c);
             }
         }
     }
 
     /**
      * returns true if courses overlap, false otherwise
-     * @param i Course for evaluation
-     * @param j Course for evaluation
+     * @param c1 Course for evaluation
+     * @param c2 Course for evaluation
      * @return True if courses overlap, false otherwise
      */
-    public Boolean coursesOverlap(Course i, Course j) {//TODO Get rid of prints
-        System.out.println("I start/end: " + i.getTimeSlot().getBeginTimeCode()+"-"+i.getTimeSlot().getEndTimeCode() + " J start/end: " + j.getTimeSlot().getBeginTimeCode()+"-"+j.getTimeSlot().getEndTimeCode());
-        if (i.getTimeSlot().getBeginTimeCode() == j.getTimeSlot().getBeginTimeCode() || i.getTimeSlot().getEndTimeCode() == j.getTimeSlot().getEndTimeCode()) {//if they equal, they overlap
-            System.out.println("Same start time");
-            return true;
-        }
-        if (i.getTimeSlot().getBeginTimeCode() > j.getTimeSlot().getBeginTimeCode() && i.getTimeSlot().getBeginTimeCode() < j.getTimeSlot().getEndTimeCode()) {//if start time is in between
-            System.out.println("Start time in between");
-            return true;
-        }
-        if (i.getTimeSlot().getEndTimeCode() > j.getTimeSlot().getBeginTimeCode() && i.getTimeSlot().getEndTimeCode() < j.getTimeSlot().getEndTimeCode()) {//end time is in between
-            System.out.println("End time in between");
+    public Boolean coursesOverlap(Course c1, Course c2) {//TODO Get rid of prints
+        int c1Begin = c1.getTimeSlot().getBeginTimeCode();
+        int c1End = c1.getTimeSlot().getEndTimeCode();
+        int c2Begin = c2.getTimeSlot().getBeginTimeCode();
+        int c2End = c2.getTimeSlot().getEndTimeCode();
 
-            return true;
-        }
-        if (i.getTimeSlot().getBeginTimeCode() < j.getTimeSlot().getBeginTimeCode() && i.getTimeSlot().getEndTimeCode() > j.getTimeSlot().getEndTimeCode()) {//Surrounds
+        boolean overlap = false;
+
+        System.out.println("I start/end: " + c1Begin+"-"+c1End + " J start/end: " + c2Begin+"-"+c2End);
+        if (c1Begin == c2Begin || c1End == c2End) {//if they equal, they overlap
+            System.out.println("Same start time");
+            overlap = true;
+        } else if (c1Begin > c2Begin && c1Begin < c2End) {//if start time is in between
+            System.out.println("Start time in between");
+            overlap = true;
+        } else if (c1End > c2Begin && c1End < c2End) {//end time is in between
+            System.out.println("End time in between");
+            overlap = true;
+        } else if (c1Begin < c2Begin && c1End > c2End) {//Surrounds
             System.out.println("Sandwich overlap (starts before and ends after)");
-            return true;
+            overlap = true;
         }
-        return false;
+        return overlap;
     }
 
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
