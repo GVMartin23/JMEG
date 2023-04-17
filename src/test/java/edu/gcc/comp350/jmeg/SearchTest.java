@@ -142,10 +142,9 @@ class SearchTest {
         Filter filter2 = new Filter("YEAR", "2019");
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
-        courses = search.filterCourses(filter2, courses);
 
         assertEquals(courses.size(), courses.stream().filter(c -> c.getYr_code() == 2018).count());
-        assertEquals("Already filtered by year", outContent.toString().trim());
+        assertEquals(search.filterCourses(filter2, courses), courses);
     }
 
     @Test

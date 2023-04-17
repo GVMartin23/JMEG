@@ -177,7 +177,7 @@ public class Search {
      * @param c2 Course for evaluation
      * @return True if courses overlap, false otherwise
      */
-    public Boolean coursesOverlap(Course c1, Course c2) {//TODO Get rid of prints
+    public Boolean coursesOverlap(Course c1, Course c2) {
         int c1Begin = c1.getTimeSlot().getBeginTimeCode();
         int c1End = c1.getTimeSlot().getEndTimeCode();
         int c2Begin = c2.getTimeSlot().getBeginTimeCode();
@@ -236,7 +236,7 @@ public class Search {
         Scanner scnr = io.getScanner();
         System.out.println("Filter By?");
         System.out.println("Year    Term    None");
-        String filterBy = scnr.nextLine().toUpperCase();
+        String filterBy = scnr.nextLine().toUpperCase().strip();
         if (filterBy.equals("NONE")) {
             return courseList;
         }
@@ -312,7 +312,6 @@ public class Search {
     /**
      * This method takes in user input and searches the course list based on the course name
      * that is inputted
-     *
      * @param input - user input (course name) as a string
      * @return - course list including courses with the course name specified by the user
      */
@@ -325,7 +324,6 @@ public class Search {
     /**
      * This method takes in user input and searches the course list based on the course code
      * that is inputted
-     *
      * @param input- user input (course code) as a string
      * @return - course list including courses with the course name specified by the user
      */
@@ -338,7 +336,6 @@ public class Search {
     /**
      * This method takes in user input and searches the course list based on the course day
      * that is inputted
-     *
      * @param input- user input (course day) as a string
      * @return - course list including courses with the course name specified by the user
      */
@@ -395,7 +392,6 @@ public class Search {
     public ArrayList<Course> filterCourses(Filter filter, ArrayList<Course> courses) {
         ArrayList<Filter> filterList = getFilters();
         if (filterList.contains(filter)) {
-            System.out.println("Already filtered by " + filter.getFilterType().toString().toLowerCase());
             return courses;
         } else {
             filterList.add(filter);
@@ -415,7 +411,6 @@ public class Search {
      * displays more information on the specified course.
      * Displays the course title, code, begin and end time, day, professor,
      * capacity, credits
-     *
      * @param c - course searched for
      */
     private void viewDetails(Course c) {
