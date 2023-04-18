@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class Search {
     private final IO io;
-    private ArrayList<Filter> filters;
+    private ArrayList<Filterable> filters;
     private final Schedule currentSchedule;
     private ArrayList<Course> results;
     private boolean leave;
@@ -27,7 +27,7 @@ public class Search {
      * Getter for filters
      * @return filters is null, new ArrayList, else filters
      */
-    public ArrayList<Filter> getFilters() {
+    public ArrayList<Filterable> getFilters() {
         if (filters == null) {
             filters = new ArrayList<>();
         }
@@ -46,14 +46,15 @@ public class Search {
 
         semester = semester.toUpperCase();
         if (semester.equals("FALL") || semester.equals("SPRING")) {
-            Filter semesterFilter = new Filter("TERM", semester);
-            filterCourses(semesterFilter, filteredCourses);
-            getFilters().add(semesterFilter);
+            int code = semester.equals("FALL") ? 10 : 30;
+            FilterTerm termFilter = new FilterTerm(code);
+            filteredCourses = termFilter.filter(filteredCourses);
+            getFilters().add(termFilter);
         }
 
         if (year == 2018 || year == 2019 || year == 2020) {
-            Filter yearFilter = new Filter("YEAR", String.valueOf(year));
-            filterCourses(yearFilter, filteredCourses);
+            FilterYear yearFilter = new FilterYear(year);
+            filteredCourses = yearFilter.filter(filteredCourses);
             getFilters().add(yearFilter);
         }
 
@@ -241,13 +242,13 @@ public class Search {
             return courseList;
         }
 
-        Filter filter = null;
+        Filterable filter = null;
         String filterVal;
         if (filterBy.equals("YEAR")) {
             System.out.println("Enter year (2018, 2019, 2020): ");
             filterVal = scnr.next();
             if (filterVal.equals("2018") || filterVal.equals("2019") || filterVal.equals("2020")) {
-                filter = new Filter(filterBy, filterVal);
+                filter = new FilterYear(Integer.parseInt(filterVal));
             } else {
                 System.out.println("Error, invalid input.");
             }
@@ -255,7 +256,8 @@ public class Search {
             System.out.println("Enter term (Spring, Fall): ");
             filterVal = scnr.next().toUpperCase();
             if (filterVal.equals("FALL") || filterVal.equals("SPRING")) {
-                filter = new Filter(filterBy, filterVal);
+                int code = filterVal.equals("FALL") ? 10 : 30;
+                filter = new FilterTerm(code);
             }
         }
 
@@ -389,21 +391,15 @@ public class Search {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public ArrayList<Course> filterCourses(Filter filter, ArrayList<Course> courses) {
-        ArrayList<Filter> filterList = getFilters();
+    public ArrayList<Course> filterCourses(Filterable filter, ArrayList<Course> courses) {
+        ArrayList<Filterable> filterList = getFilters();
         if (filterList.contains(filter)) {
             return courses;
         } else {
             filterList.add(filter);
         }
 
-        if (filter.getFilterType() == Filter.FilterTypes.YEAR) {
-            return (ArrayList<Course>) courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
-        } else if (filter.getFilterType() == Filter.FilterTypes.TERM) {
-            int termInt = filter.getFilterName().equals("FALL") ? 10 : 30;
-            return (ArrayList<Course>) courses.stream().filter(c -> c.getTrm_code() == termInt).collect(Collectors.toList());
-        }
-        return null;
+        return filter.filter(courses);
     }
 
     /**

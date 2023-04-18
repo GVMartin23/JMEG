@@ -119,7 +119,7 @@ class SearchTest {
 
     @Test
     void filterCoursesYear() {
-        Filter filter = new Filter("YEAR", "2018");
+        Filterable filter = new FilterYear(2018);
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
@@ -129,7 +129,7 @@ class SearchTest {
 
     @Test
     void filterCoursesTerm() {
-        Filter filter = new Filter("TERM", "FALL");
+        Filterable filter = new FilterTerm(10);
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
@@ -138,8 +138,8 @@ class SearchTest {
 
     @Test
     void filterCoursesTwice() {
-        Filter filter = new Filter("YEAR", "2018");
-        Filter filter2 = new Filter("YEAR", "2019");
+        Filterable filter = new FilterYear(2018);
+        Filterable filter2 = new FilterYear(2019);
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
@@ -164,8 +164,8 @@ class SearchTest {
     void addToSchedule() {
         Course c = Main.getCourses().get(407);
         schedule.setCourses(new ArrayList<>());
-        Filter filter = new Filter("YEAR", "2018");
-        Filter filter2 = new Filter("TERM", "FALL");
+        Filterable filter = new FilterYear(2018);
+        Filterable filter2 = new FilterTerm(10);
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
         courses = search.filterCourses(filter2, courses);
