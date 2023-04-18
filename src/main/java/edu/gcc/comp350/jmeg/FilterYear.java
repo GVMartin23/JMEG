@@ -3,9 +3,17 @@ package edu.gcc.comp350.jmeg;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * Class for filtering Courses by year
+ * Implements: Filterable
+ */
 public class FilterYear implements Filterable {
     private final int year;
 
+    /**
+     * Constructor for FilterYear
+     * @param year year to filter by
+     */
     public FilterYear (int year) {
         this.year = year;
     }
