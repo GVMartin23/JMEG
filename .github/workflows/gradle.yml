@@ -37,7 +37,7 @@ jobs:
 #          arguments: build
 
       - name: Run tests with Gradle on Ubuntu
-        run: ./gradlew clean install --stacktrace --info
+        run: ./gradlew clean test --stacktrace --info
 #      - name: Test with Gradle
 #        uses: ./gradlew test --tests "*"
 #      - name: Verify that the Docker image for the action builds
