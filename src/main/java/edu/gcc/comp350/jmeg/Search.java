@@ -1,4 +1,9 @@
 package edu.gcc.comp350.jmeg;
+
+import edu.gcc.comp350.jmeg.filter.FilterTerm;
+import edu.gcc.comp350.jmeg.filter.FilterYear;
+import edu.gcc.comp350.jmeg.filter.Filterable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,18 +12,30 @@ import java.util.stream.Collectors;
 
 public class Search {
     private final IO io;
-    private ArrayList<Filter> filters;
+    private ArrayList<Filterable> filters;
     private final Schedule currentSchedule;
     private ArrayList<Course> results;
     private boolean leave;
     private boolean leaveResults;
 
-    public Search(Schedule schedule, String semester, int year) {
+    public Search(Schedule schedule) {
         currentSchedule = schedule;
+        filters = new ArrayList<>();
         io = IO.getInstance();
         leave = false;
         leaveResults = false;
-        results = initFilters(semester, year);
+        results = initFilters(schedule.getSemester(), schedule.getYear());
+    }
+
+    /**
+     * Getter for filters
+     * @return filters is null, new ArrayList, else filters
+     */
+    public ArrayList<Filterable> getFilters() {
+        if (filters == null) {
+            filters = new ArrayList<>();
+        }
+        return filters;
     }
 
     /**
@@ -33,14 +50,15 @@ public class Search {
 
         semester = semester.toUpperCase();
         if (semester.equals("FALL") || semester.equals("SPRING")) {
-            Filter semesterFilter = new Filter("TERM", semester);
-            filterCourses(semesterFilter, filteredCourses);
-            getFilters().add(semesterFilter);
+            int code = semester.equals("FALL") ? 10 : 30;
+            FilterTerm termFilter = new FilterTerm(code);
+            filteredCourses = termFilter.filter(filteredCourses);
+            getFilters().add(termFilter);
         }
 
         if (year == 2018 || year == 2019 || year == 2020) {
-            Filter yearFilter = new Filter("YEAR", String.valueOf(year));
-            filterCourses(yearFilter, filteredCourses);
+            FilterYear yearFilter = new FilterYear(year);
+            filteredCourses = yearFilter.filter(filteredCourses);
             getFilters().add(yearFilter);
         }
 
@@ -96,8 +114,7 @@ public class Search {
     private void addCourseInteract(ArrayList<Course> results) {
         Scanner scnr = io.getScanner();
 
-        boolean success = false;
-        while (!success) {
+        while (true) {
             System.out.println("Enter the course code of the class you wish to add, or Q to quit");
             String courseCodeToAdd = scnr.nextLine().toUpperCase().strip();
             if (courseCodeToAdd.equals("Q")) {
@@ -108,74 +125,94 @@ public class Search {
             for (Course i : results) {
                 String resultCode = i.getCrs_code().replace(" ", "").strip();
                 if (resultCode.equals(userCode)) {
-                    if (currentSchedule.getCourses().size() > 0) {//If there is stuff in the existing calendar
-                        for (Course j : currentSchedule.getCourses()) {
-                            if (TimeSlot.dayOverlap(i.getTimeSlot(), j.getTimeSlot()) && coursesOverlap(i, j)) {
-                                System.out.println("Cannot add course as it overlaps with course " + j.getCrs_title() + ".\n Please remove " + j.getCrs_title() + " in order to add course " + i.getCrs_title());
-                                return;
-                            } else {
-                                currentSchedule.getCourses().add(i);
-                                leave = true;
-                                leaveResults = true;
-                                return;
-                            }
-                        }
-                    } else {//Nothing in the schedule
-                        System.out.println("Add course"+courseCodeToAdd+" ? Y/N");
-                        String answer=scnr.nextLine().toUpperCase();
-                        while(!answer.equals("Y")&& !answer.equals("N")){
-                            System.out.println("Invalid input. Enter Y/N");
-                            answer=scnr.nextLine();
-                        }
-                        if(answer.equals("Y")) {
-                            for (Course c : results) {
-                                if (c.equals(i)) {
-                                    currentSchedule.getCourses().add(c);
-                                }
-                            }
-                            leaveResults = true;
-                            leave = true;
-                            //Should send them back to searchInteract
-                        }
+                    System.out.println("SIZE" + currentSchedule.getCourses().size());
+
+                    if (checkForOverlap(i, currentSchedule.getCourses())) {
+                        System.out.println("Cannot add course as there already exists a course with the time " + i.getBegin_tim() + " on the same day as this course.\n"
+                        + "Please remove the overlap and retry");
                         return;
                     }
+
+                    addToSchedule(currentSchedule, i, results);
+
+                    //Should send them back to searchInteract
+                    leave = true;
+                    leaveResults = true;
+                    return;
                 }
             }
-            if (!success) {
-                System.out.println("Failed to add class. Invalid course code, try again");
+            System.out.println("Failed to add class. Invalid course code, try again");
+        }
+    }
+
+    /**
+     * Adds all courses that are equivalent to courseToAdd that exist in resultList.
+     * This deals with classes such as Math classes where the data splits them into two classes,
+     * one meeting MWF and 10 and the other that meets on Tuesday at a different time since these are 4 credit classes.
+     * @param schedule Schedule to add the Course(s) to
+     * @param courseToAdd Course that is used to determine which courses to add
+     * @param resultList List of search results containing the Course(s) to add
+     */
+    public void addToSchedule(Schedule schedule, Course courseToAdd, List<Course> resultList) {
+        for (Course c : resultList) {
+            if (c.equals(courseToAdd)) {
+                schedule.getCourses().add(c);
             }
         }
     }
 
     /**
+     * Checks course against List of courses to see if there are any overlaps
+     * @param course Course that is to be added
+     * @param overlapList Current list of courses that may overlap with Course
+     * @return true if overlap exists, false if there are no overlaps
+     */
+    public boolean checkForOverlap(Course course, List<Course> overlapList) {
+        for (Course overlapCourse : overlapList) {
+            if (TimeSlot.dayOverlap(course.getTimeSlot(), overlapCourse.getTimeSlot()) && coursesOverlap(course, overlapCourse)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * returns true if courses overlap, false otherwise
-     * @param i Course for evaluation
-     * @param j Course for evaluation
+     * @param c1 Course for evaluation
+     * @param c2 Course for evaluation
      * @return True if courses overlap, false otherwise
      */
-    public Boolean coursesOverlap(Course i, Course j){
-        if(i.getTimeSlot().getBeginTimeCode()==j.getTimeSlot().getBeginTimeCode() || i.getTimeSlot().getEndTimeCode()==j.getTimeSlot().getEndTimeCode()){
-            return true;
+    public Boolean coursesOverlap(Course c1, Course c2) {
+        int c1Begin = c1.getTimeSlot().getBeginTimeCode();
+        int c1End = c1.getTimeSlot().getEndTimeCode();
+        int c2Begin = c2.getTimeSlot().getBeginTimeCode();
+        int c2End = c2.getTimeSlot().getEndTimeCode();
+
+        boolean overlap = false;
+
+        if (c1Begin == c2Begin || c1End == c2End) {
+            //if they equal, they overlap
+            overlap = true;
+        } else if (c1Begin > c2Begin && c1Begin < c2End) {
+            //if start time is in between
+            overlap = true;
+        } else if (c1End > c2Begin && c1End < c2End) {
+            //end time is in between
+            overlap = true;
+        } else if (c1Begin < c2Begin && c1End > c2End) {
+            //Surrounds
+            overlap = true;
         }
-        return ((i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
-                i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getEndTimeCode())
-                ||
-                (i.getTimeSlot().getBeginTimeCode() <= j.getTimeSlot().getBeginTimeCode() &&
-                        i.getTimeSlot().getEndTimeCode() >= j.getTimeSlot().getEndTimeCode())
-                ||
-                (i.getTimeSlot().getBeginTimeCode() >= j.getTimeSlot().getBeginTimeCode() &&
-                        i.getTimeSlot().getEndTimeCode() <= j.getTimeSlot().getEndTimeCode())
-                ||
-                (i.getTimeSlot().getBeginTimeCode()<=j.getTimeSlot().getEndTimeCode() )&&
-                        i.getTimeSlot().getEndTimeCode()>=j.getTimeSlot().getBeginTimeCode());
+        return overlap;
     }
+
     private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
         while (!leaveResults) {
             System.out.print(Course.succinctCourse(courseList));
             System.out.println("What would you like to do?");
             System.out.println("Add Course     Filter    View Details     Search Again      Exit");
-            String input = scnr.nextLine().strip().toUpperCase();
+            String input = "";
             while (input.equals("")) {
                 input = scnr.nextLine().strip().toUpperCase();
             }
@@ -188,7 +225,7 @@ public class Search {
             } else if (input.equals("SEARCH AGAIN")) {
                 System.out.println("Returning to search");
                 leaveResults = true;
-            } else if (input.equals("EXIT")){
+            } else if (input.equals("EXIT")) {
                 leaveResults = true;
                 leave = true;
             } else {
@@ -200,23 +237,22 @@ public class Search {
     }
 
 
-
     private ArrayList<Course> filterInteract(ArrayList<Course> courseList) {
         Scanner scnr = io.getScanner();
         System.out.println("Filter By?");
         System.out.println("Year    Term    None");
-        String filterBy = scnr.nextLine().toUpperCase();
+        String filterBy = scnr.nextLine().toUpperCase().strip();
         if (filterBy.equals("NONE")) {
             return courseList;
         }
 
-        Filter filter = null;
+        Filterable filter = null;
         String filterVal;
         if (filterBy.equals("YEAR")) {
             System.out.println("Enter year (2018, 2019, 2020): ");
             filterVal = scnr.next();
-            if(filterVal.equals("2018") || filterVal.equals("2019") || filterVal.equals("2020")) {
-                filter = new Filter(filterBy, filterVal);
+            if (filterVal.equals("2018") || filterVal.equals("2019") || filterVal.equals("2020")) {
+                filter = new FilterYear(Integer.parseInt(filterVal));
             } else {
                 System.out.println("Error, invalid input.");
             }
@@ -224,7 +260,8 @@ public class Search {
             System.out.println("Enter term (Spring, Fall): ");
             filterVal = scnr.next().toUpperCase();
             if (filterVal.equals("FALL") || filterVal.equals("SPRING")) {
-                filter = new Filter(filterBy, filterVal);
+                int code = filterVal.equals("FALL") ? 10 : 30;
+                filter = new FilterTerm(code);
             }
         }
 
@@ -246,7 +283,9 @@ public class Search {
 
         String courseCode = scan.nextLine().toUpperCase().strip();
 
-        List<Course> courses = courseList.stream().filter(c -> c.getCrs_code().equals(courseCode)).collect(Collectors.toList());
+        List<Course> courses = courseList.stream()
+                .filter(c -> c.getCrs_code().equals(courseCode))
+                .collect(Collectors.toList());
 
         if (courses.size() == 0) {
             System.out.println("Error, invalid course code, please enter correct code.");
@@ -259,7 +298,7 @@ public class Search {
     /**
      * Takes in and identifier and searches based on input
      * @param identifier defines what method to search by
-     * @param input string that is used to search
+     * @param input      string that is used to search
      * @return List of courses if identifier exits else null
      */
     public ArrayList<Course> search(String identifier, String input, ArrayList<Course> searchList) {
@@ -283,14 +322,9 @@ public class Search {
      * @return - course list including courses with the course name specified by the user
      */
     public ArrayList<Course> searchCourseName(String input, ArrayList<Course> searchList) {
-        ArrayList<Course> c = new ArrayList<>();
-
-        for (Course course : searchList) {
-            if (course.getCrs_title().contains(input)) {
-                c.add(course);
-            }
-        }
-        return c;
+        return searchList.stream()
+                .filter(course -> course.getCrs_title().contains(input))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -300,14 +334,9 @@ public class Search {
      * @return - course list including courses with the course name specified by the user
      */
     public ArrayList<Course> searchCourseCode(String input, ArrayList<Course> searchList) {
-        ArrayList<Course> c = new ArrayList<>();
-
-        for (Course course : searchList) {
-            if (course.getCrs_code().contains(input)) {
-                c.add(course);
-            }
-        }
-        return c;
+        return searchList.stream()
+                .filter(course -> course.getCrs_code().contains(input))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -320,32 +349,33 @@ public class Search {
         ArrayList<Course> c = new ArrayList<>();
 
         for (Course course : searchList) {
+            TimeSlot timeSlot = course.getTimeSlot();
             if(input.equals("M") || input.equals("MON") || input.equals("MONDAY")){
-                if (course.getMonday_cde().contains(input)) {
+                if (timeSlot.isOnMonday()) {
                     c.add(course);
                 }
             }
 
             if(input.equals("T") || input.equals("TUES") || input.equals("TUESDAY")){
-                if (course.getTuesday_cde().contains(input)) {
+                if (timeSlot.isOnTuesday()) {
                     c.add(course);
                 }
             }
 
             if(input.equals("W") || input.equals("WED") || input.equals("WEDNESDAY")){
-                if (course.getWednesday_cde().contains(input)) {
+                if (timeSlot.isOnWednesday()) {
                     c.add(course);
                 }
             }
 
             if(input.equals("R") || input.equals("THURS") || input.equals("THURSDAY")){
-                if (course.getThursday_cde().contains(input)) {
+                if (timeSlot.isOnThursday()) {
                     c.add(course);
                 }
             }
 
             if(input.equals("F") || input.equals("FRI") || input.equals("FRIDAY")){
-                if (course.getFriday_cde().contains(input)) {
+                if (timeSlot.isOnFriday()) {
                     c.add(course);
                 }
             }
@@ -354,39 +384,26 @@ public class Search {
     }
 
     /**
-     * This method takes in user input and searches the course list based on the course begin time
-     * that is inputted
+     * This method takes in user input and searches the course list based on the course begin time and end time
+     * that is input
      * @param input- user input (course begin time) as a string
      * @return - course list including courses with the course name specified by the user
      */
     private ArrayList<Course> searchCourseTime(String input, ArrayList<Course> searchList) {
-
-        ArrayList<Course> c = new ArrayList<>();
-
-        for (Course course : searchList) {
-            if (course.getBegin_tim().contains(input)) {
-                c.add(course);
-            }
-        }
-        return c;
+        return searchList.stream()
+                .filter(course -> course.getBegin_tim().contains(input) || course.getEnd_tim().contains(input))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public ArrayList<Course> filterCourses(Filter filter, ArrayList<Course> courses) {
-        ArrayList<Filter> filterList = getFilters();
+    public ArrayList<Course> filterCourses(Filterable filter, ArrayList<Course> courses) {
+        ArrayList<Filterable> filterList = getFilters();
         if (filterList.contains(filter)) {
-            System.out.println("Already filtered by " + filter.getFilterType().toString().toLowerCase());
             return courses;
         } else {
             filterList.add(filter);
         }
 
-        if (filter.getFilterType() == Filter.FilterTypes.YEAR) {
-            return  (ArrayList<Course>) courses.stream().filter(c -> c.getYr_code() == Integer.parseInt(filter.getFilterName())).collect(Collectors.toList());
-        } else if (filter.getFilterType() == Filter.FilterTypes.TERM) {
-            int termInt = filter.getFilterName().equals("FALL") ? 10 : 30;
-            return (ArrayList<Course>) courses.stream().filter(c -> c.getTrm_code() == termInt).collect(Collectors.toList());
-        }
-        return null;
+        return filter.filter(courses);
     }
 
     /**
@@ -400,10 +417,20 @@ public class Search {
         System.out.println(c);
     }
 
-    public ArrayList<Filter> getFilters() {
-        if (filters == null) {
-            filters = new ArrayList<>();
-        }
-        return filters;
+    /**
+     * Clears previously used filters
+     */
+    public void clearFilters() {
+        filters = new ArrayList<>();
+    }
+
+    /**
+     * Probably will need in future
+     * Used so that we don't have to create a new schedule every time we want to search
+     * Will be useful when our search is a page with a searchbar instead of current implementation
+     */
+    public void resetSearch() {
+        clearFilters();
+        results = initFilters(currentSchedule.getSemester(), currentSchedule.getYear());
     }
 }

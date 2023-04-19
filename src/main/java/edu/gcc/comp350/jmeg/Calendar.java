@@ -1,7 +1,7 @@
 package edu.gcc.comp350.jmeg;
 
 public class Calendar {
-    private Schedule currentSchedule;
+    private final Schedule currentSchedule;
 
     public Calendar(Schedule currentSchedule){
         this.currentSchedule=currentSchedule;
@@ -49,13 +49,14 @@ public class Calendar {
             for(int j=0; j<10; j++){
                 if(calendarArray[i][j]==null){
                     if(j>4){
-                        string.append(j - 4).append("|");
+                        string.append(j - 4);
                     }else{
-                        string.append(j + 8).append("|");
+                        string.append(j + 8);
                     }
                 }else {
-                    string.append(calendarArray[i][j]).append("|");//Building the calendar string
+                    string.append(calendarArray[i][j]);//Building the calendar string
                 }
+                string.append("|");
             }
             string.append("\n");
         }

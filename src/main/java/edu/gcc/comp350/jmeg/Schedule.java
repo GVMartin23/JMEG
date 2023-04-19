@@ -55,6 +55,9 @@ public class Schedule {
     }
 
     public ArrayList<Course> getCourses() {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
         return courses;
     }
 
@@ -63,6 +66,9 @@ public class Schedule {
     }
 
     public String getSemester() {
+        if (semester == null) {
+            semester = "";
+        }
         return semester;
     }
 
@@ -75,7 +81,7 @@ public class Schedule {
      * Used to go from scheduleInteract to searchInteraction
      */
    public void searchCourses() {
-        Search search = new Search(this, semester, year);
+        Search search = new Search(this);
         search.searchInteraction();
    }
 
@@ -88,11 +94,7 @@ public class Schedule {
         return courses.remove(course);
    }
 
-   private void getRecommendedSchedule(User user){
-        //TODO: stretch goal
-   }
-
-   private void switchSection(Course old_course, Course new_course){
+   public void switchSection(Course old_course, Course new_course){
         removeCourse(old_course);
         courses.add(new_course);
    }
@@ -135,7 +137,7 @@ public class Schedule {
            }
 
            System.out.println("\nWhat would you like to do?\nSearch     View Calendar       Remove Course       Quit");
-           String action = scnr.nextLine().toUpperCase(Locale.ROOT).strip();
+           String action = scnr.nextLine().toUpperCase().strip();
 
            if (action.equals("SEARCH")) {
                searchCourses();

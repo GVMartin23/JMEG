@@ -1,5 +1,8 @@
 package edu.gcc.comp350.jmeg;
 
+import edu.gcc.comp350.jmeg.filter.FilterTerm;
+import edu.gcc.comp350.jmeg.filter.FilterYear;
+import edu.gcc.comp350.jmeg.filter.Filterable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SearchTest {
     static Search search;
     private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private Schedule schedule;
 
     @BeforeAll
     static void setup() {
@@ -24,8 +28,9 @@ class SearchTest {
 
     @BeforeEach
     void prelim() {
-        Schedule schedule = new Schedule("TESTING", 0, "FALL", 2018);
-        search = new Search(schedule, "", 0);
+        schedule = new Schedule("TESTING", 0, "FALL", 2018);
+        search = new Search(schedule);
+        search.clearFilters();
     }
 
     @Test
@@ -117,7 +122,7 @@ class SearchTest {
 
     @Test
     void filterCoursesYear() {
-        Filter filter = new Filter("YEAR", "2018");
+        Filterable filter = new FilterYear(2018);
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
@@ -127,7 +132,7 @@ class SearchTest {
 
     @Test
     void filterCoursesTerm() {
-        Filter filter = new Filter("TERM", "FALL");
+        Filterable filter = new FilterTerm(10);
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
 
@@ -136,14 +141,13 @@ class SearchTest {
 
     @Test
     void filterCoursesTwice() {
-        Filter filter = new Filter("YEAR", "2018");
-        Filter filter2 = new Filter("YEAR", "2019");
+        Filterable filter = new FilterYear(2018);
+        Filterable filter2 = new FilterYear(2019);
 
         ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
-        courses = search.filterCourses(filter2, courses);
 
         assertEquals(courses.size(), courses.stream().filter(c -> c.getYr_code() == 2018).count());
-        assertEquals("Already filtered by year", outContent.toString().trim());
+        assertEquals(search.filterCourses(filter2, courses), courses);
     }
 
     @Test
@@ -157,9 +161,34 @@ class SearchTest {
         c1 = Main.getCourses().get(2673);
         //Same class, so should overlap
         assertTrue(search.coursesOverlap(c1, c2));
+    }
 
+    @Test
+    void addToSchedule() {
+        Course c = Main.getCourses().get(407);
+        schedule.setCourses(new ArrayList<>());
+        Filterable filter = new FilterYear(2018);
+        Filterable filter2 = new FilterTerm(10);
 
+        ArrayList<Course> courses = search.filterCourses(filter, Main.getCourses());
+        courses = search.filterCourses(filter2, courses);
 
+        search.addToSchedule(schedule, c, courses);
 
+        assertEquals(schedule.getCourses().size(), 2);
+
+    }
+
+    @Test
+    void checkForOverlap() {
+        Course c = Main.getCourses().get(407);
+        Course c2 = Main.getCourses().get(409);
+        ArrayList<Course> courses = new ArrayList<>();
+        courses.add(c);
+        schedule.setCourses(courses);
+
+        assertTrue(search.checkForOverlap(c, schedule.getCourses()));
+
+        assertFalse(search.checkForOverlap(c2, schedule.getCourses()));
     }
 }

@@ -71,28 +71,19 @@ public class TimeSlot {
         int parsedInt = Integer.parseInt(parsed[0]);
         if (timeString.contains("PM") && !timeString.contains("12")) {
             //All PM times except Noon
-            parsedInt = convertToMilitary(parsedInt);
+            parsedInt += 12;//Convert to Military
         }
 
         if (timeString.contains("12") && !timeString.contains("PM")) {
             //Catch 12AM classes
-            parsedInt = convertToMilitary(parsedInt);
+            parsedInt += 12;//Convert to Military
         }
 
-        //Convert hours to minutes and add minutes
+        //Convert hours to 60 minutes and add extra minutes
         parsedInt *= 60;
         parsedInt += Integer.parseInt(parsed[1].substring(0,2));
 
         return parsedInt;
-    }
-
-    /**
-     * Converts hours to military time
-     * @param num num to convert
-     * @return num + 12
-     */
-    private int convertToMilitary(int num) {
-        return num + 12;
     }
 
     /**
