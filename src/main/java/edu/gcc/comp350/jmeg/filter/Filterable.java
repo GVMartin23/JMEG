@@ -1,4 +1,6 @@
-package edu.gcc.comp350.jmeg;
+package edu.gcc.comp350.jmeg.filter;
+
+import edu.gcc.comp350.jmeg.Course;
 
 import java.util.ArrayList;
 

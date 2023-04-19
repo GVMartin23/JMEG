@@ -1,5 +1,9 @@
 package edu.gcc.comp350.jmeg;
 
+import edu.gcc.comp350.jmeg.filter.FilterTerm;
+import edu.gcc.comp350.jmeg.filter.FilterYear;
+import edu.gcc.comp350.jmeg.filter.Filterable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

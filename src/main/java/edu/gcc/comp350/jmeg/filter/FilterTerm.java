@@ -1,4 +1,6 @@
-package edu.gcc.comp350.jmeg;
+package edu.gcc.comp350.jmeg.filter;
+
+import edu.gcc.comp350.jmeg.Course;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -7,7 +9,7 @@ import java.util.stream.Collectors;
  * Class for filtering Courses by term
  * Implements: Filterable
  */
-public class FilterTerm implements Filterable{
+public class FilterTerm implements Filterable {
 
     private final int term;
 

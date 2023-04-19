@@ -1,5 +1,8 @@
 package edu.gcc.comp350.jmeg;
 
+import edu.gcc.comp350.jmeg.filter.FilterTerm;
+import edu.gcc.comp350.jmeg.filter.FilterYear;
+import edu.gcc.comp350.jmeg.filter.Filterable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
