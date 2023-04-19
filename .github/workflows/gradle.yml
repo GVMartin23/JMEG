@@ -32,5 +32,6 @@ jobs:
       run: chmod +x ./gradlew
     - name: Build with Gradle
       uses: ./gradlew build
-    - uses: actions/checkout@v3
-    - with: GVMartin23/JMEG
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+      with: GVMartin23/JMEG
