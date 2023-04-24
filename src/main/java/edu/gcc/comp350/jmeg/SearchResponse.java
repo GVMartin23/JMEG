@@ -9,7 +9,6 @@ import java.util.ArrayList;
 @RestController
 public class SearchResponse {
 
-
     @GetMapping("/search")
     public ArrayList<Course> retrieveResults(@RequestParam(value = "code", defaultValue = "") String code) {
         Schedule currentSchedule = new Schedule("Title", 0, "SPRING", 2019);
