@@ -103,6 +103,7 @@ public class Schedule {
      * Creates a new calendar and prints out string created by calendar
      */
    private void showCalendar() {
+       System.out.println("Credits: "+credits);
        Calendar c=new Calendar(this);
        System.out.println(c.showCalendar());
    }
@@ -121,6 +122,7 @@ public class Schedule {
            System.out.println("Schedule currently empty.  Add classes!");
            courses=new ArrayList<>();
        }else {
+           System.out.println("Credits: "+credits);
            System.out.println("Entire class list:");
            //Lists out all classes in schedule
            System.out.println(Course.succinctCourse(courses));
@@ -131,6 +133,7 @@ public class Schedule {
                firstTime = false;
            } else {
                System.out.println("Viewing schedule "+ title);
+               System.out.println("Credits:" +credits);
                System.out.println("Entire class list:");
                //Lists out all classes in schedule
                System.out.println(Course.succinctCourse(courses));
@@ -146,7 +149,7 @@ public class Schedule {
            }else if(action.equals("VIEW CALENDAR")){
                showCalendar();
            } else if (action.equals("REMOVE COURSE")) {
-               removeCourseInteract();
+                   removeCourseInteract();
            } else {
                System.out.println("Incorrect input");
            }
@@ -161,12 +164,18 @@ public class Schedule {
            String inputCode = scnr.nextLine().strip().toUpperCase();
            List<Course> removable = courses.stream().filter(c -> c.getCrs_code().equals(inputCode)).collect(Collectors.toList());
            if (removable.size() == 1) {
-               if (removeCourse(removable.get(0))) {
-                   System.out.println("Removed: " + removable.get(0));
-               } else {
-                   System.out.println("Error, could not remove course.");
+               if(credits- removable.get(0).getCredit_hrs()>=12) {
+                   int cred=removable.get(0).getCredit_hrs();
+                   if (removeCourse(removable.get(0))) {
+                       System.out.println("Removed: " + removable.get(0));
+                       setCredits(getCredits()+cred);
+                   } else {
+                       System.out.println("Error, could not remove course.");
+                   }
+                   break;
+               }else{
+                   System.out.println("Cannot remove course as it would take you under the 12 credit limit");
                }
-               break;
            } else {
                System.out.println("Error, invalid course code.");
            }
