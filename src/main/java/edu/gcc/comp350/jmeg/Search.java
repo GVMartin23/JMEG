@@ -125,8 +125,10 @@ public class Search {
             for (Course i : results) {
                 String resultCode = i.getCrs_code().replace(" ", "").strip();
                 if (resultCode.equals(userCode)) {
-                    System.out.println("SIZE" + currentSchedule.getCourses().size());
-
+                    if(currentSchedule.getCredits()+i.getCredit_hrs()>18){
+                        System.out.println("Cannot add class as it takes you over the 18 credit limit");
+                        break;
+                    }
                     if (checkForOverlap(i, currentSchedule.getCourses())) {
                         System.out.println("Cannot add course as there already exists a course with the time " + i.getBegin_tim() + " on the same day as this course.\n"
                         + "Please remove the overlap and retry");
@@ -156,6 +158,7 @@ public class Search {
     public void addToSchedule(Schedule schedule, Course courseToAdd, List<Course> resultList) {
         for (Course c : resultList) {
             if (c.equals(courseToAdd)) {
+                schedule.setCredits(schedule.getCredits()+ courseToAdd.getCredit_hrs());
                 schedule.getCourses().add(c);
             }
         }
