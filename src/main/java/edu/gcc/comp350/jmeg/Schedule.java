@@ -113,7 +113,7 @@ public class Schedule {
      * Used to navigate different functions that can be taken in schedule
      * Current functions are Searching or Quiting program
      */
-   public void scheduleInteract() {
+   public void scheduleInteract() throws Exception {
        boolean firstTime = true;
        Scanner scnr = IO.getInstance().getScanner();
 
@@ -156,7 +156,7 @@ public class Schedule {
        }
    }
 
-   private void removeCourseInteract() {
+   private void removeCourseInteract() throws Exception {
        Scanner scnr = IO.getInstance().getScanner();
        while (true) {
            System.out.print(Course.succinctCourse(courses));
@@ -166,18 +166,30 @@ public class Schedule {
            if (removable.size() == 1) {
                if(credits- removable.get(0).getCredit_hrs()>=12) {
                    int cred=removable.get(0).getCredit_hrs();
+                   System.out.println("Are you sure you want to remove "+removable.get(0).getCrs_title()+" ? Y/N");
+                   String ans=scnr.next().toUpperCase();
+                   while(!ans.equals("Y")&&!ans.equals("N")){
+                       ans=scnr.next();
+                   }
+                   if(ans.equals("N")){
+                    break;
+                   }
+
                    if (removeCourse(removable.get(0))) {
                        System.out.println("Removed: " + removable.get(0));
-                       setCredits(getCredits()+cred);
+                       setCredits(getCredits()-cred);
                    } else {
                        System.out.println("Error, could not remove course.");
+                       throw new Exception();
                    }
                    break;
                }else{
                    System.out.println("Cannot remove course as it would take you under the 12 credit limit");
+                   throw new Exception();
                }
            } else {
                System.out.println("Error, invalid course code.");
+               throw new Exception();
            }
        }
    }

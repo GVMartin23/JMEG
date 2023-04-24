@@ -72,7 +72,7 @@ public class Search {
      * If this method is only called in scheduleInteract,
      * then a return will send it back to that method
      */
-    public void searchInteraction() {
+    public void searchInteraction() throws Exception {
         Scanner scnr = io.getScanner();
 
         while (!leave) {
@@ -111,7 +111,7 @@ public class Search {
         System.out.println("Leaving search");
     }
 
-    private void addCourseInteract(ArrayList<Course> results) {
+    private void addCourseInteract(ArrayList<Course> results)throws Exception {
         Scanner scnr = io.getScanner();
 
         while (true) {
@@ -127,12 +127,14 @@ public class Search {
                 if (resultCode.equals(userCode)) {
                     if(currentSchedule.getCredits()+i.getCredit_hrs()>18){
                         System.out.println("Cannot add class as it takes you over the 18 credit limit");
-                        break;
+                        throw new Exception();
+                       // break;
                     }
                     if (checkForOverlap(i, currentSchedule.getCourses())) {
                         System.out.println("Cannot add course as there already exists a course with the time " + i.getBegin_tim() + " on the same day as this course.\n"
                         + "Please remove the overlap and retry");
-                        return;
+                        throw new Exception();
+                       // return;
                     }
 
                     addToSchedule(currentSchedule, i, results);
@@ -143,7 +145,8 @@ public class Search {
                     return;
                 }
             }
-            System.out.println("Failed to add class. Invalid course code, try again");
+            throw new Exception();
+           // System.out.println("Failed to add class. Invalid course code, try again");
         }
     }
 
@@ -209,7 +212,7 @@ public class Search {
         return overlap;
     }
 
-    private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) {
+    private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) throws Exception {
         Scanner scnr = io.getScanner();
         while (!leaveResults) {
             System.out.print(Course.succinctCourse(courseList));
@@ -240,7 +243,7 @@ public class Search {
     }
 
 
-    private ArrayList<Course> filterInteract(ArrayList<Course> courseList) {
+    private ArrayList<Course> filterInteract(ArrayList<Course> courseList) throws Exception {
         Scanner scnr = io.getScanner();
         System.out.println("Filter By?");
         System.out.println("Year    Term    None");
@@ -272,7 +275,8 @@ public class Search {
             return filterCourses(filter, courseList);
         }
         System.out.println("Invalid filter");
-        return courseList;
+        throw new Exception();
+        //return courseList;
     }
 
     /**
