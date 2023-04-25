@@ -27,7 +27,12 @@ public class SearchResponse {
 
         ArrayList<Course> courses = search.search("CODE", code, search.getResults());
 
-        return "Hello World";
+        StringBuilder sb = new StringBuilder();
+        for (Course c : courses) {
+            sb.append(c.toString());
+        }
+
+        return sb.toString();
     }
 
     @GetMapping("/addCourse")
