@@ -1,5 +1,8 @@
 package edu.gcc.comp350.jmeg;
 
+import edu.gcc.comp350.jmeg.filter.FilterTerm;
+import edu.gcc.comp350.jmeg.filter.FilterYear;
+import edu.gcc.comp350.jmeg.filter.Filterable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +46,23 @@ public class ScheduleResponse {
             Schedule newSchedule = new Schedule(scheduleTitle, 0, semester, yearVal);
             Main.getSchedules().add(newSchedule);
             Main.setCurrentSchedule(newSchedule);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @GetMapping("/removeSchedule")
+    public boolean removeSchedule(@RequestParam(value = "code", defaultValue = "") String code) {
+        try {
+            Schedule schedule = Main.getCurrentSchedule();
+            int term = (schedule.getSemester().equals("SPRING")) ? 30 : 10;
+            Filterable filterTerm = new FilterTerm(term);
+            Filterable filterYear = new FilterYear(schedule.getYear());
+            ArrayList<Course> courses = filterTerm.filter(Main.getCourses());
+            courses = filterYear.filter(courses);
+            Course course = courses.stream().filter(c -> c.getCrs_code().equals(code)).collect(Collectors.toList()).get(0);
+            schedule.removeCourse(course);
             return true;
         } catch (Exception e) {
             return false;

@@ -90,8 +90,12 @@ public class Schedule {
      * @param course course to remove
      * @return true if successful, false otherwise
      */
-   public boolean removeCourse(Course course){
-        return courses.remove(course);
+   public boolean removeCourse(Course course) {
+       boolean didRemove = false;
+       while (courses.contains(course)) {
+           didRemove = courses.remove(course);
+       }
+       return didRemove;
    }
 
    public void switchSection(Course old_course, Course new_course){

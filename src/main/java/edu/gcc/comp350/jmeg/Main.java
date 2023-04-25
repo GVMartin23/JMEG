@@ -9,7 +9,6 @@ import java.util.*;
 public class Main {
     private static ArrayList<Schedule> schedules;
     private static ArrayList<Course> courses;
-
     private static Schedule currentSchedule;
     private static IO io;
 

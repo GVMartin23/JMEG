@@ -15,11 +15,12 @@ public class SearchResponse {
 
     @GetMapping("/search")
     public ArrayList<Course> retrieveResults(@RequestParam(value = "code", defaultValue = "") String code) {
+        code = code.toUpperCase();
         Schedule currentSchedule;
         try {
             currentSchedule = Main.getCurrentSchedule();
         } catch (Exception e) {
-            return null;
+            currentSchedule = new Schedule("TEST", 0, "SPRING", 2019);;
         }
 
         search = new Search(currentSchedule);
