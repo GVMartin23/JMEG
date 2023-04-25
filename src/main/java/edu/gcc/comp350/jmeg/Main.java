@@ -9,6 +9,8 @@ import java.util.*;
 public class Main {
     private static ArrayList<Schedule> schedules;
     private static ArrayList<Course> courses;
+
+    private static Schedule currentSchedule;
     private static IO io;
 
     public static void setCourses(ArrayList<Course> courses) {
@@ -27,6 +29,17 @@ public class Main {
             schedules = new ArrayList<>();
         }
         return schedules;
+    }
+
+    public static Schedule getCurrentSchedule() throws Exception {
+        if (currentSchedule == null) {
+            throw new Exception("No current selected Schedule");
+        }
+        return currentSchedule;
+    }
+
+    public static void setCurrentSchedule(Schedule schedule) {
+        currentSchedule = schedule;
     }
 
 
