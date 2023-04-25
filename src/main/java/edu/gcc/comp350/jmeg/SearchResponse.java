@@ -29,7 +29,8 @@ public class SearchResponse {
 
         StringBuilder sb = new StringBuilder();
         for (Course c : courses) {
-            sb.append(c.toString());
+            SimpleCourse sc = new SimpleCourse(c);
+            sb.append(sc);
         }
 
         return sb.toString();
