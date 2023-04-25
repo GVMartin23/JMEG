@@ -42,6 +42,7 @@ public class ScheduleResponse {
             int yearVal = Integer.parseInt(year);
             Schedule newSchedule = new Schedule(scheduleTitle, 0, semester, yearVal);
             Main.getSchedules().add(newSchedule);
+            Main.setCurrentSchedule(newSchedule);
             return true;
         } catch (Exception e) {
             return false;
