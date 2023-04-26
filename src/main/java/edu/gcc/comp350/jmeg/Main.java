@@ -42,7 +42,7 @@ public class Main {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         io = IO.getInstance();
         io.importCSVData();//Load courses into arrayList from CSV
         io.loadSchedules();//Load saved schedules

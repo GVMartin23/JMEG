@@ -14,7 +14,7 @@ public class SearchResponse {
     private Search search;
 
     @GetMapping("/search")
-    public String retrieveResults(@RequestParam(value = "code", defaultValue = "") String code) {
+    public ArrayList<Course> retrieveResults(@RequestParam(value = "code", defaultValue = "") String code) {
         code = code.toUpperCase();
         Schedule currentSchedule;
         try {
@@ -25,15 +25,7 @@ public class SearchResponse {
 
         search = new Search(currentSchedule);
 
-        ArrayList<Course> courses = search.search("CODE", code, search.getResults());
-
-        StringBuilder sb = new StringBuilder();
-        for (Course c : courses) {
-            SimpleCourse sc = new SimpleCourse(c);
-            sb.append(sc);
-        }
-
-        return sb.toString();
+        return search.search("CODE", code, search.getResults());
     }
 
     @GetMapping("/addCourse")
