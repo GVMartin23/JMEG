@@ -1,11 +1,15 @@
 package edu.gcc.comp350.jmeg;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import java.util.*;
 
-
+@SpringBootApplication
 public class Main {
     private static ArrayList<Schedule> schedules;
     private static ArrayList<Course> courses;
+    private static Schedule currentSchedule;
     private static IO io;
 
     public static void setCourses(ArrayList<Course> courses) {
@@ -26,11 +30,24 @@ public class Main {
         return schedules;
     }
 
-    public static void main(String[] args) {
+    public static Schedule getCurrentSchedule() throws Exception {
+        if (currentSchedule == null) {
+            throw new Exception("No current selected Schedule");
+        }
+        return currentSchedule;
+    }
+
+    public static void setCurrentSchedule(Schedule schedule) {
+        currentSchedule = schedule;
+    }
+
+
+    public static void main(String[] args) throws Exception {
         io = IO.getInstance();
         io.importCSVData();//Load courses into arrayList from CSV
         io.loadSchedules();//Load saved schedules
         getSchedules();
+        SpringApplication.run(Main.class, args);
         User user=makeUser();//Use command prompt to make new user
         ArrayList<Schedule> userSchedules=fillUserSchedules(user);//Create arrayList of schedules for the user,
         userScheduleSelect(user, userSchedules);//Allow for search/add class interface
@@ -42,7 +59,7 @@ public class Main {
      * @param userSchedules List of schedules to select from
      * Provides interface to select which schedule to edit
      */
-    public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules) {
+    public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules) throws Exception {
         Scanner scanner = io.getScanner();
 
         if (!userSchedules.isEmpty()) {
