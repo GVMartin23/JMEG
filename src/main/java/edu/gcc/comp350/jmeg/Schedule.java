@@ -2,7 +2,6 @@ package edu.gcc.comp350.jmeg;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -80,7 +79,7 @@ public class Schedule {
      * Creates new Search class then enters the searchInteraction method in search
      * Used to go from scheduleInteract to searchInteraction
      */
-   public void searchCourses() {
+   public void searchCourses() throws Exception {
         Search search = new Search(this);
         search.searchInteraction();
    }
@@ -162,39 +161,24 @@ public class Schedule {
 
    private void removeCourseInteract() throws Exception {
        Scanner scnr = IO.getInstance().getScanner();
-       while (true) {
-           System.out.print(Course.succinctCourse(courses));
-           System.out.println("Which Course would you like to remove?\nEnter code:");
-           String inputCode = scnr.nextLine().strip().toUpperCase();
-           List<Course> removable = courses.stream().filter(c -> c.getCrs_code().equals(inputCode)).collect(Collectors.toList());
-           if (removable.size() == 1) {
-               if(credits- removable.get(0).getCredit_hrs()>=12) {
-                   int cred=removable.get(0).getCredit_hrs();
-                   System.out.println("Are you sure you want to remove "+removable.get(0).getCrs_title()+" ? Y/N");
-                   String ans=scnr.next().toUpperCase();
-                   while(!ans.equals("Y")&&!ans.equals("N")){
-                       ans=scnr.next();
-                   }
-                   if(ans.equals("N")){
-                    break;
-                   }
+       System.out.print(Course.succinctCourse(courses));
+       System.out.println("Which Course would you like to remove?\nEnter code:");
+       String inputCode = scnr.nextLine().strip().toUpperCase();
+       List<Course> removable = courses.stream().filter(c -> c.getCrs_code().equals(inputCode)).collect(Collectors.toList());
+       if (removable.size() == 1) {
+           if(credits - removable.get(0).getCredit_hrs()>=12) {
+               int cred=removable.get(0).getCredit_hrs();
 
-                   if (removeCourse(removable.get(0))) {
-                       System.out.println("Removed: " + removable.get(0));
-                       setCredits(getCredits()-cred);
-                   } else {
-                       System.out.println("Error, could not remove course.");
-                       throw new Exception();
-                   }
-                   break;
-               }else{
-                   System.out.println("Cannot remove course as it would take you under the 12 credit limit");
-                   throw new Exception();
+               if (removeCourse(removable.get(0))) {
+                   setCredits(getCredits() - cred);
+               } else {
+                   throw new Exception("Could not remove course");
                }
-           } else {
-               System.out.println("Error, invalid course code.");
-               throw new Exception();
+           }else{
+               throw new Exception("Cannot remove course as it would take you under the 12 credit limit");
            }
+       } else {
+           throw new Exception("Invalid course code");
        }
    }
 
