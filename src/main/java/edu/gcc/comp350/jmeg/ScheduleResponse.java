@@ -68,4 +68,14 @@ public class ScheduleResponse {
             return false;
         }
     }
+
+    @GetMapping("/getScheduleCourses")
+    public ArrayList<Course> getCourseList() {
+        try {
+            Schedule schedule = Main.getCurrentSchedule();
+            return schedule.getCourses();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

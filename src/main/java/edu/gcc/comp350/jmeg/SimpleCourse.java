@@ -34,6 +34,6 @@ public class SimpleCourse {
                 onThursday + ',' +
                 onFriday + ',' +
                 courseName + ',' +
-                courseCode + '\n';
+                courseCode + ':';
     }
 }
