@@ -20,7 +20,7 @@ public class SearchResponse {
         try {
             currentSchedule = Main.getCurrentSchedule();
         } catch (Exception e) {
-            currentSchedule = new Schedule("TEST", 0, "SPRING", 2019);;
+            currentSchedule = new Schedule("TEST", 0, "SPRING", 2019);
         }
 
         search = new Search(currentSchedule);
