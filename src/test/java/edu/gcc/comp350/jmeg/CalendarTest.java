@@ -3,7 +3,6 @@ package edu.gcc.comp350.jmeg;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +20,6 @@ class CalendarTest {
     public void calendarTest(){
         ArrayList<Course> courses=Main.getCourses();
 
-        User u=new User("Ethan", "CS", "AI");
         Course c= courses.get(100);
         Course c2= courses.get(2);
         Course c3=courses.get(3);
@@ -34,7 +32,7 @@ class CalendarTest {
         fakeCourseList.add(c3);
         fakeCourseList.add(c4);
         fakeCourseList.add(c5);
-        Schedule s=new Schedule(u,"Test Calendar");
+        Schedule s=new Schedule("TEST", 0, "SPRING", 2019);
         s.setCourses(fakeCourseList);
         Calendar cal=new Calendar(s);
         System.out.println(cal.showCalendar());

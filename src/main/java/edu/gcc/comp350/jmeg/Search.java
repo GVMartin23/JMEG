@@ -27,6 +27,13 @@ public class Search {
         results = initFilters(schedule.getSemester(), schedule.getYear());
     }
 
+    public ArrayList<Course> getResults() {
+        if (results == null) {
+            results = new ArrayList<>();
+        }
+        return results;
+    }
+
     /**
      * Getter for filters
      * @return filters is null, new ArrayList, else filters

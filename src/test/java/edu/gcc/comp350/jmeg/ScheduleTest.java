@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScheduleTest {
-    static User user;
     Schedule schedule;
 
     @BeforeAll
@@ -15,12 +14,11 @@ class ScheduleTest {
         if (Main.getCourses().isEmpty()) {
             IO.getInstance().importCSVData();
         }
-        user = new User("Tester", "", "");
     }
 
     @BeforeEach
     void prelim() {
-        schedule = new Schedule(user, "Test");
+        schedule = new Schedule("Test", 0, "SPRING", 2019);
     }
 
     @Test
