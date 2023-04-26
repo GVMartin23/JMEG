@@ -59,7 +59,7 @@ public class Main {
      * @param userSchedules List of schedules to select from
      * Provides interface to select which schedule to edit
      */
-    public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules) {
+    public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules) throws Exception {
         Scanner scanner = io.getScanner();
 
         if (!userSchedules.isEmpty()) {
