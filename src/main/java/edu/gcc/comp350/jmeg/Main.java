@@ -47,6 +47,7 @@ public class Main {
         io.importCSVData();//Load courses into arrayList from CSV
         io.loadSchedules();//Load saved schedules
         getSchedules();
+        setCurrentSchedule(new Schedule("TEST", 0, "SPRING", 2019));
         SpringApplication.run(Main.class, args);
         User user=makeUser();//Use command prompt to make new user
         ArrayList<Schedule> userSchedules=fillUserSchedules(user);//Create arrayList of schedules for the user,
