@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @CrossOrigin(origins = "http://localhost:3000")
 public class CourseResponse {
 
-    @GetMapping("courseDetails")
+    @GetMapping("/courseDetails")
     public String getDetails(@RequestParam(value = "code", defaultValue = "")String code) {
         try {
             Schedule currentSchedule = Main.getCurrentSchedule();
