@@ -56,9 +56,19 @@ public class Main {
         Schedule schedule = new Schedule("TEST", 0, "SPRING", 2019);
         setCurrentSchedule(schedule);
         SpringApplication.run(Main.class, args);
+        AutoSave save = new AutoSave(60);
+        Thread autoSave = new Thread(save);
+        autoSave.start();
         User user=makeUser();//Use command prompt to make new user
         ArrayList<Schedule> userSchedules=fillUserSchedules(user);//Create arrayList of schedules for the user,
         userScheduleSelect(user, userSchedules);//Allow for search/add class interface
+
+        //Once Console Interactions Deleted, must have this behind server runloop.
+        //In order to prevent application from instantly closing
+        autoSave.interrupt();
+        for (Schedule scheduleToSave : schedules) {
+            io.saveSchedule(scheduleToSave);
+        }
     }
 
     /**

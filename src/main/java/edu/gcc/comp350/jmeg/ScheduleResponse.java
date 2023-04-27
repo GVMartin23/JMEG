@@ -25,6 +25,11 @@ public class ScheduleResponse {
     public boolean selectSchedule(@RequestParam(value = "title", defaultValue = "") String scheduleTitle) {
         List<Schedule> scheduleList = Main.getSchedules().stream().filter(s -> s.getTitle().equals(scheduleTitle)).collect(Collectors.toList());
 
+        try {
+            Schedule oldSchedule = Main.getCurrentSchedule();
+            IO.getInstance().saveSchedule(oldSchedule);
+        } catch (Exception ignored) {}
+
         if (scheduleList.size() == 0) {
             return false;
         }

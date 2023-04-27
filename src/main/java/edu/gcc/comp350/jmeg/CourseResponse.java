@@ -13,6 +13,9 @@ public class CourseResponse {
 
     @GetMapping("/courseDetails")
     public String getDetails(@RequestParam(value = "code", defaultValue = "")String code) {
+        if (code.equals("")) {
+            return "";
+        }
         try {
             Schedule currentSchedule = Main.getCurrentSchedule();
             Search search = new Search(currentSchedule);
