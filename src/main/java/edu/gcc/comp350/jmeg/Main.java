@@ -38,7 +38,12 @@ public class Main {
     }
 
     public static void setCurrentSchedule(Schedule schedule) {
-        currentSchedule = schedule;
+        if (schedules.contains(schedule)) {
+            currentSchedule = schedule;
+        } else {
+            schedules.add(schedule);
+        }
+
     }
 
 

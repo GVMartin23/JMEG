@@ -206,6 +206,7 @@ public class Schedule {
        }
 
         return this.title.equals(schedule.title)
-                && this.user.equals(schedule.user);
+                && this.semester.equals(schedule.semester)
+                && this.year == schedule.year;
     }
 }
