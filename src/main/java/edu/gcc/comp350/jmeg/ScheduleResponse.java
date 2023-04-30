@@ -16,6 +16,16 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:3000")
 public class ScheduleResponse {
 
+    @GetMapping("/currentSchedule")
+    public Schedule getCurrentSchedule() {
+        try {
+            return Main.getCurrentSchedule();
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
     @GetMapping("/scheduleList")
     public ArrayList<Schedule> retrieveSchedules() {
         return Main.getSchedules();
