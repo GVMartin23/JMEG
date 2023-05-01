@@ -30,6 +30,7 @@ public class Schedule {
         this.credits = credits;
         this.semester = semester;
         this.year = year;
+        this.user = new User("","","");
     }
 
     public User getUser() {
@@ -185,7 +186,7 @@ public class Schedule {
    @Override
    public String toString(){
        StringBuilder schedules = new StringBuilder(String.format("%s's current schedule:\n--------------------------------\n", user));
-       for (Course course: courses) {
+       for (Course course: getCourses()) {
            schedules.append(course.toString());
            if(courses.indexOf(course) != courses.size() - 1)
                schedules.append("--------------------------------\n");
@@ -206,6 +207,7 @@ public class Schedule {
        }
 
         return this.title.equals(schedule.title)
-                && this.user.equals(schedule.user);
+                && this.semester.equals(schedule.semester)
+                && this.year == schedule.year;
     }
 }

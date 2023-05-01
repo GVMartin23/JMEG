@@ -16,6 +16,16 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:3000")
 public class ScheduleResponse {
 
+    @GetMapping("/currentSchedule")
+    public Schedule getCurrentSchedule() {
+        try {
+            return Main.getCurrentSchedule();
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
     @GetMapping("/scheduleList")
     public ArrayList<Schedule> retrieveSchedules() {
         return Main.getSchedules();
@@ -24,6 +34,11 @@ public class ScheduleResponse {
     @GetMapping("/schedulePick")
     public boolean selectSchedule(@RequestParam(value = "title", defaultValue = "") String scheduleTitle) {
         List<Schedule> scheduleList = Main.getSchedules().stream().filter(s -> s.getTitle().equals(scheduleTitle)).collect(Collectors.toList());
+
+        try {
+            Schedule oldSchedule = Main.getCurrentSchedule();
+            IO.getInstance().saveSchedule(oldSchedule);
+        } catch (Exception ignored) {}
 
         if (scheduleList.size() == 0) {
             return false;
