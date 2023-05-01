@@ -14,26 +14,18 @@ public class SearchResponse {
     private Search search;
 
     @GetMapping("/search")
-    public String retrieveResults(@RequestParam(value = "code", defaultValue = "") String code) {
+    public ArrayList<Course> retrieveResults(@RequestParam(value = "code", defaultValue = "") String code) {
         code = code.toUpperCase();
         Schedule currentSchedule;
         try {
             currentSchedule = Main.getCurrentSchedule();
         } catch (Exception e) {
-            currentSchedule = new Schedule("TEST", 0, "SPRING", 2019);;
+            return null;
         }
 
         search = new Search(currentSchedule);
 
-        ArrayList<Course> courses = search.search("CODE", code, search.getResults());
-
-        StringBuilder sb = new StringBuilder();
-        for (Course c : courses) {
-            SimpleCourse sc = new SimpleCourse(c);
-            sb.append(sc);
-        }
-
-        return sb.toString();
+        return search.search("CODE", code, search.getResults());
     }
 
     @GetMapping("/addCourse")

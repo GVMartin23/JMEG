@@ -174,13 +174,8 @@ public class Course {
 
     @Override
     public String toString(){
-        String crs = crs_title + "\n";
-        crs += "--------------------------------\n";
-        crs += "Course and Section Code: " + crs_comp1 + " " + crs_comp2 + " " + crs_comp3 + "\t\t";
-
-        String meets = String.format("Meets: %s/%s/%s/%s/%s\t\tFrom: %s to %s\n",
+        String crs = String.format("Meets: %s/%s/%s/%s/%s\t\tFrom: %s to %s\n",
                 monday_cde, tuesday_cde, wednesday_cde, thursday_cde, friday_cde, begin_tim, end_tim);
-        crs += meets;
 
         crs += "Professor: " + last_name + ", " + first_name;
         crs += String.format("\t\tCapacity: %d/%d\n", crs_enrollment, crs_capacity);
