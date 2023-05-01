@@ -53,15 +53,17 @@ public class Main {
         io.importCSVData();//Load courses into arrayList from CSV
         io.loadSchedules();//Load saved schedules
         getSchedules();
-        Schedule schedule = new Schedule("TEST", 0, "SPRING", 2019);
+        Schedule schedule = new Schedule("Test", 0, "SPRING", 2019);
+        User user = new User("Name", "Major", "Minor");
+        schedule.setUser(user);
         setCurrentSchedule(schedule);
         SpringApplication.run(Main.class, args);
         AutoSave save = new AutoSave(60);
         Thread autoSave = new Thread(save);
         autoSave.start();
-        User user=makeUser();//Use command prompt to make new user
-        ArrayList<Schedule> userSchedules=fillUserSchedules(user);//Create arrayList of schedules for the user,
-        userScheduleSelect(user, userSchedules);//Allow for search/add class interface
+        User userer=makeUser();//Use command prompt to make new user
+        ArrayList<Schedule> userSchedules=fillUserSchedules(userer);//Create arrayList of schedules for the user,
+        userScheduleSelect(userer, userSchedules);//Allow for search/add class interface
 
         //Once Console Interactions Deleted, must have this behind server runloop.
         //In order to prevent application from instantly closing
