@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,7 +26,20 @@ public class SearchResponse {
 
         search = new Search(currentSchedule);
 
-        return search.search("CODE", code, search.getResults());
+        ArrayList<Course> codeResults = search.search("CODE", code, search.getResults());
+        search.resetSearch();
+        ArrayList<Course> titleResults = search.search("NAME", code, search.getResults());
+        search.resetSearch();
+        ArrayList<Course> dayResults = search.search("DAY", code, search.getResults());
+        search.resetSearch();
+        ArrayList<Course> timeResults = search.search("TIME", code, search.getResults());
+
+        HashSet<Course> courses = new HashSet<>(codeResults);
+        courses.addAll(titleResults);
+        courses.addAll(dayResults);
+        courses.addAll(timeResults);
+
+        return new ArrayList<>(courses);
     }
 
     @GetMapping("/addCourse")
