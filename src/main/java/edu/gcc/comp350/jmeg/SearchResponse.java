@@ -1,5 +1,8 @@
 package edu.gcc.comp350.jmeg;
 
+import edu.gcc.comp350.jmeg.filter.FilterTerm;
+import edu.gcc.comp350.jmeg.filter.FilterYear;
+import edu.gcc.comp350.jmeg.filter.Filterable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,5 +64,24 @@ public class SearchResponse {
             search.addToSchedule(currentSchedule, course, results);
             return true;
         }
+    }
+
+    @GetMapping("/removeCourse")
+    public boolean removeSchedule(@RequestParam(value = "code", defaultValue = "") String code) {
+        Schedule currentSchedule;
+
+        try {
+            currentSchedule = Main.getCurrentSchedule();
+        } catch (Exception e) {
+            return false;
+        }
+
+        int term = (currentSchedule.getSemester().equals("SPRING")) ? 30 : 10;
+        Filterable filterTerm = new FilterTerm(term);
+        Filterable filterYear = new FilterYear(currentSchedule.getYear());
+        ArrayList<Course> courses = filterTerm.filter(Main.getCourses());
+        courses = filterYear.filter(courses);
+        Course course = courses.stream().filter(c -> c.getCrs_code().equals(code)).collect(Collectors.toList()).get(0);
+        return currentSchedule.removeCourse(course);
     }
 }

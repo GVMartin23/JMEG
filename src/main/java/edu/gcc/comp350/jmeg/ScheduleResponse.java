@@ -67,23 +67,6 @@ public class ScheduleResponse {
         }
     }
 
-    @GetMapping("/removeSchedule")
-    public boolean removeSchedule(@RequestParam(value = "code", defaultValue = "") String code) {
-        try {
-            Schedule schedule = Main.getCurrentSchedule();
-            int term = (schedule.getSemester().equals("SPRING")) ? 30 : 10;
-            Filterable filterTerm = new FilterTerm(term);
-            Filterable filterYear = new FilterYear(schedule.getYear());
-            ArrayList<Course> courses = filterTerm.filter(Main.getCourses());
-            courses = filterYear.filter(courses);
-            Course course = courses.stream().filter(c -> c.getCrs_code().equals(code)).collect(Collectors.toList()).get(0);
-            schedule.removeCourse(course);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     @GetMapping("/getScheduleCourses")
     public ArrayList<Course> getCourseList() {
         try {
