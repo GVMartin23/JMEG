@@ -6,24 +6,17 @@ import edu.gcc.comp350.jmeg.filter.Filterable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 
 public class Search {
-    private final IO io;
     private ArrayList<Filterable> filters;
     private final Schedule currentSchedule;
     private ArrayList<Course> results;
-    private boolean leave;
-    private boolean leaveResults;
 
     public Search(Schedule schedule) {
         currentSchedule = schedule;
         filters = new ArrayList<>();
-        io = IO.getInstance();
-        leave = false;
-        leaveResults = false;
         results = initFilters(schedule.getSemester(), schedule.getYear());
     }
 
@@ -70,85 +63,6 @@ public class Search {
         }
 
         return filteredCourses;
-    }
-
-    /**
-     * Basic method for interaction with program
-     * Everything in here can change
-     * Return at end used to pass by return to Schedule
-     * If this method is only called in scheduleInteract,
-     * then a return will send it back to that method
-     */
-    public void searchInteraction() throws Exception {
-        Scanner scnr = io.getScanner();
-
-        while (!leave) {
-            System.out.println("Search by,");
-            System.out.println("Name    Day     Time    Code");
-            //Determine how they are searching
-            String identifier = scnr.nextLine().toUpperCase();
-
-            System.out.println("Enter query:");
-            String search = scnr.nextLine().toUpperCase();
-
-            results = search(identifier, search, results);
-
-            if (results == null) {
-                System.out.println("Incorrect Search or Identifier");
-            } else if (results.isEmpty()) {
-                System.out.println("Search produced zero results, try a different query or identifier");
-                results = null;
-            } else {
-                results = resultsInteract(results);
-            }
-
-            if (leaveResults) {
-                leaveResults = false;
-                continue;
-            }
-
-            if (!leave) {
-                System.out.println("Continue Searching? (Y/N): ");
-                String exit = scnr.nextLine().toUpperCase().strip();
-                if (exit.equals("N")) {
-                    leave = true;
-                }
-            }
-        }
-        System.out.println("Leaving search");
-    }
-
-    private void addCourseInteract(ArrayList<Course> results)throws Exception {
-        Scanner scnr = io.getScanner();
-
-        System.out.println("Enter the course code of the class you wish to add, or Q to quit");
-        String courseCodeToAdd = scnr.nextLine().toUpperCase().strip();
-        if (courseCodeToAdd.equals("Q")) {
-            leaveResults = true;
-            return;
-        }
-        String userCode = courseCodeToAdd.replace(" ", "").strip();
-        for (Course i : results) {
-            String resultCode = i.getCrs_code().replace(" ", "").strip();
-            if (resultCode.equals(userCode)) {
-                if(currentSchedule.getCredits()+i.getCredit_hrs()>18){
-                    System.out.println("Cannot add class as it takes you over the 18 credit limit");
-                    throw new Exception("Credit limit exceeded");
-                }
-                if (checkForOverlap(i, currentSchedule.getCourses())) {
-                    System.out.println("Cannot add course as there already exists a course with the time " + i.getBegin_tim() + " on the same day as this course.\n"
-                    + "Please remove the overlap and retry");
-                    throw new Exception("Overlap exists with course trying to add");
-                }
-
-                addToSchedule(currentSchedule, i, results);
-                //Should send them back to searchInteract
-                leave = true;
-                leaveResults = true;
-                return;
-            }
-        }
-        throw new Exception("Invalid Code");
     }
 
     /**
@@ -211,96 +125,6 @@ public class Search {
             overlap = true;
         }
         return overlap;
-    }
-
-    private ArrayList<Course> resultsInteract(ArrayList<Course> courseList) throws Exception {
-        Scanner scnr = io.getScanner();
-        while (!leaveResults) {
-            System.out.print(Course.succinctCourse(courseList));
-            System.out.println("What would you like to do?");
-            System.out.println("Add Course     Filter    View Details     Search Again      Exit");
-            String input = "";
-            while (input.equals("")) {
-                input = scnr.nextLine().strip().toUpperCase();
-            }
-            if (input.equals("ADD COURSE")) {
-                addCourseInteract(courseList);
-            } else if (input.equals("FILTER")) {
-                courseList = filterInteract(courseList);
-            } else if (input.equals("VIEW DETAILS")) {
-                viewDetailsInteract(courseList);
-            } else if (input.equals("SEARCH AGAIN")) {
-                System.out.println("Returning to search");
-                leaveResults = true;
-            } else if (input.equals("EXIT")) {
-                leaveResults = true;
-                leave = true;
-            } else {
-                System.out.println("Error, invalid input");
-            }
-        }
-
-        return courseList;
-    }
-
-
-    private ArrayList<Course> filterInteract(ArrayList<Course> courseList) throws Exception {
-        Scanner scnr = io.getScanner();
-        System.out.println("Filter By?");
-        System.out.println("Year    Term    None");
-        String filterBy = scnr.nextLine().toUpperCase().strip();
-        if (filterBy.equals("NONE")) {
-            return courseList;
-        }
-
-        Filterable filter = null;
-        String filterVal;
-        if (filterBy.equals("YEAR")) {
-            System.out.println("Enter year (2018, 2019, 2020): ");
-            filterVal = scnr.next();
-            if (filterVal.equals("2018") || filterVal.equals("2019") || filterVal.equals("2020")) {
-                filter = new FilterYear(Integer.parseInt(filterVal));
-            } else {
-                System.out.println("Error, invalid input.");
-            }
-        } else if (filterBy.equals("TERM")) {
-            System.out.println("Enter term (Spring, Fall): ");
-            filterVal = scnr.next().toUpperCase();
-            if (filterVal.equals("FALL") || filterVal.equals("SPRING")) {
-                int code = filterVal.equals("FALL") ? 10 : 30;
-                filter = new FilterTerm(code);
-            }
-        }
-
-        if (filter != null) {
-            return filterCourses(filter, courseList);
-        }
-        System.out.println("Invalid filter");
-        throw new Exception();
-        //return courseList;
-    }
-
-    /**
-     * This method finds the course the user wants more details on and uses the viewDetails method
-     * to take that course and display more info on it
-     * @param courseList - list of courses in csv
-     */
-    private void viewDetailsInteract(ArrayList<Course> courseList) {
-        Scanner scan = io.getScanner();
-        System.out.println("Which course would you like to view details on?");
-
-        String courseCode = scan.nextLine().toUpperCase().strip();
-
-        List<Course> courses = courseList.stream()
-                .filter(c -> c.getCrs_code().equals(courseCode))
-                .collect(Collectors.toList());
-
-        if (courses.size() == 0) {
-            System.out.println("Error, invalid course code, please enter correct code.");
-            return;
-        }
-
-        viewDetails(courses.get(0));
     }
 
     /**
@@ -412,17 +236,6 @@ public class Search {
         }
 
         return filter.filter(courses);
-    }
-
-    /**
-     * This method takes in a course after the user searches for it and
-     * displays more information on the specified course.
-     * Displays the course title, code, begin and end time, day, professor,
-     * capacity, credits
-     * @param c - course searched for
-     */
-    private void viewDetails(Course c) {
-        System.out.println(c);
     }
 
     /**

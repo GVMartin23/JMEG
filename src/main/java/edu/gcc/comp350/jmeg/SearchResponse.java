@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,10 @@ public class SearchResponse {
         courses.addAll(dayResults);
         courses.addAll(timeResults);
 
-        return new ArrayList<>(courses);
+        ArrayList<Course> fullList = new ArrayList<>(courses);
+        fullList.sort(Comparator.comparing(Course::getCrs_title));
+
+        return fullList;
     }
 
     @GetMapping("/addCourse")
@@ -60,10 +64,9 @@ public class SearchResponse {
 
         if (search.checkForOverlap(course, currentSchedule.getCourses())) {
             return false;
-        } else {
-            search.addToSchedule(currentSchedule, course, results);
-            return true;
         }
+        search.addToSchedule(currentSchedule, course, results);
+        return true;
     }
 
     @GetMapping("/removeCourse")

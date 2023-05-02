@@ -62,8 +62,6 @@ public class Main {
         Thread autoSave = new Thread(save);
         autoSave.start();
         User userer=makeUser();//Use command prompt to make new user
-        ArrayList<Schedule> userSchedules=fillUserSchedules(userer);//Create arrayList of schedules for the user,
-        userScheduleSelect(userer, userSchedules);//Allow for search/add class interface
 
         //Once Console Interactions Deleted, must have this behind server runloop.
         //In order to prevent application from instantly closing
@@ -71,64 +69,6 @@ public class Main {
         for (Schedule scheduleToSave : schedules) {
             io.saveSchedule(scheduleToSave);
         }
-    }
-
-    /**
-     *
-     * @param user Specified User to narrow schedules to
-     * @param userSchedules List of schedules to select from
-     * Provides interface to select which schedule to edit
-     */
-    public static void userScheduleSelect(User user, ArrayList<Schedule> userSchedules) throws Exception {
-        Scanner scanner = io.getScanner();
-
-        if (!userSchedules.isEmpty()) {
-            System.out.println("Your schedules are: ");//Print out all the schedules for the current user
-            for (Schedule i : userSchedules) {
-                System.out.println(i.getTitle());
-            }
-            System.out.println("Which schedule do you wish to edit?");
-            System.out.println("If you want to create a new schedule, type the name below:");
-        } else {
-            System.out.println("Enter the name of your first schedule:");
-        }
-
-        String userSelectedSchedule = scanner.nextLine().strip();
-
-        while(userSelectedSchedule.equals("")){
-            userSelectedSchedule=scanner.nextLine().strip();
-        }
-        System.out.println("You selected " + userSelectedSchedule);
-
-        Schedule currentSchedule = new Schedule(user, userSelectedSchedule);
-
-        for (Schedule i : userSchedules) {//TODO: make the user input a correct schedule
-            if (i.getTitle().equals(userSelectedSchedule)) {//Matches the string input with the actual schedule
-                currentSchedule = i;
-            }else{
-                currentSchedule = new Schedule(user, userSelectedSchedule);
-            }
-        }
-
-        currentSchedule.scheduleInteract();
-
-        io.saveSchedule(currentSchedule);
-    }
-
-    /**
-     *
-     * @param user User to sort schedules by
-     * @return
-     * Fills the User's array of schedules with all their schedules, whether new or returning user
-     */
-    public static ArrayList<Schedule> fillUserSchedules(User user){
-        ArrayList<Schedule> userSchedules=new ArrayList<>();//Creates a new arrayList of schedules for the new user
-        for (Schedule value : schedules) {
-            if (value.getUser().getName().equals(user.getName())) {//Puts all the schedules containing that user's name from the master schedule list into the list
-                userSchedules.add(value);
-            }
-        }
-        return userSchedules;//Returns the schedule you want to edit
     }
 
     public static User newUser() {
