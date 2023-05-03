@@ -9,13 +9,13 @@ public class AutoSave implements Runnable{
     public void run() {
         IO io = IO.getInstance();
         while (run) {
-            for (Schedule schedule : Main.getSchedules()) {
-                io.saveSchedule(schedule);
-            }
             try {
                 Thread.sleep(numSeconds * 1000L);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
+            }
+            for (Schedule schedule : Main.getSchedules()) {
+                io.saveSchedule(schedule);
             }
         }
     }
