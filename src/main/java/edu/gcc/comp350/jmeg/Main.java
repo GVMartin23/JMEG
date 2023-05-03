@@ -53,10 +53,6 @@ public class Main {
         io.importCSVData();//Load courses into arrayList from CSV
         io.loadSchedules();//Load saved schedules
         getSchedules();
-        Schedule schedule = new Schedule("Test", 0, "SPRING", 2019);
-        User user = new User("Name", "Major", "Minor");
-        schedule.setUser(user);
-        setCurrentSchedule(schedule);
         SpringApplication.run(Main.class, args);
         AutoSave save = new AutoSave(60);
         Thread autoSave = new Thread(save);

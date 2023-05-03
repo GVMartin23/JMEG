@@ -63,4 +63,28 @@ public class ScheduleResponse {
             return false;
         }
     }
+
+    @GetMapping("/removeByTitle")
+    public boolean removeByTitle(@RequestParam(value = "title", defaultValue = "") String title) {
+        if (title.equals("")) {
+            return false;
+        }
+
+        title = title.toUpperCase().strip();
+        Schedule currentSchedule;
+
+        try {
+            currentSchedule = Main.getCurrentSchedule();
+        } catch (Exception e) {
+            return false;
+        }
+
+        String finalTitle = title;
+        Course remover = currentSchedule.getCourses()
+                .stream()
+                .filter(c -> c.getCrs_title().toUpperCase().strip().equals(finalTitle))
+                .collect(Collectors.toList()).get(0);
+
+        return currentSchedule.removeCourse(remover);
+    }
 }
