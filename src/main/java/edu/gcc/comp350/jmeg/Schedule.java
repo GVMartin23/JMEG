@@ -47,8 +47,11 @@ public class Schedule {
         return credits;
     }
 
-    public void setCredits(int credits) {
-        this.credits = credits;
+    public void setCredits() {
+        credits = 0;
+        for (Course c: courses) {
+            credits += c.getCredit_hrs();
+        }
     }
 
     public ArrayList<Course> getCourses() {
@@ -83,6 +86,8 @@ public class Schedule {
        while (courses.contains(course)) {
            didRemove = courses.remove(course);
        }
+
+       setCredits();
        return didRemove;
    }
 

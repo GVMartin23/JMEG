@@ -65,6 +65,11 @@ public class SearchResponse {
         if (search.checkForOverlap(course, currentSchedule.getCourses())) {
             return false;
         }
+
+        if (currentSchedule.getCredits() + course.getCredit_hrs() > 18) {
+            return false;
+        }
+
         search.addToSchedule(currentSchedule, course, results);
         return true;
     }
@@ -86,5 +91,25 @@ public class SearchResponse {
         courses = filterYear.filter(courses);
         Course course = courses.stream().filter(c -> c.getCrs_code().equals(code)).collect(Collectors.toList()).get(0);
         return currentSchedule.removeCourse(course);
+    }
+
+    @GetMapping("/courseDetailsTitle")
+    public String detailsByTitle(@RequestParam(value = "title", defaultValue = "") String title) {
+        title = title.toUpperCase().strip();
+        Schedule currentSchedule;
+
+        try {
+            currentSchedule = Main.getCurrentSchedule();
+        } catch (Exception e) {
+            return "";
+        }
+
+        //Get the corresponding course from given title in Schedule's courseList
+        String finalTitle = title;
+        Course course = currentSchedule.getCourses()
+                .stream()
+                .filter(c -> c.getCrs_title().toUpperCase().strip().equals(finalTitle))
+                .collect(Collectors.toList()).get(0);
+        return course.toString();
     }
 }

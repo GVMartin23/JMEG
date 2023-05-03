@@ -76,8 +76,8 @@ public class Search {
     public void addToSchedule(Schedule schedule, Course courseToAdd, List<Course> resultList) {
         for (Course c : resultList) {
             if (c.equals(courseToAdd)) {
-                schedule.setCredits(schedule.getCredits()+ courseToAdd.getCredit_hrs());
                 schedule.getCourses().add(c);
+                schedule.setCredits();
             }
         }
     }

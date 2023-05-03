@@ -1,8 +1,5 @@
 package edu.gcc.comp350.jmeg;
 
-import edu.gcc.comp350.jmeg.filter.FilterTerm;
-import edu.gcc.comp350.jmeg.filter.FilterYear;
-import edu.gcc.comp350.jmeg.filter.Filterable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,16 +61,6 @@ public class ScheduleResponse {
             return true;
         } catch (Exception e) {
             return false;
-        }
-    }
-
-    @GetMapping("/getScheduleCourses")
-    public ArrayList<Course> getCourseList() {
-        try {
-            Schedule schedule = Main.getCurrentSchedule();
-            return schedule.getCourses();
-        } catch (Exception e) {
-            return null;
         }
     }
 }
