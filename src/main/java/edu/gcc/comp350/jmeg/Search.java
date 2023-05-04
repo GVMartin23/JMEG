@@ -96,7 +96,14 @@ public class Search {
         }
         return false;
     }
-
+    public boolean checkIfAlreadyAdded(Course course, List<Course> overlapList){
+        for(Course overlapCourse: overlapList){
+            if(overlapCourse.equals(course)){
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * returns true if courses overlap, false otherwise
      * @param c1 Course for evaluation

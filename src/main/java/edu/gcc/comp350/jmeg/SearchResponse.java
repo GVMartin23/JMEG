@@ -50,28 +50,30 @@ public class SearchResponse {
     }
 
     @GetMapping("/addCourse")
-    public boolean addCourse(@RequestParam(value = "code", defaultValue = "") String code) {
+    public int addCourse(@RequestParam(value = "code", defaultValue = "") String code) {
         Schedule currentSchedule;
         try {
             currentSchedule = Main.getCurrentSchedule();
         } catch (Exception e) {
-            return false;
+            return 0;//0 for invalid schedule
         }
 
         ArrayList<Course> results = search.getResults();
 
         Course course = results.stream().filter(c -> c.getCrs_code().equals(code)).collect(Collectors.toList()).get(0);
-
+        if(search.checkIfAlreadyAdded(course, currentSchedule.getCourses())){
+            return 4;//4 for course already added
+        }
         if (search.checkForOverlap(course, currentSchedule.getCourses())) {
-            return false;
+            return 1;//1 for course overlap
         }
 
         if (currentSchedule.getCredits() + course.getCredit_hrs() > 18) {
-            return false;
+            return 2;//2 for max credits
         }
 
         search.addToSchedule(currentSchedule, course, results);
-        return true;
+        return 3; //3 for success
     }
 
     @GetMapping("/removeCourse")
