@@ -49,6 +49,7 @@ public class ScheduleResponse {
     public boolean createSchedule(@RequestParam(value = "title", defaultValue = "") String scheduleTitle,
                                   @RequestParam(value = "semester", defaultValue = "") String semester,
                                   @RequestParam(value = "year", defaultValue = "") String year) {
+        semester = semester.toUpperCase().strip();
         if (scheduleTitle.isEmpty() || semester.isEmpty() || year.isEmpty()) {
             return false;
         }

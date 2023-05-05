@@ -1,10 +1,19 @@
 package edu.gcc.comp350.jmeg;
 
+/**
+ * Class for setting up an AutoSave feature
+ * Implements Runnable
+ * @author Garrett Martin
+ */
 public class AutoSave implements Runnable{
 
     private final int numSeconds;
     private boolean run = true;
 
+    /**
+     * Implementation of run from Runnable, allowing it to be run on a separate thread.
+     * Saves all schedules every 1 minute.
+     */
     @Override
     public void run() {
         IO io = IO.getInstance();

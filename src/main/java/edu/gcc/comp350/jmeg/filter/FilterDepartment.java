@@ -8,10 +8,11 @@ import java.util.stream.Collectors;
 /**
  * Class for Filtering by different departments
  * Implements Filterable
+ * @author Garrett Martin
  */
 public class FilterDepartment implements Filterable{
 
-    private String departmentCode;
+    private final String departmentCode;
 
     /**
      * Constructor for FilterDepartment

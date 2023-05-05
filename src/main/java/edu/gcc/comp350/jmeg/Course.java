@@ -201,7 +201,7 @@ public class Course {
 
 
     /**
-     * Used in place of toString when all we want is short on line course description
+     * Used in place of toString when all we want is short inline course description
      * @param courses ArrayList of Courses to convert to String
      * @return String containing year, title, code for each course in list
      */

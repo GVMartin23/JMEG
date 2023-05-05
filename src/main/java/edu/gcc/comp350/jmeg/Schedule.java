@@ -4,17 +4,11 @@ import java.util.ArrayList;
 
 public class Schedule {
     private User user;
-    private String title;
+    private final String title;
     private int credits;
     private ArrayList<Course> courses;
     private String semester;
-    private int year;
-
-    public Schedule(User user, String title) {
-        this.user = user;
-        this.title = title;
-        credits = 0;
-    }
+    private final int year;
 
     /**
      * Constructor for Schedule
