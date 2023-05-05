@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Class for filtering Courses by term
  * Implements: Filterable
+ * @author Garrett Martin
  */
 public class FilterTerm implements Filterable {
 

@@ -7,15 +7,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SearchTest {
     static Search search;
-    private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private Schedule schedule;
 
     @BeforeAll
@@ -23,7 +20,6 @@ class SearchTest {
         if (Main.getCourses().isEmpty()) {
             IO.getInstance().importCSVData();
         }
-        System.setOut(new PrintStream(outContent));
     }
 
     @BeforeEach
@@ -31,10 +27,6 @@ class SearchTest {
         schedule = new Schedule("TESTING", 0, "FALL", 2018);
         search = new Search(schedule);
         search.clearFilters();
-    }
-
-    @Test
-    void searchInteraction() {
     }
 
     @Test

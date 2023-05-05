@@ -1,8 +1,5 @@
 package edu.gcc.comp350.jmeg;
 
-import edu.gcc.comp350.jmeg.filter.FilterTerm;
-import edu.gcc.comp350.jmeg.filter.FilterYear;
-import edu.gcc.comp350.jmeg.filter.Filterable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +49,7 @@ public class ScheduleResponse {
     public boolean createSchedule(@RequestParam(value = "title", defaultValue = "") String scheduleTitle,
                                   @RequestParam(value = "semester", defaultValue = "") String semester,
                                   @RequestParam(value = "year", defaultValue = "") String year) {
+        semester = semester.toUpperCase().strip();
         if (scheduleTitle.isEmpty() || semester.isEmpty() || year.isEmpty()) {
             return false;
         }
@@ -67,30 +65,27 @@ public class ScheduleResponse {
         }
     }
 
-    @GetMapping("/removeSchedule")
-    public boolean removeSchedule(@RequestParam(value = "code", defaultValue = "") String code) {
+    @GetMapping("/removeByTitle")
+    public boolean removeByTitle(@RequestParam(value = "title", defaultValue = "") String title) {
+        if (title.equals("")) {
+            return false;
+        }
+
+        title = title.toUpperCase().strip();
+        Schedule currentSchedule;
+
         try {
-            Schedule schedule = Main.getCurrentSchedule();
-            int term = (schedule.getSemester().equals("SPRING")) ? 30 : 10;
-            Filterable filterTerm = new FilterTerm(term);
-            Filterable filterYear = new FilterYear(schedule.getYear());
-            ArrayList<Course> courses = filterTerm.filter(Main.getCourses());
-            courses = filterYear.filter(courses);
-            Course course = courses.stream().filter(c -> c.getCrs_code().equals(code)).collect(Collectors.toList()).get(0);
-            schedule.removeCourse(course);
-            return true;
+            currentSchedule = Main.getCurrentSchedule();
         } catch (Exception e) {
             return false;
         }
-    }
 
-    @GetMapping("/getScheduleCourses")
-    public ArrayList<Course> getCourseList() {
-        try {
-            Schedule schedule = Main.getCurrentSchedule();
-            return schedule.getCourses();
-        } catch (Exception e) {
-            return null;
-        }
+        String finalTitle = title;
+        Course remover = currentSchedule.getCourses()
+                .stream()
+                .filter(c -> c.getCrs_title().toUpperCase().strip().equals(finalTitle))
+                .collect(Collectors.toList()).get(0);
+
+        return currentSchedule.removeCourse(remover);
     }
 }

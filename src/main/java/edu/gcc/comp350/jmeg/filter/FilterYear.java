@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Class for filtering Courses by year
  * Implements: Filterable
+ * @author Garrett Martin
  */
 public class FilterYear implements Filterable {
     private final int year;

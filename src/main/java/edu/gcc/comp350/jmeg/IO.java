@@ -7,16 +7,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class IO {
-    private final Scanner scanner;
-
     private static IO io;
 
     private IO() {
-        scanner = new Scanner(System.in);
-    }
-
-    public Scanner getScanner() {
-        return scanner;
     }
 
 
