@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,6 +58,8 @@ public class ScheduleResponse {
         try {
             int yearVal = Integer.parseInt(year);
             Schedule newSchedule = new Schedule(scheduleTitle, 0, semester, yearVal);
+            User user = new User(" ", " ", " ");
+            newSchedule.setUser(user);
             Main.getSchedules().add(newSchedule);
             Main.setCurrentSchedule(newSchedule);
             return true;
@@ -87,5 +90,38 @@ public class ScheduleResponse {
                 .collect(Collectors.toList()).get(0);
 
         return currentSchedule.removeCourse(remover);
+    }
+
+    @GetMapping("/deleteSchedule")
+    public int deleteSchedule(@RequestParam(value = "title", defaultValue = "") String title) {
+        title = title.toUpperCase().strip();
+        if (title.equals("")) {
+            return 4;
+        }
+
+        try {
+            for (Schedule s : Main.getSchedules()) {
+                IO.getInstance().saveSchedule(s);
+            }
+
+            File directory = new File(System.getProperty("user.dir"));
+            //lambda sorting files in directory by those that are csv files and are not data csv files
+            File[] schedules = directory.listFiles((dir, name) -> name.endsWith(".csv") && IO.getInstance().isNotDataCSV(name));
+
+            for (File f : schedules) {
+                f.delete();
+            }
+
+            String finalTitle = title;
+            Main.getSchedules().removeIf(s -> s.getTitle().toUpperCase().equals(finalTitle));
+
+            for (Schedule s : Main.getSchedules()) {
+                IO.getInstance().saveSchedule(s);
+            }
+
+            return 0;
+        } catch (Exception e) {
+            return 1;
+        }
     }
 }
