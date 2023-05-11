@@ -47,12 +47,16 @@ public class ScheduleResponse {
     }
 
     @GetMapping("/scheduleCreate")
-    public boolean createSchedule(@RequestParam(value = "title", defaultValue = "") String scheduleTitle,
+    public int createSchedule(@RequestParam(value = "title", defaultValue = "") String scheduleTitle,
                                   @RequestParam(value = "semester", defaultValue = "") String semester,
                                   @RequestParam(value = "year", defaultValue = "") String year) {
         semester = semester.toUpperCase().strip();
         if (scheduleTitle.isEmpty() || semester.isEmpty() || year.isEmpty()) {
-            return false;
+            return 2;
+        }
+
+        if (Main.getSchedules().stream().filter(s -> s.getTitle().equals(scheduleTitle)).count() > 0) {
+            return 1;
         }
 
         try {
@@ -62,9 +66,9 @@ public class ScheduleResponse {
             newSchedule.setUser(user);
             Main.getSchedules().add(newSchedule);
             Main.setCurrentSchedule(newSchedule);
-            return true;
+            return 0;
         } catch (Exception e) {
-            return false;
+            return 3;
         }
     }
 
